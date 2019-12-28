@@ -51,6 +51,11 @@
                         <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="currentCard1" destination="BvT-tn-DAb" id="uEt-K8-ucr"/>
+                        <outlet property="currentCard2" destination="Lpd-SD-WjI" id="VJe-Oh-YFr"/>
+                        <outlet property="currentCard3" destination="NQm-Gm-E1V" id="i86-xw-p6C"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

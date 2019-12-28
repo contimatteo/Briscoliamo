@@ -8,12 +8,26 @@
 
 import Foundation
 
-class GameModel {
+public class GameModel {
     
-    public var cards: Array<CardModel>;
+    public var deckCards: Array<CardModel>;
+    public var usedCards: Array<CardModel>;
 
     init() {
-        self.cards = [];
+        self.deckCards = [];
+        self.usedCards = [];
+    }
+    
+    public func extractCardFromDeck() -> CardModel? {
+        guard let card = self.deckCards.randomElement() else {
+            return nil;
+        }
+                
+        // moved {card} from {.deckCards} to {.usedCards}.
+        self.deckCards.remove(at: self.deckCards.firstIndex(of: card)!);
+        self.usedCards.append(card);
+        
+        return card;
     }
 }
 

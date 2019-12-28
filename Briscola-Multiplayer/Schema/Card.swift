@@ -8,21 +8,45 @@
 
 import Foundation
 
-class CardModel {
-    public var type: CardType;
-    public var number: Int8;
-    public var imageUrl: String;
+public class CardModel: Equatable {
     
-    init(type: CardType, number: Int8) {
-        self.type = type;
-        self.number = number;
-        self.imageUrl = "Assets.xcassets/Cards/\(self.number)-\(self.type.rawValue)";
+    public static func == (lhs: CardModel, rhs: CardModel) -> Bool {
+        return lhs.number == rhs.number && lhs.type == rhs.type;
     }
     
-    init(type: CardType, number: Int8, imageUrl: String) {
+    public var type: CardType;
+    public var number: Int;
+    public var points: Int = 0;
+    public var imageUrl: String;
+    
+    init(type: CardType, number: Int) {
         self.type = type;
         self.number = number;
-        self.imageUrl = imageUrl;
+        self.imageUrl = "\(number)-\(type.rawValue)";
+        
+        self._initCardPoints(number: number);
+    }
+    
+    private func _initCardPoints(number: Int) {
+        switch number {
+        case 1:
+            self.points = 11;
+            break;
+        case 3:
+            self.points = 10;
+            break;
+        case 10:
+            self.points = 4;
+            break;
+        case 9:
+            self.points = 3;
+            break;
+        case 8:
+            self.points = 2;
+            break;
+        default:
+            self.points = 0;
+        }
     }
 }
 

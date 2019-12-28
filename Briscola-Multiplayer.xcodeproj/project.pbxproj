@@ -19,7 +19,6 @@
 		2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EB23B7A40700B3E4A4 /* Game.swift */; };
 		2AA9C1EE23B7A47800B3E4A4 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */; };
 		2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */; };
-		2AA9C1F223B7B09C00B3E4A4 /* Cards in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F123B7B09C00B3E4A4 /* Cards */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +57,6 @@
 		2AA9C1EB23B7A40700B3E4A4 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
-		2AA9C1F123B7B09C00B3E4A4 /* Cards */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Cards; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +107,6 @@
 		2AA9C1B123B79DA400B3E4A4 /* Briscola-Multiplayer */ = {
 			isa = PBXGroup;
 			children = (
-				2AA9C1F323B7B0AB00B3E4A4 /* Images */,
 				2AA9C1E623B7A3E200B3E4A4 /* Game */,
 				2AA9C1E523B7A3D700B3E4A4 /* Schema */,
 				2AA9C1E423B79F6500B3E4A4 /* Delegate */,
@@ -181,14 +178,6 @@
 				2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */,
 			);
 			path = Game;
-			sourceTree = "<group>";
-		};
-		2AA9C1F323B7B0AB00B3E4A4 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				2AA9C1F123B7B09C00B3E4A4 /* Cards */,
-			);
-			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,7 +286,6 @@
 			files = (
 				2AA9C1BF23B79DA800B3E4A4 /* LaunchScreen.storyboard in Resources */,
 				2AA9C1BC23B79DA800B3E4A4 /* Assets.xcassets in Resources */,
-				2AA9C1F223B7B09C00B3E4A4 /* Cards in Resources */,
 				2AA9C1BA23B79DA400B3E4A4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

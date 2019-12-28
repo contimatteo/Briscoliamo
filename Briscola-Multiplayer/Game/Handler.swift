@@ -12,7 +12,7 @@ import Foundation
 public class GameHandler {
     
     private var mode: GameType;
-    private var game: GameModel;
+    public var game: GameModel;
     private var gameLoader: GameLoader;
     
     
@@ -23,6 +23,10 @@ public class GameHandler {
     }
     
     public func loadCards()  {
-        self.game.cards = gameLoader.loadCards();
+        self.game.deckCards = gameLoader.loadCards();
+    }
+    
+    public func getCardFromDeck() -> CardModel? {
+        return self.game.extractCardFromDeck();
     }
 }
