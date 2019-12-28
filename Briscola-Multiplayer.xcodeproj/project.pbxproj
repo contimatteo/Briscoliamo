@@ -19,6 +19,7 @@
 		2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EB23B7A40700B3E4A4 /* Game.swift */; };
 		2AA9C1EE23B7A47800B3E4A4 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */; };
 		2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */; };
+		2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F423B7CED400B3E4A4 /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		2AA9C1EB23B7A40700B3E4A4 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
+		2AA9C1F423B7CED400B3E4A4 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				2AA9C1E623B7A3E200B3E4A4 /* Game */,
-				2AA9C1E523B7A3D700B3E4A4 /* Schema */,
+				2AA9C1E523B7A3D700B3E4A4 /* Model */,
 				2AA9C1E423B79F6500B3E4A4 /* Delegate */,
 				2AA9C1E323B79F2F00B3E4A4 /* Controller */,
 				2AA9C1E223B79F2400B3E4A4 /* Storyboard */,
@@ -162,13 +164,14 @@
 			path = Delegate;
 			sourceTree = "<group>";
 		};
-		2AA9C1E523B7A3D700B3E4A4 /* Schema */ = {
+		2AA9C1E523B7A3D700B3E4A4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				2AA9C1E923B7A3FD00B3E4A4 /* Card.swift */,
 				2AA9C1EB23B7A40700B3E4A4 /* Game.swift */,
+				2AA9C1F423B7CED400B3E4A4 /* Player.swift */,
 			);
-			path = Schema;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2AA9C1E623B7A3E200B3E4A4 /* Game */ = {
@@ -315,6 +318,7 @@
 				2AA9C1B723B79DA400B3E4A4 /* ViewController.swift in Sources */,
 				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,
 				2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */,
+				2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */,
 				2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */,
 				2AA9C1EE23B7A47800B3E4A4 /* Loader.swift in Sources */,
 				2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */,

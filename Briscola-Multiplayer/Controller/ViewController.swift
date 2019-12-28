@@ -14,30 +14,43 @@ class ViewController: UIViewController {
 
     //
     
-    @IBOutlet weak var currentCard1: UIImageView!
-    @IBOutlet weak var currentCard2: UIImageView!
-    @IBOutlet weak var currentCard3: UIImageView!
+    @IBOutlet weak var player1Card1: UIImageView!
+    @IBOutlet weak var player1Card2: UIImageView!
+    @IBOutlet weak var player1Card3: UIImageView!
+    
+    @IBOutlet weak var player2Card1: UIImageView!
+    @IBOutlet weak var player2Card2: UIImageView!
+    @IBOutlet weak var player2Card3: UIImageView!
     //
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // load all the cards.
+        // load all the cards and load 3 cards foreach player.
         gameHandler.loadCards();
         
-        // load first 3 cards.
-        self._setInitialCardHand();
+        // create players and load 3 cards for these.
+        gameHandler.initializePlayers(numberOfPlayers: 2);
+        
+        self.displayInitialCardHands();
     }
 
 
-    private func _setInitialCardHand() {
-        let card1: CardModel = gameHandler.getCardFromDeck()!;
-        let card2: CardModel = gameHandler.getCardFromDeck()!;
-        let card3: CardModel = gameHandler.getCardFromDeck()!;
+    private func displayInitialCardHands() {
+        let (p1c1, p1c2, p1c3): PlayerCardHand = gameHandler.players[0].currentCardHand;
+        let (p2c1, p2c2, p2c3): PlayerCardHand = gameHandler.players[1].currentCardHand;
         
-        currentCard1.image = UIImage.init(named: card1.imageUrl);
-        currentCard2.image = UIImage.init(named: card2.imageUrl);
-        currentCard3.image = UIImage.init(named: card3.imageUrl);
+        self.updatePlayerCard(playerCard: player1Card1, newCard: p1c1);
+        self.updatePlayerCard(playerCard: player1Card2, newCard: p1c2);
+        self.updatePlayerCard(playerCard: player1Card3, newCard: p1c3);
+
+        self.updatePlayerCard(playerCard: player2Card1, newCard: p2c1);
+        self.updatePlayerCard(playerCard: player2Card2, newCard: p2c2);
+        self.updatePlayerCard(playerCard: player2Card3, newCard: p2c3);
+    }
+    
+    private func updatePlayerCard(playerCard: UIImageView, newCard: CardModel) {
+        playerCard.image = UIImage.init(named: newCard.imageUrl);
     }
 }
 
