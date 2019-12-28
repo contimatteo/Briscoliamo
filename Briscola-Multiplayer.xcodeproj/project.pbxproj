@@ -15,6 +15,11 @@
 		2AA9C1BF23B79DA800B3E4A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9C1BD23B79DA800B3E4A4 /* LaunchScreen.storyboard */; };
 		2AA9C1CA23B79DA900B3E4A4 /* Briscola_MultiplayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1C923B79DA900B3E4A4 /* Briscola_MultiplayerTests.swift */; };
 		2AA9C1D523B79DA900B3E4A4 /* Briscola_MultiplayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1D423B79DA900B3E4A4 /* Briscola_MultiplayerUITests.swift */; };
+		2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1E923B7A3FD00B3E4A4 /* Card.swift */; };
+		2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EB23B7A40700B3E4A4 /* Game.swift */; };
+		2AA9C1EE23B7A47800B3E4A4 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */; };
+		2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */; };
+		2AA9C1F223B7B09C00B3E4A4 /* Cards in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F123B7B09C00B3E4A4 /* Cards */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +54,11 @@
 		2AA9C1D023B79DA900B3E4A4 /* Briscola-MultiplayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Briscola-MultiplayerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA9C1D423B79DA900B3E4A4 /* Briscola_MultiplayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Briscola_MultiplayerUITests.swift; sourceTree = "<group>"; };
 		2AA9C1D623B79DA900B3E4A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2AA9C1E923B7A3FD00B3E4A4 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		2AA9C1EB23B7A40700B3E4A4 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
+		2AA9C1F123B7B09C00B3E4A4 /* Cards */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Cards; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,12 +109,13 @@
 		2AA9C1B123B79DA400B3E4A4 /* Briscola-Multiplayer */ = {
 			isa = PBXGroup;
 			children = (
-				2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */,
-				2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */,
-				2AA9C1B623B79DA400B3E4A4 /* ViewController.swift */,
-				2AA9C1B823B79DA400B3E4A4 /* Main.storyboard */,
+				2AA9C1F323B7B0AB00B3E4A4 /* Images */,
+				2AA9C1E623B7A3E200B3E4A4 /* Game */,
+				2AA9C1E523B7A3D700B3E4A4 /* Schema */,
+				2AA9C1E423B79F6500B3E4A4 /* Delegate */,
+				2AA9C1E323B79F2F00B3E4A4 /* Controller */,
+				2AA9C1E223B79F2400B3E4A4 /* Storyboard */,
 				2AA9C1BB23B79DA800B3E4A4 /* Assets.xcassets */,
-				2AA9C1BD23B79DA800B3E4A4 /* LaunchScreen.storyboard */,
 				2AA9C1C023B79DA800B3E4A4 /* Info.plist */,
 			);
 			path = "Briscola-Multiplayer";
@@ -126,6 +137,58 @@
 				2AA9C1D623B79DA900B3E4A4 /* Info.plist */,
 			);
 			path = "Briscola-MultiplayerUITests";
+			sourceTree = "<group>";
+		};
+		2AA9C1E223B79F2400B3E4A4 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				2AA9C1BD23B79DA800B3E4A4 /* LaunchScreen.storyboard */,
+				2AA9C1B823B79DA400B3E4A4 /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		2AA9C1E323B79F2F00B3E4A4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2AA9C1B623B79DA400B3E4A4 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2AA9C1E423B79F6500B3E4A4 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */,
+				2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		2AA9C1E523B7A3D700B3E4A4 /* Schema */ = {
+			isa = PBXGroup;
+			children = (
+				2AA9C1E923B7A3FD00B3E4A4 /* Card.swift */,
+				2AA9C1EB23B7A40700B3E4A4 /* Game.swift */,
+			);
+			path = Schema;
+			sourceTree = "<group>";
+		};
+		2AA9C1E623B7A3E200B3E4A4 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				2AA9C1ED23B7A47800B3E4A4 /* Loader.swift */,
+				2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		2AA9C1F323B7B0AB00B3E4A4 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2AA9C1F123B7B09C00B3E4A4 /* Cards */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +297,7 @@
 			files = (
 				2AA9C1BF23B79DA800B3E4A4 /* LaunchScreen.storyboard in Resources */,
 				2AA9C1BC23B79DA800B3E4A4 /* Assets.xcassets in Resources */,
+				2AA9C1F223B7B09C00B3E4A4 /* Cards in Resources */,
 				2AA9C1BA23B79DA400B3E4A4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,8 +323,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */,
 				2AA9C1B723B79DA400B3E4A4 /* ViewController.swift in Sources */,
+				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,
 				2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */,
+				2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */,
+				2AA9C1EE23B7A47800B3E4A4 /* Loader.swift in Sources */,
 				2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,11 +505,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K8Q29R6G2Q;
 				INFOPLIST_FILE = "Briscola-Multiplayer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.contimatteo.university.lam.briscola.Briscola-Multiplayer";
+				PRODUCT_BUNDLE_IDENTIFIER = com.contimatteo.university.lam.briscola;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -455,11 +524,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K8Q29R6G2Q;
 				INFOPLIST_FILE = "Briscola-Multiplayer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.contimatteo.university.lam.briscola.Briscola-Multiplayer";
+				PRODUCT_BUNDLE_IDENTIFIER = com.contimatteo.university.lam.briscola;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
