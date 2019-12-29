@@ -10,47 +10,84 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //
+    // MARK: Constants
+    
+    private let NUMBER_OF_PLAYERS: Int = 2;
+    private let MAX_NUMBER_OF_PLAYERS: Int = 4;
+    
+    //
+    // MARK: @IBOutlets
+    
+    @IBOutlet weak var trumpCard: UIImageView!
+    
+    @IBOutlet weak var _p1c1: UIImageView! // player 1 - card 1
+    @IBOutlet weak var _p1c2: UIImageView!
+    @IBOutlet weak var _p1c3: UIImageView!
+    @IBOutlet weak var _p2c1: UIImageView!
+    @IBOutlet weak var _p2c2: UIImageView!
+    @IBOutlet weak var _p2c3: UIImageView!
+    
+    //
+    // MARK: Variables
+    
     private var gameHandler: GameHandler = GameHandler.init();
-
-    //
+    private var player1Cards: (UIImageView, UIImageView, UIImageView)?;
+    private var player2Cards: (UIImageView, UIImageView, UIImageView)?;
+    private var player3Cards: (UIImageView, UIImageView, UIImageView)?;
+    private var player4Cards: (UIImageView, UIImageView, UIImageView)?;
+    private var playersCards: Array<(UIImageView, UIImageView, UIImageView)> = [];
     
-    @IBOutlet weak var player1Card1: UIImageView!
-    @IBOutlet weak var player1Card2: UIImageView!
-    @IBOutlet weak var player1Card3: UIImageView!
-    
-    @IBOutlet weak var player2Card1: UIImageView!
-    @IBOutlet weak var player2Card2: UIImageView!
-    @IBOutlet weak var player2Card3: UIImageView!
     //
+    // MARK: Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // load all the cards and load 3 cards foreach player.
-        gameHandler.loadCards();
+        /// prepare player's cards variables.
+        _prepareAssets();
         
-        // create players and load 3 cards for these.
-        gameHandler.initializePlayers(numberOfPlayers: 2);
+        /// load all the cards and load 3 cards foreach player,
+        /// load the trump card, create players and load 3 cards for these.
+        gameHandler.initializeGame(mode: .singleplayer, numberOfPlayers: NUMBER_OF_PLAYERS, playersType: [.human, .virtual]);
         
-        self.displayInitialCardHands();
-    }
-
-
-    private func displayInitialCardHands() {
-        let (p1c1, p1c2, p1c3): PlayerCardHand = gameHandler.players[0].currentCardHand;
-        let (p2c1, p2c2, p2c3): PlayerCardHand = gameHandler.players[1].currentCardHand;
-        
-        self.updatePlayerCard(playerCard: player1Card1, newCard: p1c1);
-        self.updatePlayerCard(playerCard: player1Card2, newCard: p1c2);
-        self.updatePlayerCard(playerCard: player1Card3, newCard: p1c3);
-
-        self.updatePlayerCard(playerCard: player2Card1, newCard: p2c1);
-        self.updatePlayerCard(playerCard: player2Card2, newCard: p2c2);
-        self.updatePlayerCard(playerCard: player2Card3, newCard: p2c3);
+        /// display players initial hands + load trump card
+        displayInitialState();
     }
     
-    private func updatePlayerCard(playerCard: UIImageView, newCard: CardModel) {
-        playerCard.image = UIImage.init(named: newCard.imageUrl);
+    private func _prepareAssets() {
+        /// TODO:  missing logic for players number > 2.
+        
+        /// first assign three cards (images) foreach player
+        player1Cards = (_p1c1, _p1c2, _p1c3);
+        player2Cards = (_p2c1, _p2c2, _p2c3);
+        
+        /// then insert each player cards (images) array into general {playersCards} var.
+        for i in 0...(min(NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS) - 1) {
+            if (i == 0) {
+                playersCards.append(player1Cards!);
+            } else {
+                playersCards.append(player2Cards!);
+            }
+        }
+    }
+    
+    private func displayInitialState() {
+        /// display players initial cards hand.
+        for (index, player) in playersCards.enumerated() {
+            let (c1, c2, c3): PlayerCardHand = gameHandler.players[index].currentCardHand;
+            _updateCardImage(imageView: player.0, newCard: c1);
+            _updateCardImage(imageView: player.1, newCard: c2);
+            _updateCardImage(imageView: player.2, newCard: c3);
+        }
+        
+        /// display the card trump
+        _updateCardImage(imageView: trumpCard, newCard: gameHandler.game.trumpCard!);
+    }
+    
+    
+    private func _updateCardImage(imageView: UIImageView, newCard: CardModel) {
+        imageView.image = UIImage.init(named: newCard.imageUrl);
     }
 }
 

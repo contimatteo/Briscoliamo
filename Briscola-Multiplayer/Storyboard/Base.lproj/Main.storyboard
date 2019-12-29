@@ -52,12 +52,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="player1Card1" destination="BvT-tn-DAb" id="szJ-Yc-QVf"/>
-                        <outlet property="player1Card2" destination="Lpd-SD-WjI" id="efN-gd-srA"/>
-                        <outlet property="player1Card3" destination="NQm-Gm-E1V" id="uha-hi-ClN"/>
-                        <outlet property="player2Card1" destination="IJN-qo-05L" id="TsK-2S-y0s"/>
-                        <outlet property="player2Card2" destination="Uhk-f1-i8f" id="n1j-HW-lgN"/>
-                        <outlet property="player2Card3" destination="RrD-Rq-WVI" id="Yfi-ik-Pcf"/>
+                        <outlet property="_p1c1" destination="BvT-tn-DAb" id="szJ-Yc-QVf"/>
+                        <outlet property="_p1c2" destination="Lpd-SD-WjI" id="efN-gd-srA"/>
+                        <outlet property="_p1c3" destination="NQm-Gm-E1V" id="uha-hi-ClN"/>
+                        <outlet property="_p2c1" destination="IJN-qo-05L" id="TsK-2S-y0s"/>
+                        <outlet property="_p2c2" destination="Uhk-f1-i8f" id="n1j-HW-lgN"/>
+                        <outlet property="_p2c3" destination="RrD-Rq-WVI" id="Yfi-ik-Pcf"/>
+                        <outlet property="trumpCard" destination="lG0-zt-8DC" id="UeP-Lj-eFP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -10,45 +10,54 @@ import Foundation
 
 
 public class GameHandler {
-    private var gameLoader: GameLoader;
-    private var mode: GameType;
     
     //
+    // MARK: Variables
+    
+    private var gameLoader: GameLoader;
+    private var mode: GameType = .singleplayer;
     
     public var game: GameModel;
     public var players: Array<PlayerModel>;
     
-    ///
+    //
+    // MARK: Initializers
     
-    init(mode: GameType = .singleplayer) {
-        self.mode = mode;
-        self.game = GameModel.init();
-        self.gameLoader = GameLoader.init();
+    init() {
+        game = GameModel.init();
+        gameLoader = GameLoader.init();
         
-        self.players = [];
+        players = [];
     }
     
     //
-    
-    public func loadCards()  {
-        self.game.deckCards = gameLoader.loadCards();
-    }
-    
-    public func initializePlayers(numberOfPlayers: Int) {
-        for playerIndex in 1...numberOfPlayers {
-            let name = "player-\(playerIndex)";
-                   
-            let card1 = self.getCardFromDeck()!;
-            let card2 = self.getCardFromDeck()!;
-            let card3 = self.getCardFromDeck()!;
-            let initialHand: PlayerCardHand = (card1, card2, card3);
-            let player = PlayerModel.init(playerName: name, initialHand: initialHand);
-            
-            self.players.append(player);
-        }
-    }
+    // MARK: Methods
     
     public func getCardFromDeck() -> CardModel? {
-        return self.game.extractCardFromDeck();
+        return game.extractCardFromDeck();
+    }
+    
+    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
+        /// game settings
+        self.mode = mode;
+        
+        /// cards
+        game.initialCards = gameLoader.loadCards();
+        game.deckCards = game.initialCards;
+        
+        /// players
+        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType)
+    }
+    
+    private func _initializePlayers(numberOfPlayers: Int, playersType: Array<PlayerType>) {
+        for playerIndex in 0...(numberOfPlayers-1) {
+            let card1 = getCardFromDeck()!;
+            let card2 = getCardFromDeck()!;
+            let card3 = getCardFromDeck()!;
+            let initialHand: PlayerCardHand = (card1, card2, card3);
+            let player = PlayerModel.init(playerName: "player-\(playerIndex)", initialHand: initialHand, type: playersType[playerIndex]);
+            
+            players.append(player);
+        }
     }
 }
