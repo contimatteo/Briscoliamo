@@ -99,7 +99,6 @@ class ViewController: UIViewController {
         trumpCard!.model = trumpCardModel;
     }
     
-    
     private func _updateCardImage(imageToUpdate: UIImageView, newCardModel: CardModel) {
         /// find the {T_CardObject} using the {cardImageView} param in input.
         guard let (playerIndex, cardIndex) = _findCardObjectByCardImageView(imageToFind: imageToUpdate) else { return };
@@ -127,14 +126,13 @@ class ViewController: UIViewController {
         return nil;
     }
     
-    
     //
     // MARK: Gestures
     
     private func initGestures() {
         let currentHumanPlayerIndex: Int = CONSTANTS.CURRENT_HUMAN_PLAYER_INDEX;
         let currentPlayerHand = playersCards[currentHumanPlayerIndex];
-    
+        
         for cIndex in currentPlayerHand.indices {
             _attachTapGestureToCard(playerIndex: currentHumanPlayerIndex, cardIndex: cIndex);
         }
@@ -147,7 +145,6 @@ class ViewController: UIViewController {
         playersCards[playerIndex][cardIndex].imageView.addGestureRecognizer(tapGestureRecognizer);
     }
     
-    
     @objc func cardImageViewTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         guard let tappedImage: UIImageView = tapGestureRecognizer.view as? UIImageView else { return };
@@ -156,12 +153,7 @@ class ViewController: UIViewController {
         let cardObjectFound = playersCards[playerIndex][cardIndex];
         print("[INFO] img tapped -> \(cardObjectFound.model!.number)-\(cardObjectFound.model!.type.rawValue)");
         
-        
-        // ////////////////////////
-        // TODO: DELETE THIS. (testing ...)
-        let cardsHandModels = gameHandler.getCardFromDeck()!;
-        print("[INFO] NEWWWW -> \(cardsHandModels.number)-\(cardsHandModels.type.rawValue) \n");
-        _updateCardImage(imageToUpdate: playersCards[playerIndex][cardIndex].imageView, newCardModel: cardsHandModels);
+        // TODO: missin logic ...
     }
 }
 
