@@ -15,6 +15,7 @@ public class CardModel: Equatable {
         return lhs.number == rhs.number && lhs.type == rhs.type;
     }
     
+    public var name: String;
     public var type: CardType;
     public var number: Int;
     public var points: Int = 0;
@@ -24,7 +25,9 @@ public class CardModel: Equatable {
     init(type: CardType, number: Int) {
         self.type = type;
         self.number = number;
-        self.imageUrl = "\(number)-\(type.rawValue)";
+        self.name = "\(number)-\(type.rawValue)";
+        
+        self.imageUrl = self.name;
         self.image = UIImage(named: imageUrl)!;
         
         self._initCardPoints(number: number);

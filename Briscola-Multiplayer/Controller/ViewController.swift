@@ -88,7 +88,7 @@ class ViewController: UIViewController {
                 
                 /// update each cards in the initial hand.
                 for (cIndex, card) in starterCardHand.enumerated() {
-                    _updateCardImage(imageToUpdate: card.imageView, newCardModel: cardsHandModels[cIndex], player: pIndex);
+                    _updateCardImage(imageToUpdate: card.imageView, newCardModel: cardsHandModels[cIndex]);
                 }
             }
         }
@@ -100,14 +100,16 @@ class ViewController: UIViewController {
     }
     
     
-    private func _updateCardImage(imageToUpdate: UIImageView, newCardModel: CardModel, player: Int) {
-        if (playersCards.indices.contains(player)) {
-            /// find the {T_CardObject} using the {cardImageView} param in input.
-            guard let (playerIndex, cardIndex) = _findCardObjectByCardImageView(imageToFind: imageToUpdate) else { return };
-            
-            /// update the {T_CardObject}.
-            playersCards[playerIndex][cardIndex].imageView.image = newCardModel.image;
-            playersCards[playerIndex][cardIndex].model = newCardModel;
+    private func _updateCardImage(imageToUpdate: UIImageView, newCardModel: CardModel) {
+        /// find the {T_CardObject} using the {cardImageView} param in input.
+        guard let (playerIndex, cardIndex) = _findCardObjectByCardImageView(imageToFind: imageToUpdate) else { return };
+        
+        /// update the {T_CardObject}.
+        playersCards[playerIndex][cardIndex].imageView.image = newCardModel.image;
+        playersCards[playerIndex][cardIndex].model = newCardModel;
+        
+        if (playerIndex == CONSTANTS.CURRENT_HUMAN_PLAYER_INDEX) {
+            _attachTapGestureToCard(playerIndex: playerIndex, cardIndex: cardIndex);
         }
     }
     
@@ -125,14 +127,26 @@ class ViewController: UIViewController {
         return nil;
     }
     
+    
     //
     // MARK: Gestures
     
     private func initGestures() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(cardImageViewTapped(tapGestureRecognizer:)))
-        p1c1ImgView.isUserInteractionEnabled = true
-        p1c1ImgView.addGestureRecognizer(tapGestureRecognizer)
+        let currentHumanPlayerIndex: Int = CONSTANTS.CURRENT_HUMAN_PLAYER_INDEX;
+        let currentPlayerHand = playersCards[currentHumanPlayerIndex];
+    
+        for cIndex in currentPlayerHand.indices {
+            _attachTapGestureToCard(playerIndex: currentHumanPlayerIndex, cardIndex: cIndex);
+        }
     }
+    
+    private func _attachTapGestureToCard(playerIndex: Int, cardIndex: Int) {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(cardImageViewTapped(tapGestureRecognizer:)));
+        
+        playersCards[playerIndex][cardIndex].imageView.isUserInteractionEnabled = true;
+        playersCards[playerIndex][cardIndex].imageView.addGestureRecognizer(tapGestureRecognizer);
+    }
+    
     
     @objc func cardImageViewTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -140,11 +154,16 @@ class ViewController: UIViewController {
         
         guard let (playerIndex, cardIndex) = _findCardObjectByCardImageView(imageToFind: tappedImage) else { return };
         let cardObjectFound = playersCards[playerIndex][cardIndex];
-        print("[INFO] imgObject -> \(cardObjectFound.model!.number)-\(cardObjectFound.model!.type.rawValue) \n");
+        print("[INFO] img tapped -> \(cardObjectFound.model!.number)-\(cardObjectFound.model!.type.rawValue)");
+        
+        
+        // ////////////////////////
+        // TODO: DELETE THIS. (testing ...)
+        let cardsHandModels = gameHandler.getCardFromDeck()!;
+        print("[INFO] NEWWWW -> \(cardsHandModels.number)-\(cardsHandModels.type.rawValue) \n");
+        _updateCardImage(imageToUpdate: playersCards[playerIndex][cardIndex].imageView, newCardModel: cardsHandModels);
     }
 }
-
-
 
 private typealias T_CardObject = (model: CardModel?, imageView: UIImageView);
 private typealias T_PlayerCardsHand = Array<T_CardObject>;
