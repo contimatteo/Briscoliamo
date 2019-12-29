@@ -21,7 +21,7 @@
 		2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */; };
 		2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F423B7CED400B3E4A4 /* Player.swift */; };
 		2AA9C1F823B8AC1800B3E4A4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F723B8AC1800B3E4A4 /* Extensions.swift */; };
-		2AA9C1FA23B8AD1000B3E4A4 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F923B8AD1000B3E4A4 /* Utilities.swift */; };
+		2AA9C1FC23B8FED700B3E4A4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +62,7 @@
 		2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
 		2AA9C1F423B7CED400B3E4A4 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2AA9C1F723B8AC1800B3E4A4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		2AA9C1F923B8AD1000B3E4A4 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,7 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				2AA9C1F723B8AC1800B3E4A4 /* Extensions.swift */,
-				2AA9C1F923B8AD1000B3E4A4 /* Utilities.swift */,
+				2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -333,10 +333,10 @@
 				2AA9C1B723B79DA400B3E4A4 /* ViewController.swift in Sources */,
 				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,
 				2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */,
+				2AA9C1FC23B8FED700B3E4A4 /* Constants.swift in Sources */,
 				2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */,
 				2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */,
 				2AA9C1EE23B7A47800B3E4A4 /* Loader.swift in Sources */,
-				2AA9C1FA23B8AD1000B3E4A4 /* Utilities.swift in Sources */,
 				2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public class CardModel: Equatable {
     
@@ -18,11 +19,13 @@ public class CardModel: Equatable {
     public var number: Int;
     public var points: Int = 0;
     public var imageUrl: String;
+    public var image: UIImage;
     
     init(type: CardType, number: Int) {
         self.type = type;
         self.number = number;
         self.imageUrl = "\(number)-\(type.rawValue)";
+        self.image = UIImage(named: imageUrl)!;
         
         self._initCardPoints(number: number);
     }
