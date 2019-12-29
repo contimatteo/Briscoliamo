@@ -17,6 +17,7 @@ public class PlayerModel {
     private var key: String;
     private var index: Int;
     public var currentCardHand: PlayerCardHand;
+    public var cardOnTable: CardModel?;
     
     //
     // MARK: Variables
@@ -32,6 +33,15 @@ public class PlayerModel {
     
     public func getIndex() -> Int {
         return index;
+    }
+    
+    public func playCard(card: CardModel) {
+        /// this card is on the table.
+        cardOnTable = card;
+        
+        /// remove this card from {currentCardHand}.
+        let cardPlayed = currentCardHand.enumerated().first(where: {$0.element == card})!;
+        currentCardHand.remove(at: cardPlayed.offset);
     }
 }
 

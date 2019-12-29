@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+// here i handle that "a card y was played" (and not by who).
 public class GameModel {
     
     //
@@ -16,6 +18,8 @@ public class GameModel {
     public var initialCards: Array<CardModel>;
     public var deckCards: Array<CardModel>;
     public var usedCards: Array<CardModel>;
+    public var cardsOnTable: Array<CardModel>;
+    
     public var trumpCard: CardModel? {
         get {
             return initialCards.last;
@@ -29,6 +33,7 @@ public class GameModel {
         initialCards = [];
         deckCards = [];
         usedCards = [];
+        cardsOnTable = [];
     }
     
     //
@@ -39,21 +44,20 @@ public class GameModel {
         
         // moved {card} from {.deckCards} to {.usedCards}.
         self.deckCards.remove(at: 0);
-        self.usedCards.append(card);
+        // self.usedCards.append(card);
         
         return card;
     }
     
-    /// TODO: remove this function.
-    private func _extractRandomCardFromDeck() -> CardModel? {
-        ///        guard let card = self.deckCards.randomElement() else { return nil; }
-        ///
-        ///       /// moved {card} from {.deckCards} to {.usedCards}.
-        ///        self.deckCards.remove(at: self.deckCards.firstIndex(of: card)!);
-        ///        self.usedCards.append(card);
-        ///
-        ///        return card;
-        return nil;
+    public func cardPlayed(card: CardModel) {
+        cardsOnTable.append(card);
+    }
+    
+    public func turnEnded(card: CardModel) {
+        for (index, card) in cardsOnTable.enumerated() {
+            usedCards.append(card);
+            cardsOnTable.remove(at: index);
+        }
     }
 }
 

@@ -9,11 +9,13 @@
 import Foundation
 
 
+// here i handle that "a player x play a card y".
 public class GameHandler {
     
     //
     // MARK: Variables
     private var mode: GameType = .singleplayer;
+    private let virtualDecisionMaker = VirtualDecisionMaker();
     
     public var game: GameModel;
     public var players: Array<PlayerModel>;
@@ -50,6 +52,24 @@ public class GameHandler {
         return playerTurn == player.getIndex();
     }
     
+    public func playOneCard(playerIndex: Int, card: CardModel) -> Bool {
+        var somethingIsChanged: Bool = false;
+        
+        if (playerIndex == playerTurn) {
+            /// remove this card from list of availables cards.
+            game.cardPlayed(card: card);
+            /// move this card into the table.
+            players[playerIndex].playCard(card: card);
+            
+            /// calculare next player turn.
+            playerTurn = (playerTurn + 1) % CONSTANTS.NUMBER_OF_PLAYERS;
+            
+            somethingIsChanged = true;
+        }
+
+        return somethingIsChanged;
+    }
+    
     //
     // MARK: Private Methods
     
@@ -60,7 +80,7 @@ public class GameHandler {
         
         /// load all cards images
         for type: CardType in types {
-            for index in 0...9 {
+            for index in 0..<10 {
                 initialCards.append(CardModel.init(type: type, number: index + 1));
             }
         }
@@ -78,10 +98,10 @@ public class GameHandler {
     
     private func _initializePlayers(numberOfPlayers: Int, playersType: Array<PlayerType>) {
         /// foreach player: create the first hand and instance the model.
-        for playerIndex in 0...(numberOfPlayers-1) {
+        for playerIndex in 0..<numberOfPlayers {
             /// create an array with the initial cards (this will be the first cards hand).
             var initialHand: PlayerCardHand = [];
-            for _ in 0...(CONSTANTS.PLAYER_CARDS_HAND_SISZE - 1) {
+            for _ in 0..<CONSTANTS.PLAYER_CARDS_HAND_SISZE {
                 let newCard = getCardFromDeck()!;
                 initialHand.append(newCard);
             }
