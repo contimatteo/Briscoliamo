@@ -24,7 +24,7 @@ public class GameLoader {
         /// load all cards images
         for type: CardType in types {
             for index in 0...9 {
-                initialCards.append(CardModel.init(type: type, number: index));
+                initialCards.append(CardModel.init(type: type, number: index + 1));
             }
         }
         
