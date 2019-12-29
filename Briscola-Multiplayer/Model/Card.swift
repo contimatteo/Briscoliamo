@@ -17,6 +17,8 @@ public class CardModel: Equatable {
     
     public var name: String;
     public var type: CardType;
+    public var tag: Int = 0;
+    
     public var number: Int;
     public var points: Int = 0;
     public var imageUrl: String;
@@ -31,6 +33,28 @@ public class CardModel: Equatable {
         self.image = UIImage(named: imageUrl)!;
         
         self._initCardPoints(number: number);
+         _generateCardTag();
+    }
+    
+    private func _generateCardTag() {
+        var fromTypeToNumber = 0;
+        
+        switch type {
+        case .bastoni:
+            fromTypeToNumber = 1;
+            break;
+        case .denari:
+            fromTypeToNumber = 2;
+            break;
+        case .coppe:
+            fromTypeToNumber = 3;
+            break;
+        case .spade:
+            fromTypeToNumber = 4;
+            break;
+        }
+        
+        self.tag = (fromTypeToNumber * 10) + number;
     }
     
     private func _initCardPoints(number: Int) {

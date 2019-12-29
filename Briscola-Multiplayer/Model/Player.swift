@@ -14,18 +14,20 @@ public class PlayerModel {
     //
     // MARK: Variables
     
-    private var key: String;
+    private var name: String;
     private var index: Int;
-    public var currentCardHand: PlayerCardHand;
+    
+    public var cardsHand: Array<CardModel>;
+    public var currentDeck: Array<CardModel> = [];
     public var cardOnTable: CardModel?;
     
     //
     // MARK: Variables
     
-    init(index: Int, initialHand: PlayerCardHand, type: PlayerType = .human) {
+    init(index: Int, initialHand: Array<CardModel>, type: PlayerType = .human) {
         self.index = index;
-        self.key = "player-\(index)";
-        self.currentCardHand = initialHand;
+        self.name = "player-\(index)";
+        self.cardsHand = initialHand;
     }
     
     //
@@ -37,11 +39,11 @@ public class PlayerModel {
     
     public func playCard(card: CardModel) {
         /// this card is on the table.
-        cardOnTable = card;
+        /// cardOnTable = card;
         
         /// remove this card from {currentCardHand}.
-        let cardPlayed = currentCardHand.enumerated().first(where: {$0.element == card})!;
-        currentCardHand.remove(at: cardPlayed.offset);
+        /// let cardPlayed = currentCardHand.enumerated().first(where: {$0.element == card})!;
+        /// currentCardHand.remove(at: cardPlayed.offset);
     }
 }
 
@@ -52,6 +54,3 @@ public enum PlayerType {
     case virtual;
 }
 
-// ////////////////////////////////////////////////////////////////////////
-
-public typealias PlayerCardHand = Array<CardModel>;

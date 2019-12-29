@@ -13,18 +13,4 @@ import Foundation
 
 class VirtualDecisionMaker {
     
-    //
-    // MARK: Variables
-    
-    private var _gameRef: GameModel?;
-    private var players: Array<PlayerModel> = [];
-    
-    //
-    // MARK: Methods
-    
-    public func loadGame(game: GameModel, players: Array<PlayerModel>) {
-        self._gameRef = game;
-    }
-    
-    
 }

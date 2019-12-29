@@ -17,23 +17,24 @@ public class GameHandler {
     private var mode: GameType = .singleplayer;
     private let virtualDecisionMaker = VirtualDecisionMaker();
     
-    public var game: GameModel;
-    public var players: Array<PlayerModel>;
+    public var players: Array<PlayerModel> = [];
     public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
+    public var initialCards: Array<CardModel> = [];
+    public var deckCards: Array<CardModel> = [];
+    public var cardsOnTable: Array<CardModel> = [];
     
-    //
-    // MARK: Initializers
-    
-    init() {
-        game = GameModel.init();
-        players = [];
-    }
+    public var trumpCard: CardModel? {
+        get { return initialCards.last; }
+    };
     
     //
     // MARK: Public Methods
     
-    public func getCardFromDeck() -> CardModel? {
-        return game.extractCardFromDeck();
+    public func extractCardFromDeck() -> CardModel? {
+        guard let card = deckCards.first else { return nil; }
+        self.deckCards.remove(at: 0);
+        
+        return card;
     }
     
     public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
@@ -41,15 +42,11 @@ public class GameHandler {
         self.mode = mode;
         
         /// cards
-        game.initialCards = _loadCards();
-        game.deckCards = game.initialCards;
+        initialCards = _loadCards();
+        deckCards = initialCards;
         
         /// players
         _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType)
-    }
-    
-    public func isPlayerTurn(player: PlayerModel) -> Bool {
-        return playerTurn == player.getIndex();
     }
     
     public func playOneCard(playerIndex: Int, card: CardModel) -> Bool {
@@ -57,7 +54,7 @@ public class GameHandler {
         
         if (playerIndex == playerTurn) {
             /// remove this card from list of availables cards.
-            game.cardPlayed(card: card);
+            cardPlayed(card: card);
             /// move this card into the table.
             players[playerIndex].playCard(card: card);
             
@@ -66,8 +63,12 @@ public class GameHandler {
             
             somethingIsChanged = true;
         }
-
+        
         return somethingIsChanged;
+    }
+    
+    public func cardPlayed(card: CardModel) {
+        cardsOnTable.append(card);
     }
     
     //
@@ -100,9 +101,9 @@ public class GameHandler {
         /// foreach player: create the first hand and instance the model.
         for playerIndex in 0..<numberOfPlayers {
             /// create an array with the initial cards (this will be the first cards hand).
-            var initialHand: PlayerCardHand = [];
+            var initialHand: Array<CardModel> = [];
             for _ in 0..<CONSTANTS.PLAYER_CARDS_HAND_SISZE {
-                let newCard = getCardFromDeck()!;
+                let newCard: CardModel = extractCardFromDeck()!;
                 initialHand.append(newCard);
             }
             
@@ -112,5 +113,12 @@ public class GameHandler {
             players.append(player);
         }
     }
-    
+}
+
+
+
+
+public enum GameType {
+    case singleplayer;
+    case multiplayer;
 }
