@@ -9,65 +9,99 @@
 import Foundation
 
 
-// here i handle that "a player x play a card y".
 public class GameHandler {
-    
     //
     // MARK: Variables
     private var mode: GameType = .singleplayer;
-    private let virtualDecisionMaker = VirtualDecisionMaker();
+    public var turnEnded: Bool = false;
+    public var gameEnded: Bool = true;
     
-    public var game: GameModel;
-    public var players: Array<PlayerModel>;
+    private var virtualDecisionMaker: VirtualDecisionMaker? = nil;
+    
+    public var players: Array<PlayerModel> = [];
     public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
-    
-    //
-    // MARK: Initializers
-    
-    init() {
-        game = GameModel.init();
-        players = [];
-    }
+    public var initialCards: Array<CardModel> = [];
+    public var deckCards: Array<CardModel> = [];
+    public var cardsOnTable: Array<CardModel> = [];
+    public var trumpCard: CardModel?;
     
     //
     // MARK: Public Methods
     
-    public func getCardFromDeck() -> CardModel? {
-        return game.extractCardFromDeck();
+    public func extractCardFromDeck() -> CardModel? {
+        guard let card = deckCards.first else { return nil; }
+        self.deckCards.remove(at: 0);
+        
+        return card;
     }
     
     public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
         /// game settings
         self.mode = mode;
+        gameEnded = false;
+        turnEnded = true;
         
         /// cards
-        game.initialCards = _loadCards();
-        game.deckCards = game.initialCards;
+        let cards = _loadCards();
+        initialCards = cards;
+        deckCards = cards;
+        trumpCard = cards.last!;
         
         /// players
-        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType)
-    }
-    
-    public func isPlayerTurn(player: PlayerModel) -> Bool {
-        return playerTurn == player.getIndex();
-    }
-    
-    public func playOneCard(playerIndex: Int, card: CardModel) -> Bool {
-        var somethingIsChanged: Bool = false;
+        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
         
-        if (playerIndex == playerTurn) {
-            /// remove this card from list of availables cards.
-            game.cardPlayed(card: card);
-            /// move this card into the table.
-            players[playerIndex].playCard(card: card);
-            
-            /// calculare next player turn.
-            playerTurn = (playerTurn + 1) % CONSTANTS.NUMBER_OF_PLAYERS;
-            
-            somethingIsChanged = true;
+        /// virtual AI assistant
+        virtualDecisionMaker = VirtualDecisionMaker.init(trumpCard: trumpCard!);
+    }
+    
+    public func playCard(playerIndex: Int, card: CardModel) {
+        if (playerIndex != playerTurn || !turnEnded || gameEnded) { return; }
+        
+        turnEnded = false;
+        
+        /// human player play a card.
+        _humanPlayCard(playerIndex: playerIndex, card: card);
+        
+        /// ai will generate a choice foreach fake player.
+        for pIndex in players.indices {
+            if (pIndex != playerIndex) {
+                _aiPlayCard(playerIndex: pIndex);
+            }
         }
-
-        return somethingIsChanged;
+    }
+    
+    public func nextTurn() {
+        playerTurn = (playerTurn + 1) % CONSTANTS.NUMBER_OF_PLAYERS;
+    }
+    
+    public func endTurn() {
+        var newCard: CardModel? = nil;
+        for player in players {
+            newCard = extractCardFromDeck();
+            if newCard != nil {
+                player.cardsHand.append(newCard!);
+            }
+        }
+        
+        /// move each
+        let playerIndexWhoWinTheTurn = 0;
+        for card in cardsOnTable {
+            players[playerIndexWhoWinTheTurn].currentDeck.append(card);
+        }
+        
+        /// empty the cards on table.
+        cardsOnTable.removeAll();
+        
+        /// end the turn.
+        turnEnded = true;
+        
+        if (_isGameEnded()) {
+            gameEnded = true;
+            
+            for player in players {
+                print("//////// PLAYER \(player.getIndex()) --> \(player.deckPoints)");
+            }
+        }
     }
     
     //
@@ -100,9 +134,9 @@ public class GameHandler {
         /// foreach player: create the first hand and instance the model.
         for playerIndex in 0..<numberOfPlayers {
             /// create an array with the initial cards (this will be the first cards hand).
-            var initialHand: PlayerCardHand = [];
+            var initialHand: Array<CardModel> = [];
             for _ in 0..<CONSTANTS.PLAYER_CARDS_HAND_SISZE {
-                let newCard = getCardFromDeck()!;
+                let newCard: CardModel = extractCardFromDeck()!;
                 initialHand.append(newCard);
             }
             
@@ -113,4 +147,67 @@ public class GameHandler {
         }
     }
     
+    private func _humanPlayCard(playerIndex: Int, card: CardModel) {
+        /// move this card into the table.
+        /// cardsOnTable[playerIndex] = card;
+        cardsOnTable.insert(card, at: playerIndex);
+        
+        /// remove this card from player hand.
+        players[playerIndex].playCard(card: card);
+        
+        /// calculare next player turn.
+        nextTurn();
+    }
+    
+    private func _aiPlayCard(playerIndex: Int) {
+        /// prepare array with the hand cards of each player.
+        let playersHands:Array<Array<CardModel>> = _getAllPlayersHands();
+        
+        /// aks to AI the card to play;
+        let cardToPlayIndex: Int = virtualDecisionMaker!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
+        let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
+        
+        /// move this card into the table.
+        cardsOnTable.insert(cardToPlay, at: playerIndex);
+        
+        /// remove this card from player hand.
+        players[playerIndex].playCard(card: cardToPlay);
+        
+        /// calculare next player turn.
+        nextTurn();
+    }
+    
+    private func _getAllPlayersHands() -> Array<Array<CardModel>> {
+        var playersHands: Array<Array<CardModel>> = [[]];
+        
+        for (pIndex, player) in players.enumerated() {
+            playersHands.append([]);
+            for card in player.cardsHand {
+                playersHands[pIndex].append(card);
+            }
+        }
+        
+        return playersHands;
+    }
+    
+    private func _isGameEnded() -> Bool {
+        let deckEmpty: Bool = deckCards.count == 0;
+        
+        var allPlayersHandsAreEmpty: Bool = true;
+        for player in players {
+            if (player.cardsHand.count > 0) {
+                allPlayersHandsAreEmpty = false;
+                continue;
+            }
+        }
+        
+        return deckEmpty && allPlayersHandsAreEmpty;
+    }
+}
+
+
+
+public enum GameType {
+    case singleplayer;
+    case multiplayer;
 }
