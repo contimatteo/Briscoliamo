@@ -19,7 +19,14 @@ public class PlayerModel {
     
     public var cardsHand: Array<CardModel>;
     public var currentDeck: Array<CardModel> = [];
-    public var cardOnTable: CardModel?;
+    
+    public var deckPoints: Int {
+        get {
+            var sum = 0;
+            for card in currentDeck { sum += card.points; }
+            return sum;
+        }
+    }
     
     //
     // MARK: Variables
@@ -38,12 +45,9 @@ public class PlayerModel {
     }
     
     public func playCard(card: CardModel) {
-        /// this card is on the table.
-        /// cardOnTable = card;
-        
         /// remove this card from {currentCardHand}.
-        /// let cardPlayed = currentCardHand.enumerated().first(where: {$0.element == card})!;
-        /// currentCardHand.remove(at: cardPlayed.offset);
+        let cardPlayed = cardsHand.enumerated().first(where: {$0.element == card})!;
+        cardsHand.remove(at: cardPlayed.offset);
     }
 }
 

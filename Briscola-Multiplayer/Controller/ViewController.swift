@@ -9,7 +9,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
     //
     // MARK: @IBOutlets
     
@@ -26,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tc2ImgView: UIImageView!
     @IBOutlet weak var tc3ImgView: UIImageView!
     @IBOutlet weak var tc4ImgView: UIImageView!
+    
     //
     // MARK: Variables
     
@@ -43,8 +43,8 @@ class ViewController: UIViewController {
         /// prepare player's cards variables.
         prepareAssets();
         
-        /// load all the cards and load 3 cards foreach player,
-        /// load the trump card, create players and load 3 cards for these.
+        /// load all the cards and load 3 cards foreach player, load
+        /// the trump card, create players and load 3 cards for these.
         gameHandler.initializeGame(mode: .singleplayer, numberOfPlayers: CONSTANTS.NUMBER_OF_PLAYERS, playersType: [.human, .virtual]);
         
         /// gestures
@@ -86,16 +86,32 @@ class ViewController: UIViewController {
     }
     
     public func render() {
-        /// 1 STEP: render all players hands.
+        /// STEP 1: render all players hands.
         for (pIndex, playerImgs) in playersCardImgViews.enumerated() {
             if (gameHandler.players.indices.contains(pIndex)) {
                 let playerHand: Array<CardModel> = gameHandler.players[pIndex].cardsHand;
                 
-                for (cIndex, imgView) in playerImgs.enumerated() {
-                    _updateImageView(imageView: imgView, model: playerHand[cIndex]);
+                for (cIndex, cardImg) in playerImgs.enumerated() {
+                    if (playerHand.indices.contains(cIndex)) {
+                        _updateImageView(imageView: cardImg, model: playerHand[cIndex]);
+                    } else {
+                        _emptyImageView(imageView: cardImg);
+                    }
                 }
             }
         }
+        
+        /// STEP 2: render all cards on table.
+        for (cIndex, cardImg) in tableCardImages.enumerated() {
+            if (gameHandler.cardsOnTable.indices.contains(cIndex)) {
+                _updateImageView(imageView: cardImg, model: gameHandler.cardsOnTable[cIndex]);
+            } else {
+                _emptyImageView(imageView: cardImg);
+            }
+        }
+        
+        /// trump card
+        _updateImageView(imageView: trumpImgView, model: gameHandler.trumpCard!);
     }
     
     private func initGestures() {
@@ -139,15 +155,33 @@ class ViewController: UIViewController {
         imageView.tag = model.tag;
     }
     
+    private func _emptyImageView(imageView: UIImageView, imageName: String? = "empty") {
+        imageView.image = UIImage(named: imageName!);
+        imageView.tag = -1;
+    }
+    
+    private func _endTurn() {
+        gameHandler.endTurn();
+    }
+    
     //
     // MARK: Gestures
     
     @objc func cardTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        /// recognize the image tapped.
         guard let tappedImg: UIImageView = tapGestureRecognizer.view as? UIImageView else { return };
-        print("tappedImg -> \(tappedImg)");
+        guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
         
-        guard let (model, playerIndex, cardIndex) = _getModelFromImageView(imgView: tappedImg) else { return };
-        print("tappedImg -> \(model.type.rawValue)-\(model.number)");
+        /// play the cards.
+        gameHandler.playCard(playerIndex: playerIndex, card: model);
+        render();
+        
+        /// end the turn after a delay.
+        let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
+        DispatchQueue.main.asyncAfter(deadline: delay, execute: {
+            self._endTurn();
+            self.render();
+        })
     }
 }
 

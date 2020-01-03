@@ -11,30 +11,50 @@ import UIKit
 
 public class CardModel: Equatable {
     
+    //
+    // MARK: Protocol Adapters
+    
     public static func == (lhs: CardModel, rhs: CardModel) -> Bool {
         return lhs.number == rhs.number && lhs.type == rhs.type;
     }
+    
+    //
+    // MARK: Variables
     
     public var name: String;
     public var type: CardType;
     public var tag: Int = 0;
     
     public var number: Int;
-    public var points: Int = 0;
+    public var points: Int;
     public var imageUrl: String;
     public var image: UIImage;
     
+    public var hasPoints: Bool { get { return points > 0; } }
+    
+    //
+    // MARK: Initialzers
+    
     init(type: CardType, number: Int) {
+        /// card descriptor
         self.type = type;
         self.number = number;
-        self.name = "\(number)-\(type.rawValue)";
+        name = "\(number)-\(type.rawValue)";
+        points = 0;
         
-        self.imageUrl = self.name;
-        self.image = UIImage(named: imageUrl)!;
+        /// image
+        imageUrl = self.name;
+        image = UIImage(named: imageUrl)!;
         
-        self._initCardPoints(number: number);
-         _generateCardTag();
+        /// points
+        _initCardPoints(number: number);
+        
+        /// generate unique tag.
+        _generateCardTag();
     }
+    
+    //
+    // MARK: Methods
     
     private func _generateCardTag() {
         var fromTypeToNumber = 0;
