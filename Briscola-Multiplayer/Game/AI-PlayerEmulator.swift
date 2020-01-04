@@ -48,6 +48,7 @@ class AIPlayerEmulator {
             classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
             let trumpOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             if (trumpOnTable) {
+                print("c'è una briscola in tavola");
                 /// 1.1.1 - gioca il liscio più alto che ho.
                 cardToPlay = _getSmooth(.higher);
                 if (cardToPlay != nil) { return cardToPlay!; }
@@ -62,9 +63,13 @@ class AIPlayerEmulator {
             classifToFind = (isTrump: false, isSmooth: false, isCargo: true);
             let cargoOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             if (cargoOnTable) {
+                print("c'è un carico in tavola");
                 /// 1.2.1 - gioco il carico più alto che ho di questo tipo ma solo se supera la carta in tavola.
                 cardToPlay = _getCargo(.lower, withType: cardOnTable.type);
-                if (cardToPlay != nil && playerCardsHand[cardToPlay!].points > cardOnTable.points) { return cardToPlay!; }
+                if (cardToPlay != nil && playerCardsHand[cardToPlay!].points > cardOnTable.points) {
+                    print("\(playerCardsHand[cardToPlay!].points) > \(cardOnTable.points)");
+                    return cardToPlay!;
+                }
                 /// 1.2.2 - gioco la briscola più bassa che ho
                 cardToPlay = _getTrump(.lower);
                 if (cardToPlay != nil) { return cardToPlay!; }
@@ -76,6 +81,7 @@ class AIPlayerEmulator {
             }
             
             /// 1.3. - c'è un liscio in tavola !
+            print("c'è un liscio in tavola");
             /// 1.3.1 - gioco il carico più alto che ho di questo tipo.
             cardToPlay = _getCargo(.higher, withType: cardOnTable.type);
             if (cardToPlay != nil) { return cardToPlay!; }
@@ -87,6 +93,7 @@ class AIPlayerEmulator {
         }
         
         /// 2    - nessuna carta presente in tavola.
+        print("nessuna carta in tavola");
         /// 2.1 - gioco il liscio più basso che ho
         cardToPlay = _getSmooth(.lower);
         if (cardToPlay != nil) { return cardToPlay!; }
@@ -94,6 +101,7 @@ class AIPlayerEmulator {
         cardToPlay = _getCargo(.lower);
         if (cardToPlay != nil) { return cardToPlay!; }
         /// 2.3 - gioco la briscola più bassa che ho
+        print("\n////// FINAL MATCH !! ///////")
         return _getTrump(.lower)!;
     }
     
