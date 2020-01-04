@@ -17,7 +17,7 @@ class AIPlayerEmulator {
     
     private var cardsHandClassification: Array<CardClassification> = [];
     private var cardsOnTableClassification: Array<CardClassification> = [];
-    private var playercardsHand: Array<CardModel> = [];
+    private var playerCardsHand: Array<CardModel> = [];
     private var cardsOnTable: Array<CardModel> = [];
     
     //
@@ -30,7 +30,6 @@ class AIPlayerEmulator {
     //
     // MARK:
     
-    // ritorna l'indice della carta nella mano del giocatore in posizione {playerIndex}
     public func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel>) -> Int {
         var cardToPlay: Int?;
         var classifToFind: CardClassification;
@@ -39,57 +38,61 @@ class AIPlayerEmulator {
         /// preparing vars used by all class' methods.
         _prepareGlobalAIVars(currentPlayerHand: currentPlayerHand, cardsOnTable: cardsOnTable);
         
-        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
         /// è già stata giocata almeno una carta ?
         if (cardsOnTable.count > 0) {
-            /// let firstCard = cardsOnTable.first!;
-            ///
-            /// TODO: ...
-            let isPlayedByMyPartner: Bool = false;
+            let isPlayedByMyPartner: Bool = _isCardPlayedByMyPartner();
             
             /// c'è una briscola in tavola ?
             classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
             let trumpOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             
+            /// c'è una briscola in tavola ?
             if (trumpOnTable) {
-                /// c'è una briscola in tavola.
-                classifToFind = (isTrump: false, isSmooth: true, isCargo: false);
-                
-                /// se ho un liscio gioco quello.
-                let playerHasASmooth: Bool = _existCardWithClassification(cardsHandClassification, cardToFind: classifToFind);
-                if (playerHasASmooth) {
-                    if (isPlayedByMyPartner) {
-                        /// gioca il carico più alto che ho.
-                        cardToPlay = _getCargo(.higher);
-                        if (cardToPlay != nil) { return cardToPlay!; }
-                    } else {
-                        /// gioca il liscio più basso che ho.
-                        cardToPlay = _getSmooth(.lower);
-                        if (cardToPlay != nil) { return cardToPlay!; }
-                    }
+                /// l'ha giocata il mio compagno ?
+                if (isPlayedByMyPartner) {
+                    /// gioca il carico più alto che ho.
+                    cardToPlay = _getCargo(.higher);
+                    if (cardToPlay != nil) { return cardToPlay!; }
+                    
+                    /// gioco il liscio più basso che ho
+                    cardToPlay = _getSmooth(.lower);
+                    if (cardToPlay != nil) { return cardToPlay!; }
+                    
+                    /// gioco la briscola più bassa che ho
+                    return _getTrump(.lower)!;
+                } else {
+                    /// gioca il liscio più alto che ho.
+                    cardToPlay = _getSmooth(.higher);
+                    if (cardToPlay != nil) { return cardToPlay!; }
                 }
             }
         } else {
+            /// gioco il liscio più basso che ho
+            cardToPlay = _getSmooth(.lower);
+            if (cardToPlay != nil) { return cardToPlay!; }
+            
+            /// gioca il carico più basso che ho.
+            cardToPlay = _getCargo(.lower);
+            if (cardToPlay != nil) { return cardToPlay!; }
+            
+            /// gioco la briscola più bassa che ho
+            return _getTrump(.lower)!;
         }
         
-        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        /// FIXME: remove this logic.
-        return currentPlayerHand.indices.randomElement()!;
+        /// UN-REACHABLE CODE !!
+        /// FIXME: this throws an error.
+        return currentPlayerHand.indices.last! + 1;
     }
     
     private func _prepareGlobalAIVars(currentPlayerHand: Array<CardModel>, cardsOnTable: Array<CardModel>) {
         /// init vars.
         cardsHandClassification.removeAll();
         cardsOnTableClassification.removeAll();
-        self.playercardsHand.removeAll();
+        self.playerCardsHand.removeAll();
         self.cardsOnTable.removeAll();
         
         /// prepare player vars.
-        self.playercardsHand = currentPlayerHand;
+        self.playerCardsHand = currentPlayerHand;
         self.cardsOnTable = cardsOnTable;
         
         /// classificazione di ogni carta.
@@ -115,32 +118,22 @@ class AIPlayerEmulator {
         return cIndex != nil;
     }
     
-    //    private func _existsCardWithPartialClassification(_ classifications: Array<CardClassification>, cardToFind cToFind: CardClassification) -> Bool {
-    //         let cIndex = classifications.firstIndex(where: {
-    //            (cToFind.briscola == nil || $0.briscola == cToFind.briscola) &&
-    //                (cToFind.carico == nil || $0.carico == cToFind.carico) &&
-    //                (cToFind.liscio == nil || $0.liscio == cToFind.liscio)
-    //        });
-    //
-    //         return cIndex != nil;
-    //    }
-    
     private func _getCargo(_ searchType: CardSearchingOrder) -> Int? {
-        let classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
+        let classifToFind = (isTrump: false, isSmooth: false, isCargo: true);
         let isCargoExist = _existCardWithClassification(cardsHandClassification, cardToFind: classifToFind);
         
         if (!isCargoExist) { return nil; }
         
         /// surely a 'cargo' cart exist!
         var cardFounded: Int = 0;
-        for (cIndex, card) in playercardsHand.enumerated() {
+        for (cIndex, card) in playerCardsHand.enumerated() {
             if (_classifySingleCard(card).isCargo) {
                 /// higher cargo
-                if (searchType == .higher && card.points > playerHand[cardFounded].points) {
+                if (searchType == .higher && card.points > playerCardsHand[cardFounded].points) {
                     cardFounded = cIndex;
                 }
                 /// lower cargo
-                if (searchType == .lower && card.points < playerHand[cardFounded].points) {
+                if (searchType == .lower && card.points < playerCardsHand[cardFounded].points) {
                     cardFounded = cIndex;
                 }
             }
@@ -157,14 +150,14 @@ class AIPlayerEmulator {
         
         /// surely a 'cargo' cart exist!
         var cardFounded: Int = 0;
-        for (cIndex, card) in playercardsHand.enumerated() {
-            if (_classifySingleCard(card).isCargo) {
+        for (cIndex, card) in playerCardsHand.enumerated() {
+            if (_classifySingleCard(card).isSmooth) {
                 /// higher smooth
-                if (searchType == .higher && card.number > playerHand[cardFounded].number) {
+                if (searchType == .higher && card.number > playerCardsHand[cardFounded].number) {
                     cardFounded = cIndex;
                 }
                 /// lower smooth
-                if (searchType == .lower && card.number < playerHand[cardFounded].number) {
+                if (searchType == .lower && card.number < playerCardsHand[cardFounded].number) {
                     cardFounded = cIndex;
                 }
             }
@@ -172,17 +165,45 @@ class AIPlayerEmulator {
         
         return cardFounded;
     }
+    
+    private func _getTrump(_ searchType: CardSearchingOrder) -> Int? {
+        let classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
+        let isCargoExist = _existCardWithClassification(cardsHandClassification, cardToFind: classifToFind);
+        
+        if (!isCargoExist) { return nil; }
+        
+        /// surely a 'cargo' cart exist!
+        var cardFounded: Int = 0;
+        for (cIndex, card) in playerCardsHand.enumerated() {
+            if (_classifySingleCard(card).isTrump) {
+                /// higher trump
+                if (searchType == .higher) {
+                    if (card.points > playerCardsHand[cardFounded].points) {
+                        cardFounded = cIndex;
+                    } else if (card.points == playerCardsHand[cardFounded].points && card.number > playerCardsHand[cardFounded].number) {
+                         cardFounded = cIndex;
+                    }
+                }
+                /// lower trump
+                if (searchType == .lower) {
+                    if (card.points < playerCardsHand[cardFounded].points) {
+                        cardFounded = cIndex;
+                    } else if (card.points == playerCardsHand[cardFounded].points && card.number < playerCardsHand[cardFounded].number) {
+                         cardFounded = cIndex;
+                    }
+                }
+            }
+        }
+        
+        return cardFounded;
+    }
+    
+    private func _isCardPlayedByMyPartner() -> Bool {
+        /// TODO: missing logic for handling multiple players.
+        return false;
+    }
 }
 
 
-//private typealias CardClassification2 = ( lowerPoints: Int, higherPoints: Int, lowerNumber: Int, higherNumber: Int);
-//private typealias CardClassification3 = (
-//    trumpHigher: Int?, /// briscola
-//    trumpLower: Int?,
-//    cargoHigher: Int?, /// carico
-//    cargoLower: Int?,
-//    smoothHigher: Int?, /// liscio
-//    smoothLower: Int?
-//);
 private typealias CardClassification = (isTrump: Bool, isCargo: Bool, isSmooth: Bool);
 private enum CardSearchingOrder { case higher; case lower; }
