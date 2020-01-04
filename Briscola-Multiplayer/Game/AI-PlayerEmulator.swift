@@ -38,50 +38,63 @@ class AIPlayerEmulator {
         /// preparing vars used by all class' methods.
         _prepareGlobalAIVars(currentPlayerHand: currentPlayerHand, cardsOnTable: cardsOnTable);
         
-        /// è già stata giocata almeno una carta ?
+        /// 1. - è già stata giocata almeno una carta ?
         if (cardsOnTable.count > 0) {
-            let isPlayedByMyPartner: Bool = _isCardPlayedByMyPartner();
+            /// TODO: missing multiplayer logic.
+            let cardOnTable: CardModel = cardsOnTable.first!;
+            /// let isPlayedByMyPartner: Bool = _isCardPlayedByMyPartner();
             
-            /// c'è una briscola in tavola ?
+            /// 1.1. - c'è una briscola in tavola ?
             classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
             let trumpOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
-            
-            /// c'è una briscola in tavola ?
             if (trumpOnTable) {
-                /// l'ha giocata il mio compagno ?
-                if (isPlayedByMyPartner) {
-                    /// gioca il carico più alto che ho.
-                    cardToPlay = _getCargo(.higher);
-                    if (cardToPlay != nil) { return cardToPlay!; }
-                    
-                    /// gioco il liscio più basso che ho
-                    cardToPlay = _getSmooth(.lower);
-                    if (cardToPlay != nil) { return cardToPlay!; }
-                    
-                    /// gioco la briscola più bassa che ho
-                    return _getTrump(.lower)!;
-                } else {
-                    /// gioca il liscio più alto che ho.
-                    cardToPlay = _getSmooth(.higher);
-                    if (cardToPlay != nil) { return cardToPlay!; }
-                }
+                /// 1.1.1 - gioca il liscio più alto che ho.
+                cardToPlay = _getSmooth(.higher);
+                if (cardToPlay != nil) { return cardToPlay!; }
+                /// 1.1.2 - gioco la briscola più bassa che ho
+                cardToPlay = _getTrump(.lower);
+                if (cardToPlay != nil) { return cardToPlay!; }
+                /// 1.1.3 - gioco il carico più basso che ho.
+                return _getCargo(.lower)!;
             }
-        } else {
-            /// gioco il liscio più basso che ho
+            
+            /// 1.2. - c'è una carico in tavola ?
+            classifToFind = (isTrump: false, isSmooth: false, isCargo: true);
+            let cargoOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
+            if (cargoOnTable) {
+                /// 1.2.1 - gioco il carico più alto che ho di questo tipo ma solo se supera la carta in tavola.
+                cardToPlay = _getCargo(.lower, withType: cardOnTable.type);
+                if (cardToPlay != nil && playerCardsHand[cardToPlay!].points > cardOnTable.points) { return cardToPlay!; }
+                /// 1.2.2 - gioco la briscola più bassa che ho
+                cardToPlay = _getTrump(.lower);
+                if (cardToPlay != nil) { return cardToPlay!; }
+                /// 1.2.3 - gioco il liscio più alto che ho
+                cardToPlay = _getSmooth(.higher);
+                if (cardToPlay != nil) { return cardToPlay!; }
+                /// 1.2.4 - gioco il carico più basso che ho.
+                return _getCargo(.lower)!;
+            }
+            
+            /// 1.3. - c'è un liscio in tavola !
+            /// 1.3.1 - gioco il carico più alto che ho di questo tipo.
+            cardToPlay = _getCargo(.higher, withType: cardOnTable.type);
+            if (cardToPlay != nil) { return cardToPlay!; }
+            /// 1.3.2 - gioco il liscio più basso che ho
             cardToPlay = _getSmooth(.lower);
             if (cardToPlay != nil) { return cardToPlay!; }
-            
-            /// gioca il carico più basso che ho.
-            cardToPlay = _getCargo(.lower);
-            if (cardToPlay != nil) { return cardToPlay!; }
-            
-            /// gioco la briscola più bassa che ho
+            /// 1.3.3 - gioco la briscola più bassa che ho.
             return _getTrump(.lower)!;
         }
         
-        /// UN-REACHABLE CODE !!
-        /// FIXME: this throws an error.
-        return currentPlayerHand.indices.last! + 1;
+        /// 2    - nessuna carta presente in tavola.
+        /// 2.1 - gioco il liscio più basso che ho
+        cardToPlay = _getSmooth(.lower);
+        if (cardToPlay != nil) { return cardToPlay!; }
+        /// 2.2 - gioca il carico più basso che ho.
+        cardToPlay = _getCargo(.lower);
+        if (cardToPlay != nil) { return cardToPlay!; }
+        /// 2.3 - gioco la briscola più bassa che ho
+        return _getTrump(.lower)!;
     }
     
     private func _prepareGlobalAIVars(currentPlayerHand: Array<CardModel>, cardsOnTable: Array<CardModel>) {
@@ -118,7 +131,7 @@ class AIPlayerEmulator {
         return cIndex != nil;
     }
     
-    private func _getCargo(_ searchType: CardSearchingOrder) -> Int? {
+    private func _getCargo(_ searchType: CardSearchingOrder, withType: CardType? = nil) -> Int? {
         let classifToFind = (isTrump: false, isSmooth: false, isCargo: true);
         let isCargoExist = _existCardWithClassification(cardsHandClassification, cardToFind: classifToFind);
         
@@ -127,7 +140,7 @@ class AIPlayerEmulator {
         /// surely a 'cargo' cart exist!
         var cardFounded: Int = 0;
         for (cIndex, card) in playerCardsHand.enumerated() {
-            if (_classifySingleCard(card).isCargo) {
+            if (_classifySingleCard(card).isCargo && (withType == nil || card.type == withType!)) {
                 /// higher cargo
                 if (searchType == .higher && card.points > playerCardsHand[cardFounded].points) {
                     cardFounded = cIndex;
@@ -142,7 +155,7 @@ class AIPlayerEmulator {
         return cardFounded;
     }
     
-    private func _getSmooth(_ searchType: CardSearchingOrder) -> Int? {
+    private func _getSmooth(_ searchType: CardSearchingOrder, withType: CardType? = nil) -> Int? {
         let classifToFind = (isTrump: false, isSmooth: true, isCargo: false);
         let isCargoExist = _existCardWithClassification(cardsHandClassification, cardToFind: classifToFind);
         
@@ -151,7 +164,7 @@ class AIPlayerEmulator {
         /// surely a 'cargo' cart exist!
         var cardFounded: Int = 0;
         for (cIndex, card) in playerCardsHand.enumerated() {
-            if (_classifySingleCard(card).isSmooth) {
+            if (_classifySingleCard(card).isSmooth && (withType == nil || card.type == withType!)) {
                 /// higher smooth
                 if (searchType == .higher && card.number > playerCardsHand[cardFounded].number) {
                     cardFounded = cIndex;
@@ -181,7 +194,7 @@ class AIPlayerEmulator {
                     if (card.points > playerCardsHand[cardFounded].points) {
                         cardFounded = cIndex;
                     } else if (card.points == playerCardsHand[cardFounded].points && card.number > playerCardsHand[cardFounded].number) {
-                         cardFounded = cIndex;
+                        cardFounded = cIndex;
                     }
                 }
                 /// lower trump
@@ -189,7 +202,7 @@ class AIPlayerEmulator {
                     if (card.points < playerCardsHand[cardFounded].points) {
                         cardFounded = cIndex;
                     } else if (card.points == playerCardsHand[cardFounded].points && card.number < playerCardsHand[cardFounded].number) {
-                         cardFounded = cIndex;
+                        cardFounded = cIndex;
                     }
                 }
             }

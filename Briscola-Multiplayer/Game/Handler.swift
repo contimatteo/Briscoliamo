@@ -83,7 +83,7 @@ public class GameHandler {
             }
         }
         
-        /// move each
+        /// move each card into the winner deck.
         let playerIndexWhoWinTheTurn = 0;
         for card in cardsOnTable {
             players[playerIndexWhoWinTheTurn].currentDeck.append(card);
@@ -95,13 +95,7 @@ public class GameHandler {
         /// end the turn.
         turnEnded = true;
         
-        if (_isGameEnded()) {
-            gameEnded = true;
-            
-            for player in players {
-                print("//////// PLAYER \(player.getIndex()) --> \(player.deckPoints)");
-            }
-        }
+        if (_isGameEnded()) { gameEnded = true; }
     }
     
     //
@@ -165,6 +159,7 @@ public class GameHandler {
         
         /// aks to AI the card to play;
         let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
+        print("PLAYER \(playerIndex) play the card \(cardToPlayIndex) \n");
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
         
         /// move this card into the table.
