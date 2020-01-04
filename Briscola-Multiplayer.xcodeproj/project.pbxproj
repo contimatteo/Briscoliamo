@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2A3D8FA223B9417A00B40C1D /* VirtualDecisionMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D8FA123B9417A00B40C1D /* VirtualDecisionMaker.swift */; };
+		2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */; };
 		2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */; };
 		2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */; };
 		2AA9C1B723B79DA400B3E4A4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B623B79DA400B3E4A4 /* ViewController.swift */; };
@@ -42,7 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2A3D8FA123B9417A00B40C1D /* VirtualDecisionMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualDecisionMaker.swift; sourceTree = "<group>"; };
+		2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AI-PlayerEmulator.swift"; sourceTree = "<group>"; };
 		2AA9C1AF23B79DA400B3E4A4 /* Briscola-Multiplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Briscola-Multiplayer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */,
-				2A3D8FA123B9417A00B40C1D /* VirtualDecisionMaker.swift */,
+				2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -330,7 +330,7 @@
 			files = (
 				2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */,
 				2AA9C1F823B8AC1800B3E4A4 /* Extensions.swift in Sources */,
-				2A3D8FA223B9417A00B40C1D /* VirtualDecisionMaker.swift in Sources */,
+				2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */,
 				2AA9C1B723B79DA400B3E4A4 /* ViewController.swift in Sources */,
 				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,
 				2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */,

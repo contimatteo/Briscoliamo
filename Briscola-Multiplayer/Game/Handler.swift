@@ -16,7 +16,7 @@ public class GameHandler {
     public var turnEnded: Bool = false;
     public var gameEnded: Bool = true;
     
-    private var virtualDecisionMaker: VirtualDecisionMaker? = nil;
+    private var aiPlayerEmulator: AIPlayerEmulator? = nil;
     
     public var players: Array<PlayerModel> = [];
     public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
@@ -51,7 +51,7 @@ public class GameHandler {
         _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
         
         /// virtual AI assistant
-        virtualDecisionMaker = VirtualDecisionMaker.init(trumpCard: trumpCard!);
+        aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
     }
     
     public func playCard(playerIndex: Int, card: CardModel) {
@@ -164,7 +164,7 @@ public class GameHandler {
         let playersHands:Array<Array<CardModel>> = _getAllPlayersHands();
         
         /// aks to AI the card to play;
-        let cardToPlayIndex: Int = virtualDecisionMaker!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
+        let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
         
         /// move this card into the table.
