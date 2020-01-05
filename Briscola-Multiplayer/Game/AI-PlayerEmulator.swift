@@ -54,14 +54,14 @@ class AIPlayerEmulator {
                 cardToPlay = _getSmooth(.higher);
                 if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.1.2 - gioco il carico più basso che ho sotto i 10 punti.
-                cardToPlay = _getCargo(.lower, pointsRange: 1...4); /// ISSUE: this case not working
-                if (cardToPlay != nil) { return cardToPlay!; }
+                /// cardToPlay = _getCargo(.lower, pointsRange: 1...4); /// ISSUE: this case not working
+                /// if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.1.3 - gioco la briscola più bassa che ho (solo se non vale dei punti).
-                cardToPlay = _getTrump(.lower, pointsRange: 0...0);
-                if (cardToPlay != nil) { return cardToPlay!;}
+                /// cardToPlay = _getTrump(.lower, pointsRange: 0...0);
+                /// if (cardToPlay != nil) { return cardToPlay!;}
                 /// 1.1.4 - gioco la briscola più bassa che ho (solo se la carta in tavola vale dei punti e la mia supera quella in tavola).
-                cardToPlay = _getTrump(.lower, pointsRange: cardOnTable.points...11);
-                if (cardToPlay != nil && cardOnTable.points > 0) { return cardToPlay!;}
+                /// cardToPlay = _getTrump(.lower, pointsRange: cardOnTable.points...11);
+                /// if (cardToPlay != nil && cardOnTable.points > 0) { return cardToPlay!;}
                 /// 1.1.5 - gioco il carico più basso che ho.
                 cardToPlay = _getCargo(.lower);
                 if (cardToPlay != nil) { return cardToPlay!; }
@@ -75,17 +75,14 @@ class AIPlayerEmulator {
             if (cargoOnTable) {
                 print("\n// CARICO IN TAVOLA");
                 /// 1.2.1 - gioco il carico più alto che ho di questo tipo ma solo se supera la carta in tavola.
-                cardToPlay = _getCargo(.higher, pointsRange: cardOnTable.points...11, withType: cardOnTable.type);
-                if (cardToPlay != nil) {
-                    print("//// gioco il carico più alto che ho di questo tipo ma solo se supera la carta in tavola");
-                    return cardToPlay!;
-                }
+                /// cardToPlay = _getCargo(.higher, pointsRange: cardOnTable.points...11, withType: cardOnTable.type);
+                /// if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.2.2 - gioco la briscola più bassa che ho
                 cardToPlay = _getTrump(.lower);
-                if (cardToPlay != nil) { print("//// gioco la briscola più bassa che ho"); return cardToPlay!; }
+                if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.2.3 - gioco il liscio più alto che ho
                 cardToPlay = _getSmooth(.higher);
-                if (cardToPlay != nil) { print("//// gioco il liscio più alto che ho"); return cardToPlay!; }
+                if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.2.4 - gioco il carico più basso che ho.
                 return _getCargo(.lower)!;
             }
@@ -93,38 +90,29 @@ class AIPlayerEmulator {
             /// LISCIO IN TAVOLA
             print("\n// LISCIO IN TAVOLA");
             /// 1.3.1 - gioco il carico più alto che ho di questo tipo (solo se è un re, un tre on un asso).
-            cardToPlay = _getCargo(.higher, pointsRange: 4...11, withType: cardOnTable.type);
-            if (cardToPlay != nil) {
-                print("//// gioco il carico più alto che ho di questo tipo (solo se è un re, un tre on un asso).");
-                return cardToPlay!;
-            }
+            /// cardToPlay = _getCargo(.higher, pointsRange: 4...11, withType: cardOnTable.type);
+            /// if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.2 - gioco il liscio più alto che ho non di questo tipo.
-            cardToPlay = _getSmooth(.higher, notWithType: cardOnTable.type);
-            if (cardToPlay != nil && currentPlayerHand[cardToPlay!].number < cardOnTable.number) {
-                print("//// gioco il liscio più alto che ho non di questo tipo.");
-                return cardToPlay!;
-            }
+            /// cardToPlay = _getSmooth(.higher, notWithType: cardOnTable.type);
+            /// if (cardToPlay != nil && currentPlayerHand[cardToPlay!].number < cardOnTable.number) { return cardToPlay!; }
             /// 1.3.2 - gioco il liscio più basso che ho di questo tipo, a patto di non superare la carta in tavola.
-            cardToPlay = _getSmooth(.lower, withType: cardOnTable.type);
-            if (cardToPlay != nil && currentPlayerHand[cardToPlay!].number < cardOnTable.number) {
-                print("//// gioco il liscio più basso che ho di questo tipo, a patto di non superare la carta in tavola.");
-                return cardToPlay!;
-            }
+            /// cardToPlay = _getSmooth(.lower, withType: cardOnTable.type);
+            /// if (cardToPlay != nil && currentPlayerHand[cardToPlay!].number < cardOnTable.number) { return cardToPlay!; }
             /// 1.3.3 - gioco il carico più alto che ho di questo tipo.
-            cardToPlay = _getCargo(.higher, withType: cardOnTable.type);
-            if (cardToPlay != nil) { print("//// gioco il carico più alto che ho di questo tipo."); return cardToPlay!; }
+            /// cardToPlay = _getCargo(.higher, withType: cardOnTable.type);
+            /// if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.4 - gioco il liscio più basso che ho.
             cardToPlay = _getSmooth(.lower);
-            if (cardToPlay != nil) { print("//// gioco il liscio più basso che ho"); return cardToPlay!; }
+            if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.5 - gioca il carico più basso che ho  (fante o cavallo o re)
-            cardToPlay = _getCargo(.lower, pointsRange: 1...4);
-            if (cardToPlay != nil) { print("//// gioca il carico più basso che ho  (fante o cavallo o re)"); return cardToPlay!; }
+            /// cardToPlay = _getCargo(.lower, pointsRange: 1...4);
+            /// if (cardToPlay != nil) { print("//// gioca il carico più basso che ho  (fante o cavallo o re)"); return cardToPlay!; }
             /// 1.3.6 - gioca la briscola più bassa che ho senza punti.
-            cardToPlay = _getTrump(.lower, pointsRange: 0...4);
-            if (cardToPlay != nil) { print("//// gioca la briscola più bassa che ho senza punti."); return cardToPlay!; }
+            /// cardToPlay = _getTrump(.lower, pointsRange: 0...4);
+            /// if (cardToPlay != nil) { print("//// gioca la briscola più bassa che ho senza punti."); return cardToPlay!; }
             /// 1.3.7 - gioco il carico più basso che ho.
             cardToPlay = _getCargo(.lower);
-            if (cardToPlay != nil) { print("//// gioco il carico più basso che ho."); return cardToPlay!; }
+            if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.8 - gioco la briscola più bassa che ho.
             return _getTrump(.lower)!;
         }
@@ -134,11 +122,11 @@ class AIPlayerEmulator {
         cardToPlay = _getSmooth(.lower);
         if (cardToPlay != nil) { return cardToPlay!; }
         /// 2.2 - gioca il carico più basso che ho.
-        cardToPlay = _getCargo(.lower, pointsRange: 1...4);
-        if (cardToPlay != nil) { return cardToPlay!; }
+        /// cardToPlay = _getCargo(.lower, pointsRange: 1...4);
+        /// if (cardToPlay != nil) { return cardToPlay!; }
         /// 2.2 - gioca la briscola più bassa che ho.
-        cardToPlay = _getTrump(.lower, pointsRange: 0...4);
-        if (cardToPlay != nil) { return cardToPlay!; }
+        /// cardToPlay = _getTrump(.lower, pointsRange: 0...4);
+        /// if (cardToPlay != nil) { return cardToPlay!; }
         /// 2.2 - gioca il carico più basso che ho.
         cardToPlay = _getCargo(.lower);
         if (cardToPlay != nil) { return cardToPlay!; }

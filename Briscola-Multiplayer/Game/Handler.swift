@@ -22,7 +22,7 @@ public class GameHandler {
     public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
     public var initialCards: Array<CardModel> = [];
     public var deckCards: Array<CardModel> = [];
-    public var cardsOnTable: Array<CardModel> = [];
+    public var cardsOnTable: Array<CardModel?> = [];
     public var trumpCard: CardModel?;
     
     //
@@ -54,23 +54,29 @@ public class GameHandler {
         aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
     }
     
-    public func playCard(playerIndex: Int, card: CardModel) {
+    public func playCard(playerIndex: Int, card: CardModel? = nil) {
         if (playerIndex != playerTurn || !turnEnded || gameEnded) { return; }
         
+        /// start the turn.
         turnEnded = false;
+        let currentPlayer: PlayerModel = players[playerIndex];
         
-        /// human player play a card.
-        _humanPlayCard(playerIndex: playerIndex, card: card);
+        /// human
+        if (currentPlayer.type == .human) {
+            /// human player play a card.
+            _humanPlayCard(playerIndex: playerIndex, card: card!);
+            /// each ai player will be play a card.
+            while playerTurn != playerIndex {
+                _aiPlayCard(playerIndex: playerTurn);
+            }
+        }
         
-        /// ai will generate a choice foreach fake player.
-        /// for pIndex in players.indices {
-        ///     if (pIndex != playerIndex) {
-        ///         _aiPlayCard(playerIndex: pIndex);
-        ///     }
-        /// }
-        
-        while playerTurn != playerIndex {
-             _aiPlayCard(playerIndex: playerTurn);
+        /// emualator
+        if (currentPlayer.type == .virtual) {
+            /// each ai player will be play a card.
+            while currentPlayer.type != .human {
+                _aiPlayCard(playerIndex: playerTurn);
+            }
         }
     }
     
@@ -79,27 +85,34 @@ public class GameHandler {
     }
     
     public func endTurn() {
-        var newCard: CardModel? = nil;
-        for player in players {
-            newCard = extractCardFromDeck();
-            if newCard != nil {
-                player.cardsHand.append(newCard!);
-            }
-        }
-        
+        /// find the winner card index (this is also the index of the winner player).
+        let playerIndexWhoWinTheTurn: Int = _findWinnerCardOnTable();
         /// move each card into the winner deck.
-        let playerIndexWhoWinTheTurn = 0;
         for card in cardsOnTable {
             players[playerIndexWhoWinTheTurn].currentDeck.append(card);
         }
         
+        /// set the turn to current winner player index.
+        playerTurn = playerIndexWhoWinTheTurn;
         /// empty the cards on table.
         cardsOnTable.removeAll();
-        
         /// end the turn.
         turnEnded = true;
         
+        /// get new card from deck.
+        var newCard: CardModel? = nil;
+        for player in players {
+            newCard = extractCardFromDeck();
+            if newCard != nil { player.cardsHand.append(newCard!); }
+        }
+        
+        /// is the game ended ?
         if (_isGameEnded()) { gameEnded = true; }
+        
+        /// play a card if the winner is a {.virtual} player
+        if (players[playerIndexWhoWinTheTurn].type == .virtual) {
+            playCard(playerIndex: playerTurn)
+        }
     }
     
     //
@@ -152,7 +165,7 @@ public class GameHandler {
         
         /// remove this card from player hand.
         players[playerIndex].playCard(card: card);
-        print("PLAYER \(playerIndex) play the card \(card.name) \n");
+        print("PLAYER \(playerIndex) --> \(card.name)");
         
         /// calculare next player turn.
         nextTurn();
@@ -165,7 +178,7 @@ public class GameHandler {
         /// aks to AI the card to play;
         let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
-        print("PLAYER \(playerIndex) play the card \(cardToPlay.name) \n");
+        print("PLAYER \(playerIndex) --> \(cardToPlay.name) \n\n");
         
         /// move this card into the table.
         cardsOnTable.insert(cardToPlay, at: playerIndex);
@@ -203,6 +216,23 @@ public class GameHandler {
         
         return deckEmpty && allPlayersHandsAreEmpty;
     }
+    
+    private func _findWinnerCardOnTable() -> Int {
+        var winnerCardIndex: Int = 0;
+        let winnerCard: CardModel = cardsOnTable[winnerCardIndex];
+        
+        for (cIndex, card) in cardsOnTable.enumerated() {
+            if (trumpCard!.type == card.type && trumpCard!.type != winnerCard.type) { winnerCardIndex = cIndex; }
+            
+            if (card.type == winnerCard.type) {
+                if (card.points > winnerCard.points) { winnerCardIndex = cIndex; }
+                if (card.points == winnerCard.points && card.number > winnerCard.number) { winnerCardIndex = cIndex; }
+            }
+        }
+        
+        return winnerCardIndex;
+    }
+    
 }
 
 
