@@ -63,10 +63,14 @@ public class GameHandler {
         _humanPlayCard(playerIndex: playerIndex, card: card);
         
         /// ai will generate a choice foreach fake player.
-        for pIndex in players.indices {
-            if (pIndex != playerIndex) {
-                _aiPlayCard(playerIndex: pIndex);
-            }
+        /// for pIndex in players.indices {
+        ///     if (pIndex != playerIndex) {
+        ///         _aiPlayCard(playerIndex: pIndex);
+        ///     }
+        /// }
+        
+        while playerTurn != playerIndex {
+             _aiPlayCard(playerIndex: playerTurn);
         }
     }
     
@@ -148,6 +152,7 @@ public class GameHandler {
         
         /// remove this card from player hand.
         players[playerIndex].playCard(card: card);
+        print("PLAYER \(playerIndex) play the card \(card.name) \n");
         
         /// calculare next player turn.
         nextTurn();
@@ -159,8 +164,8 @@ public class GameHandler {
         
         /// aks to AI the card to play;
         let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
-        print("PLAYER \(playerIndex) play the card \(cardToPlayIndex) \n");
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
+        print("PLAYER \(playerIndex) play the card \(cardToPlay.name) \n");
         
         /// move this card into the table.
         cardsOnTable.insert(cardToPlay, at: playerIndex);
