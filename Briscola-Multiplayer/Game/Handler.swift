@@ -22,7 +22,7 @@ public class GameHandler {
     public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
     public var initialCards: Array<CardModel> = [];
     public var deckCards: Array<CardModel> = [];
-    public var cardsOnTable: Array<CardModel?> = [];
+    public var cardsOnTable: Array<CardModel> = [];
     public var trumpCard: CardModel?;
     
     //
