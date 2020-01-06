@@ -107,8 +107,8 @@ class ViewController: UIViewController {
         
         /// STEP 2: render all cards on table.
         for (cIndex, cardImg) in tableCardImgViews.enumerated() {
-            if (gameHandler.cardsOnTable.indices.contains(cIndex)) {
-                _updateImageView(imageView: cardImg, model: gameHandler.cardsOnTable[cIndex]);
+            if (gameHandler.cardsOnTable.indices.contains(cIndex) && gameHandler.cardsOnTable[cIndex] != nil) {
+                _updateImageView(imageView: cardImg, model: gameHandler.cardsOnTable[cIndex]!);
             } else {
                 _emptyImageView(imageView: cardImg);
             }
@@ -182,7 +182,10 @@ class ViewController: UIViewController {
         guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
         
         /// play the cards.
-        gameHandler.playCard(playerIndex: playerIndex, card: model);
+        let cardPlayed = gameHandler.playCard(playerIndex: playerIndex, card: model);
+        if (!cardPlayed) { return };
+        
+        /// render the new game state.
         render();
         
         /// end the turn after a delay.
