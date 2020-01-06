@@ -97,7 +97,7 @@ class GameViewController: UIViewController {
                 
                 for (cIndex, cardImg) in playerImgs.enumerated() {
                     if (playerHand.indices.contains(cIndex)) {
-                        _updateImageView(imageView: cardImg, model: playerHand[cIndex]);
+                        _updateImageView(images: playerImgs, imageIndex: cIndex, model: playerHand[cIndex]);
                     } else {
                         _emptyImageView(imageView: cardImg);
                     }
@@ -108,23 +108,28 @@ class GameViewController: UIViewController {
         /// STEP 2: render all cards on table.
         for (cIndex, cardImg) in tableCardImgViews.enumerated() {
             if (gameHandler.cardsOnTable.indices.contains(cIndex) && gameHandler.cardsOnTable[cIndex] != nil) {
-                _updateImageView(imageView: cardImg, model: gameHandler.cardsOnTable[cIndex]!);
+                _updateImageView(images: tableCardImgViews, imageIndex: cIndex, model: gameHandler.cardsOnTable[cIndex]!);
             } else {
                 _emptyImageView(imageView: cardImg);
             }
         }
         
         /// trump card
-        _updateImageView(imageView: trumpImgView, model: gameHandler.trumpCard!);
+        _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
         
         /// display points
         for (pIndex, player) in gameHandler.players.enumerated() {
             playersPointsLabels[pIndex].text = String(player.deckPoints);
         }
+        
+        /// if game is ended go to the results page.
+        if (gameHandler.gameEnded) {
+            goToNextView();
+        }
     }
     
     private func initGestures() {
-        let currentHumanPlayerIndex: Int = CONSTANTS.CURRENT_HUMAN_PLAYER_INDEX;
+        let currentHumanPlayerIndex: Int = gameHandler.players.firstIndex(where: {$0.type == .human})!;
         let currentPlayerHand = playersCardImgViews[currentHumanPlayerIndex];
         
         for cIndex in currentPlayerHand.indices {
@@ -159,24 +164,22 @@ class GameViewController: UIViewController {
         return nil;
     }
     
-    private func _updateImageView(imageView: UIImageView, model: CardModel) {
-        imageView.image = model.image;
-        imageView.tag = model.tag;
+    private func _updateImageView(images: Array<UIImageView>, imageIndex: Int, model: CardModel) {
+        if (!images.indices.contains(imageIndex)) { return; }
+        
+        /// imageView.image = model.image;
+        //// imageView.tag = model.tag;
+        images[imageIndex].image = model.image;
+        images[imageIndex].tag = model.tag;
+    }
+    
+    private func _updateImageView(image: UIImageView, model: CardModel) {
+        _updateImageView(images: [image], imageIndex: 0, model: model);
     }
     
     private func _emptyImageView(imageView: UIImageView, imageName: String? = "empty") {
         imageView.image = UIImage(named: imageName!);
         imageView.tag = -1;
-    }
-    
-    private func _endTurn() {
-        gameHandler.endTurn();
-        render();
-        
-        /// if game is ended go to the results page.
-        if (gameHandler.gameEnded) {
-            goToNextView();
-        }
     }
     
     //
@@ -195,9 +198,11 @@ class GameViewController: UIViewController {
         render();
         
         /// end the turn after a delay.
+        gameHandler.endTurn();
+        /// and render the new state.
         let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
-            self._endTurn();
+            self.render();
         })
     }
     

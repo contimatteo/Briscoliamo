@@ -20,7 +20,6 @@
 		2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EB23B7A40700B3E4A4 /* Game.swift */; };
 		2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */; };
 		2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F423B7CED400B3E4A4 /* Player.swift */; };
-		2AA9C1F823B8AC1800B3E4A4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F723B8AC1800B3E4A4 /* Extensions.swift */; };
 		2AA9C1FC23B8FED700B3E4A4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */; };
 		2AFAFA5223C3D83C00F186EE /* ResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5123C3D83C00F186EE /* ResultsController.swift */; };
 		2AFAFA5423C3D8AD00F186EE /* SocialsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5323C3D8AD00F186EE /* SocialsController.swift */; };
@@ -65,7 +64,6 @@
 		2AA9C1EB23B7A40700B3E4A4 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
 		2AA9C1F423B7CED400B3E4A4 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		2AA9C1F723B8AC1800B3E4A4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2AFAFA5123C3D83C00F186EE /* ResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsController.swift; sourceTree = "<group>"; };
 		2AFAFA5323C3D8AD00F186EE /* SocialsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialsController.swift; sourceTree = "<group>"; };
@@ -121,7 +119,7 @@
 		2AA9C1B123B79DA400B3E4A4 /* Briscola-Multiplayer */ = {
 			isa = PBXGroup;
 			children = (
-				2AA9C1F623B8AC0500B3E4A4 /* Libraries */,
+				2AA9C1F623B8AC0500B3E4A4 /* Utilities */,
 				2AA9C1E623B7A3E200B3E4A4 /* Game */,
 				2AA9C1E523B7A3D700B3E4A4 /* Model */,
 				2AA9C1E423B79F6500B3E4A4 /* Delegate */,
@@ -200,13 +198,12 @@
 			path = Game;
 			sourceTree = "<group>";
 		};
-		2AA9C1F623B8AC0500B3E4A4 /* Libraries */ = {
+		2AA9C1F623B8AC0500B3E4A4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				2AA9C1F723B8AC1800B3E4A4 /* Extensions.swift */,
 				2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */,
 			);
-			path = Libraries;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,7 +338,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */,
-				2AA9C1F823B8AC1800B3E4A4 /* Extensions.swift in Sources */,
 				2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */,
 				2AA9C1B723B79DA400B3E4A4 /* GameViewController.swift in Sources */,
 				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,

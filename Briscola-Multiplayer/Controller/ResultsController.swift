@@ -15,7 +15,5 @@ class ResultsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        
-        print("\n \n trump card name -> \(gameInstance.trumpCard!.name)");
     }
 }

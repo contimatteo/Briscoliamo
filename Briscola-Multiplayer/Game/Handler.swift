@@ -53,6 +53,11 @@ public class GameHandler {
         
         /// intialize the cards hands: this avoid error on setting specific array index.
         _initializeCardsHands()
+        
+        /// check if the ai emulator player should start playing.
+        if (players[playerTurn].type == .virtual) {
+            let _ = playCard(playerIndex: playerTurn);
+        }
     }
     
     public func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
@@ -153,28 +158,24 @@ public class GameHandler {
     }
     
     private func _humanPlayCard(playerIndex: Int, card: CardModel) {
-        print("\n\n///////////////////////////// HUMAN \(playerIndex) /////////////////////////////")
         /// move this card into the table.
         cardsOnTable[playerIndex] = card;
         // cardsOnTable.insert(card, at: playerIndex);
         
         /// remove this card from player hand.
         players[playerIndex].playCard(card: card);
-        print("//// PLAYER \(playerIndex) play the card \(card.name)");
         
         /// calculare next player turn.
         nextTurn();
     }
     
     private func _aiPlayCard(playerIndex: Int) {
-        print("\n\n///////////////////////////// AI EMULATOR \(playerIndex) /////////////////////////////")
         /// prepare array with the hand cards of each player.
         let playersHands:Array<Array<CardModel>> = _getAllPlayersHands();
         
         /// aks to AI the card to play;
         let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
-        print("///// PLAYER \(playerIndex) play the card \(cardToPlay.name)");
         
         /// move this card into the table.
         // cardsOnTable.insert(cardToPlay, at: playerIndex);

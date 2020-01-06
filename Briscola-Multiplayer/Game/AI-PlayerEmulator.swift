@@ -46,7 +46,6 @@ class AIPlayerEmulator {
             classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
             let trumpOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             if (trumpOnTable) {
-                print("//// BRISCOLA IN TAVOLA");
                 /// 1.1.1 - gioca il liscio più alto che ho.
                 cardToPlay = _getSmooth(.higher);
                 if (cardToPlay != nil) { return cardToPlay!; }
@@ -70,7 +69,6 @@ class AIPlayerEmulator {
             classifToFind = (isTrump: false, isSmooth: false, isCargo: true);
             let cargoOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             if (cargoOnTable) {
-                print("///// CARICO IN TAVOLA");
                 /// 1.2.1 - gioco il carico più alto che ho di questo tipo ma solo se supera la carta in tavola.
                 /// cardToPlay = _getCargo(.higher, pointsRange: cardOnTable.points...11, withType: cardOnTable.type);
                 /// if (cardToPlay != nil) { return cardToPlay!; }
@@ -85,7 +83,6 @@ class AIPlayerEmulator {
             }
             
             /// LISCIO IN TAVOLA
-            print("//// LISCIO IN TAVOLA");
             /// 1.3.1 - gioco il carico più alto che ho di questo tipo (solo se è un re, un tre on un asso).
             /// cardToPlay = _getCargo(.higher, pointsRange: 4...11, withType: cardOnTable.type);
             /// if (cardToPlay != nil) { return cardToPlay!; }
@@ -103,10 +100,10 @@ class AIPlayerEmulator {
             if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.5 - gioca il carico più basso che ho  (fante o cavallo o re)
             /// cardToPlay = _getCargo(.lower, pointsRange: 1...4);
-            /// if (cardToPlay != nil) { print("//// gioca il carico più basso che ho  (fante o cavallo o re)"); return cardToPlay!; }
+            /// if (cardToPlay != nil) {  return cardToPlay!; }
             /// 1.3.6 - gioca la briscola più bassa che ho senza punti.
             /// cardToPlay = _getTrump(.lower, pointsRange: 0...4);
-            /// if (cardToPlay != nil) { print("//// gioca la briscola più bassa che ho senza punti."); return cardToPlay!; }
+            /// if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.7 - gioco il carico più basso che ho.
             cardToPlay = _getCargo(.lower);
             if (cardToPlay != nil) { return cardToPlay!; }
