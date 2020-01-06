@@ -101,7 +101,7 @@ public class CardModel: Equatable {
 }
 
 
-public enum CardType: String {
+public enum CardType: String, Equatable {
     case coppe
     case bastoni
     case spade

@@ -19,6 +19,7 @@ public class PlayerModel {
     
     public var cardsHand: Array<CardModel>;
     public var currentDeck: Array<CardModel> = [];
+    public var type: PlayerType;
     
     public var deckPoints: Int {
         get {
@@ -35,6 +36,8 @@ public class PlayerModel {
         self.index = index;
         self.name = "player-\(index)";
         self.cardsHand = initialHand;
+        
+        self.type = type;
     }
     
     //

@@ -16,5 +16,5 @@ public struct CONSTANTS {
     static public let PLAYER_CARDS_HAND_SISZE: Int = 3;
     static public let STARTER_PLAYER_INDEX: Int = 0;
     static public let CURRENT_HUMAN_PLAYER_INDEX: Int = 0;
-    static public let TURN_SECONDS_DELAY: Double = 1.0;
+    static public let TURN_SECONDS_DELAY: Double = 5.0;
 }

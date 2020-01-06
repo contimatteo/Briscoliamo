@@ -23,16 +23,19 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tc1ImgView: UIImageView! // table card 1
     @IBOutlet weak var tc2ImgView: UIImageView!
-    @IBOutlet weak var tc3ImgView: UIImageView!
-    @IBOutlet weak var tc4ImgView: UIImageView!
     
+    @IBOutlet weak var p1labelName: UILabel!
+    @IBOutlet weak var p1LabelPoints: UILabel!
+    @IBOutlet weak var p2labelName: UILabel!
+    @IBOutlet weak var p2LabelPoints: UILabel!
     //
     // MARK: Variables
     
     private var gameHandler: GameHandler = GameHandler.init();
     
     private var playersCardImgViews: Array<Array<UIImageView>> = [];
-    private var tableCardImages: Array<UIImageView> = [];
+    private var tableCardImgViews: Array<UIImageView> = [];
+    private var playersPointsLabels: Array<UILabel> = [];
     
     //
     // MARK: Methods
@@ -79,10 +82,11 @@ class ViewController: UIViewController {
         playersCardImgViews.append(player3Cards);
         playersCardImgViews.append(player4Cards);
         
-        tableCardImages.append(tc1ImgView);
-        tableCardImages.append(tc2ImgView);
-        tableCardImages.append(tc3ImgView);
-        tableCardImages.append(tc4ImgView);
+        tableCardImgViews.append(tc1ImgView);
+        tableCardImgViews.append(tc2ImgView);
+        
+        playersPointsLabels.append(p1LabelPoints);
+        playersPointsLabels.append(p2LabelPoints);
     }
     
     public func render() {
@@ -102,7 +106,7 @@ class ViewController: UIViewController {
         }
         
         /// STEP 2: render all cards on table.
-        for (cIndex, cardImg) in tableCardImages.enumerated() {
+        for (cIndex, cardImg) in tableCardImgViews.enumerated() {
             if (gameHandler.cardsOnTable.indices.contains(cIndex)) {
                 _updateImageView(imageView: cardImg, model: gameHandler.cardsOnTable[cIndex]);
             } else {
@@ -112,6 +116,11 @@ class ViewController: UIViewController {
         
         /// trump card
         _updateImageView(imageView: trumpImgView, model: gameHandler.trumpCard!);
+        
+        /// display points
+        for (pIndex, player) in gameHandler.players.enumerated() {
+            playersPointsLabels[pIndex].text = String(player.deckPoints);
+        }
     }
     
     private func initGestures() {
