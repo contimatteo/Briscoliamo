@@ -32,10 +32,6 @@ class AIPlayerEmulator {
     // MARK:
     
     public func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel?>) -> Int {
-        // //////////////////////////////////////////
-        return playersHands.indices.first!;
-        // //////////////////////////////////////////
-        
         var cardToPlay: Int?;
         var classifToFind: CardClassification;
         let currentPlayerHand = playersHands[playerIndex];
@@ -46,9 +42,6 @@ class AIPlayerEmulator {
         /// CARTA IN TAVOLA
         let cardOnTable: CardModel? = _getDominantCardOnTable();
         if (cardOnTable != nil) {
-            /// TODO: missing multiplayer logic.
-            /// let isPlayedByMyPartner: Bool = _isCardPlayedByMyPartner();
-            
             /// BRISCOLA IN TAVOLA
             classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
             let trumpOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
@@ -58,7 +51,7 @@ class AIPlayerEmulator {
                 cardToPlay = _getSmooth(.higher);
                 if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.1.2 - gioco il carico più basso che ho sotto i 10 punti.
-                /// cardToPlay = _getCargo(.lower, pointsRange: 1...4); /// ISSUE: this case not working
+                /// cardToPlay = _getCargo(.lower, pointsRange: 1...4);
                 /// if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.1.3 - gioco la briscola più bassa che ho (solo se non vale dei punti).
                 /// cardToPlay = _getTrump(.lower, pointsRange: 0...0);
@@ -262,11 +255,6 @@ class AIPlayerEmulator {
         /// card which has this property {points in the input range} so i could return the initial value, but not because it's the right index, but
         /// beacuse i didn't find any other correct value. So i moved this condition here.
         return  pointsRange.contains(playerCardsHand[cardFounded].points) ? cardFounded : nil;
-    }
-    
-    private func _isCardPlayedByMyPartner() -> Bool {
-        /// TODO: missing logic for handling multiple players.
-        return false;
     }
     
     private func _getDominantCardOnTable () -> CardModel? {

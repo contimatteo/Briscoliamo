@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     //
     // MARK: @IBOutlets
     
@@ -171,6 +171,12 @@ class ViewController: UIViewController {
     
     private func _endTurn() {
         gameHandler.endTurn();
+        render();
+        
+        /// if game is ended go to the results page.
+        if (gameHandler.gameEnded) {
+            goToNextView();
+        }
     }
     
     //
@@ -192,8 +198,19 @@ class ViewController: UIViewController {
         let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
             self._endTurn();
-            self.render();
         })
+    }
+    
+    //
+    // MARK: Navigation
+    
+     public func goToNextView() {
+        let nextController = ResultsController();
+
+        /// setting properties of new controller
+        nextController.gameInstance = gameHandler;
+
+        self.navigationController!.pushViewController(nextController, animated: true)
     }
 }
 
