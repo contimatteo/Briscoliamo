@@ -182,7 +182,7 @@
         <!--INIZIO-->
         <scene sceneID="s1F-8o-4I4">
             <objects>
-                <viewController id="OfN-Qe-tfM" customClass="GameRunnerController" customModule="Briscola_Multiplayer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OfN-Qe-tfM" customClass="RootController" customModule="Briscola_Multiplayer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uhY-ni-uJM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
