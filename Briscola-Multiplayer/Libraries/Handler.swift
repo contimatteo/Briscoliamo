@@ -13,7 +13,6 @@ public class GameHandler {
     //
     // MARK: Variables
     private var mode: GameType = .singleplayer;
-    public var turnEnded: Bool = false;
     public var gameEnded: Bool = true;
     
     private var aiPlayerEmulator: AIPlayerEmulator? = nil;
@@ -22,7 +21,7 @@ public class GameHandler {
     public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
     public var initialCards: Array<CardModel> = [];
     public var deckCards: Array<CardModel> = [];
-    public var cardsOnTable: Array<CardModel> = [];
+    public var cardsOnTable: Array<CardModel?> = [];
     public var trumpCard: CardModel?;
     
     //
@@ -39,7 +38,6 @@ public class GameHandler {
         /// game settings
         self.mode = mode;
         gameEnded = false;
-        turnEnded = true;
         
         /// cards
         let cards = _loadCards();
@@ -52,32 +50,32 @@ public class GameHandler {
         
         /// virtual AI assistant
         aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
+        
+        /// intialize the cards hands: this avoid error on setting specific array index.
+        _initializeCardsHands()
+        
+        /// check if the ai emulator player should start playing.
+        if (players[playerTurn].type == .virtual) {
+            let _ = playCard(playerIndex: playerTurn);
+        }
     }
     
-    public func playCard(playerIndex: Int, card: CardModel? = nil) {
-        if (playerIndex != playerTurn || !turnEnded || gameEnded) { return; }
+    public func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
+        if (playerIndex != playerTurn || gameEnded) { return false; }
         
-        /// start the turn.
-        turnEnded = false;
-        let currentPlayer: PlayerModel = players[playerIndex];
-        
-        /// human
-        if (currentPlayer.type == .human) {
+        /// HUMAN
+        if (players[playerIndex].type == .human) {
             /// human player play a card.
             _humanPlayCard(playerIndex: playerIndex, card: card!);
-            /// each ai player will be play a card.
-            while playerTurn != playerIndex {
-                _aiPlayCard(playerIndex: playerTurn);
-            }
         }
         
-        /// emualator
-        if (currentPlayer.type == .virtual) {
-            /// each ai player will be play a card.
-            while currentPlayer.type != .human {
-                _aiPlayCard(playerIndex: playerTurn);
-            }
+        /// EMULATOR
+        while players[playerTurn].type != .human && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
+            /// AI player will be play a card.
+            _aiPlayCard(playerIndex: playerTurn);
         }
+        
+        return true;
     }
     
     public func nextTurn() {
@@ -89,15 +87,13 @@ public class GameHandler {
         let playerIndexWhoWinTheTurn: Int = _findWinnerCardOnTable();
         /// move each card into the winner deck.
         for card in cardsOnTable {
-            players[playerIndexWhoWinTheTurn].currentDeck.append(card);
+            players[playerIndexWhoWinTheTurn].currentDeck.append(card!);
         }
         
         /// set the turn to current winner player index.
         playerTurn = playerIndexWhoWinTheTurn;
         /// empty the cards on table.
         cardsOnTable.removeAll();
-        /// end the turn.
-        turnEnded = true;
         
         /// get new card from deck.
         var newCard: CardModel? = nil;
@@ -109,9 +105,12 @@ public class GameHandler {
         /// is the game ended ?
         if (_isGameEnded()) { gameEnded = true; }
         
+        /// intialize the cards hands: this avoid error on setting specific array index.
+        _initializeCardsHands();
+        
         /// play a card if the winner is a {.virtual} player
         if (players[playerIndexWhoWinTheTurn].type == .virtual) {
-            playCard(playerIndex: playerTurn)
+            let _ = playCard(playerIndex: playerTurn);
         }
     }
     
@@ -160,12 +159,11 @@ public class GameHandler {
     
     private func _humanPlayCard(playerIndex: Int, card: CardModel) {
         /// move this card into the table.
-        /// cardsOnTable[playerIndex] = card;
-        cardsOnTable.insert(card, at: playerIndex);
+        cardsOnTable[playerIndex] = card;
+        // cardsOnTable.insert(card, at: playerIndex);
         
         /// remove this card from player hand.
         players[playerIndex].playCard(card: card);
-        print("PLAYER \(playerIndex) --> \(card.name)");
         
         /// calculare next player turn.
         nextTurn();
@@ -178,10 +176,10 @@ public class GameHandler {
         /// aks to AI the card to play;
         let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
-        print("PLAYER \(playerIndex) --> \(cardToPlay.name) \n\n");
         
         /// move this card into the table.
-        cardsOnTable.insert(cardToPlay, at: playerIndex);
+        // cardsOnTable.insert(cardToPlay, at: playerIndex);
+        cardsOnTable[playerIndex] = cardToPlay;
         
         /// remove this card from player hand.
         players[playerIndex].playCard(card: cardToPlay);
@@ -218,19 +216,29 @@ public class GameHandler {
     }
     
     private func _findWinnerCardOnTable() -> Int {
-        var winnerCardIndex: Int = 0;
-        let winnerCard: CardModel = cardsOnTable[winnerCardIndex];
+        var winnerCardIndex: Int = cardsOnTable.firstIndex(where: {$0 != nil})!;
+        let winnerCard: CardModel = cardsOnTable[winnerCardIndex]!;
         
         for (cIndex, card) in cardsOnTable.enumerated() {
-            if (trumpCard!.type == card.type && trumpCard!.type != winnerCard.type) { winnerCardIndex = cIndex; }
-            
-            if (card.type == winnerCard.type) {
-                if (card.points > winnerCard.points) { winnerCardIndex = cIndex; }
-                if (card.points == winnerCard.points && card.number > winnerCard.number) { winnerCardIndex = cIndex; }
+            if (card != nil) {
+                if (trumpCard!.type == card!.type && trumpCard!.type != winnerCard.type) { winnerCardIndex = cIndex; }
+                
+                if (card!.type == winnerCard.type) {
+                    if (card!.points > winnerCard.points) { winnerCardIndex = cIndex; }
+                    if (card!.points == winnerCard.points && card!.number > winnerCard.number) { winnerCardIndex = cIndex; }
+                }
             }
         }
         
         return winnerCardIndex;
+    }
+    
+    private func _initializeCardsHands() {
+        for pIndex in players.indices { cardsOnTable.insert(nil, at: pIndex); }
+    }
+    
+    private func _hasPlayerAlreadyPlayACard(playerIndex: Int) -> Bool {
+        return players[playerIndex].cardsHand.count < CONSTANTS.PLAYER_CARDS_HAND_SISZE;
     }
     
 }

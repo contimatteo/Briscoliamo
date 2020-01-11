@@ -19,7 +19,7 @@ class AIPlayerEmulator {
     private var cardsOnTableClassification: Array<CardClassification> = [];
     
     private var playerCardsHand: Array<CardModel> = [];
-    private var cardsOnTable: Array<CardModel> = [];
+    private var cardsOnTable: Array<CardModel?> = [];
     
     //
     // MARK:
@@ -31,7 +31,7 @@ class AIPlayerEmulator {
     //
     // MARK:
     
-    public func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel>) -> Int {
+    public func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel?>) -> Int {
         var cardToPlay: Int?;
         var classifToFind: CardClassification;
         let currentPlayerHand = playersHands[playerIndex];
@@ -40,21 +40,17 @@ class AIPlayerEmulator {
         _prepareGlobalAIVars(currentPlayerHand: currentPlayerHand, cardsOnTable: cardsOnTable);
         
         /// CARTA IN TAVOLA
-        if (cardsOnTable.count > 0) {
-            /// TODO: missing multiplayer logic.
-            /// let isPlayedByMyPartner: Bool = _isCardPlayedByMyPartner();
-            let cardOnTable: CardModel = _getDominantCardOnTable();
-            
+        let cardOnTable: CardModel? = _getDominantCardOnTable();
+        if (cardOnTable != nil) {
             /// BRISCOLA IN TAVOLA
             classifToFind = (isTrump: true, isSmooth: false, isCargo: false);
             let trumpOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             if (trumpOnTable) {
-                print("\n// BRISCOLA IN TAVOLA");
                 /// 1.1.1 - gioca il liscio più alto che ho.
                 cardToPlay = _getSmooth(.higher);
                 if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.1.2 - gioco il carico più basso che ho sotto i 10 punti.
-                /// cardToPlay = _getCargo(.lower, pointsRange: 1...4); /// ISSUE: this case not working
+                /// cardToPlay = _getCargo(.lower, pointsRange: 1...4);
                 /// if (cardToPlay != nil) { return cardToPlay!; }
                 /// 1.1.3 - gioco la briscola più bassa che ho (solo se non vale dei punti).
                 /// cardToPlay = _getTrump(.lower, pointsRange: 0...0);
@@ -73,7 +69,6 @@ class AIPlayerEmulator {
             classifToFind = (isTrump: false, isSmooth: false, isCargo: true);
             let cargoOnTable: Bool = _existCardWithClassification(cardsOnTableClassification, cardToFind: classifToFind);
             if (cargoOnTable) {
-                print("\n// CARICO IN TAVOLA");
                 /// 1.2.1 - gioco il carico più alto che ho di questo tipo ma solo se supera la carta in tavola.
                 /// cardToPlay = _getCargo(.higher, pointsRange: cardOnTable.points...11, withType: cardOnTable.type);
                 /// if (cardToPlay != nil) { return cardToPlay!; }
@@ -88,7 +83,6 @@ class AIPlayerEmulator {
             }
             
             /// LISCIO IN TAVOLA
-            print("\n// LISCIO IN TAVOLA");
             /// 1.3.1 - gioco il carico più alto che ho di questo tipo (solo se è un re, un tre on un asso).
             /// cardToPlay = _getCargo(.higher, pointsRange: 4...11, withType: cardOnTable.type);
             /// if (cardToPlay != nil) { return cardToPlay!; }
@@ -106,10 +100,10 @@ class AIPlayerEmulator {
             if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.5 - gioca il carico più basso che ho  (fante o cavallo o re)
             /// cardToPlay = _getCargo(.lower, pointsRange: 1...4);
-            /// if (cardToPlay != nil) { print("//// gioca il carico più basso che ho  (fante o cavallo o re)"); return cardToPlay!; }
+            /// if (cardToPlay != nil) {  return cardToPlay!; }
             /// 1.3.6 - gioca la briscola più bassa che ho senza punti.
             /// cardToPlay = _getTrump(.lower, pointsRange: 0...4);
-            /// if (cardToPlay != nil) { print("//// gioca la briscola più bassa che ho senza punti."); return cardToPlay!; }
+            /// if (cardToPlay != nil) { return cardToPlay!; }
             /// 1.3.7 - gioco il carico più basso che ho.
             cardToPlay = _getCargo(.lower);
             if (cardToPlay != nil) { return cardToPlay!; }
@@ -134,7 +128,7 @@ class AIPlayerEmulator {
         return _getTrump(.lower)!;
     }
     
-    private func _prepareGlobalAIVars(currentPlayerHand: Array<CardModel>, cardsOnTable: Array<CardModel>) {
+    private func _prepareGlobalAIVars(currentPlayerHand: Array<CardModel>, cardsOnTable: Array<CardModel?>) {
         /// init vars.
         cardsHandClassification.removeAll();
         cardsOnTableClassification.removeAll();
@@ -150,12 +144,14 @@ class AIPlayerEmulator {
         for (cIndex, card) in currentPlayerHand.enumerated() { cardsHandClassification.insert(_classifySingleCard(card), at: cIndex); }
     }
     
-    private func _classifySingleCard(_ card: CardModel) -> CardClassification {
+    private func _classifySingleCard(_ card: CardModel?) -> CardClassification {
         var classification: CardClassification = (isTrump: false, isCargo: false, isSmooth: false);
         
-        if (card.type == trumpCard.type) { classification.isTrump = true; }
-        if (card.type != trumpCard.type && card.points > 0) { classification.isCargo = true; }
-        if (card.type != trumpCard.type && card.points < 1) { classification.isSmooth = true;}
+        if (card == nil) { return classification; }
+        
+        if (card!.type == trumpCard.type) { classification.isTrump = true; }
+        if (card!.type != trumpCard.type && card!.points > 0) { classification.isCargo = true; }
+        if (card!.type != trumpCard.type && card!.points < 1) { classification.isSmooth = true;}
         
         return classification;
     }
@@ -258,13 +254,9 @@ class AIPlayerEmulator {
         return  pointsRange.contains(playerCardsHand[cardFounded].points) ? cardFounded : nil;
     }
     
-    private func _isCardPlayedByMyPartner() -> Bool {
-        /// TODO: missing logic for handling multiple players.
-        return false;
-    }
-    
-    private func _getDominantCardOnTable () -> CardModel {
-        return cardsOnTable.first!;
+    private func _getDominantCardOnTable () -> CardModel? {
+        guard let cardIndex = cardsOnTable.firstIndex(where: {$0 != nil}) else { return nil; }
+        return cardsOnTable[cardIndex];
     }
 }
 

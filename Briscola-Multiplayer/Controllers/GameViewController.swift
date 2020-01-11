@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     //
     // MARK: @IBOutlets
     
@@ -97,7 +97,7 @@ class ViewController: UIViewController {
                 
                 for (cIndex, cardImg) in playerImgs.enumerated() {
                     if (playerHand.indices.contains(cIndex)) {
-                        _updateImageView(imageView: cardImg, model: playerHand[cIndex]);
+                        _updateImageView(images: playerImgs, imageIndex: cIndex, model: playerHand[cIndex]);
                     } else {
                         _emptyImageView(imageView: cardImg);
                     }
@@ -107,24 +107,29 @@ class ViewController: UIViewController {
         
         /// STEP 2: render all cards on table.
         for (cIndex, cardImg) in tableCardImgViews.enumerated() {
-            if (gameHandler.cardsOnTable.indices.contains(cIndex)) {
-                _updateImageView(imageView: cardImg, model: gameHandler.cardsOnTable[cIndex]);
+            if (gameHandler.cardsOnTable.indices.contains(cIndex) && gameHandler.cardsOnTable[cIndex] != nil) {
+                _updateImageView(images: tableCardImgViews, imageIndex: cIndex, model: gameHandler.cardsOnTable[cIndex]!);
             } else {
                 _emptyImageView(imageView: cardImg);
             }
         }
         
         /// trump card
-        _updateImageView(imageView: trumpImgView, model: gameHandler.trumpCard!);
+        _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
         
         /// display points
         for (pIndex, player) in gameHandler.players.enumerated() {
             playersPointsLabels[pIndex].text = String(player.deckPoints);
         }
+        
+        /// if game is ended go to the results page.
+        if (gameHandler.gameEnded) {
+            goToNextView();
+        }
     }
     
     private func initGestures() {
-        let currentHumanPlayerIndex: Int = CONSTANTS.CURRENT_HUMAN_PLAYER_INDEX;
+        let currentHumanPlayerIndex: Int = gameHandler.players.firstIndex(where: {$0.type == .human})!;
         let currentPlayerHand = playersCardImgViews[currentHumanPlayerIndex];
         
         for cIndex in currentPlayerHand.indices {
@@ -159,18 +164,22 @@ class ViewController: UIViewController {
         return nil;
     }
     
-    private func _updateImageView(imageView: UIImageView, model: CardModel) {
-        imageView.image = model.image;
-        imageView.tag = model.tag;
+    private func _updateImageView(images: Array<UIImageView>, imageIndex: Int, model: CardModel) {
+        if (!images.indices.contains(imageIndex)) { return; }
+        
+        /// imageView.image = model.image;
+        //// imageView.tag = model.tag;
+        images[imageIndex].image = model.image;
+        images[imageIndex].tag = model.tag;
+    }
+    
+    private func _updateImageView(image: UIImageView, model: CardModel) {
+        _updateImageView(images: [image], imageIndex: 0, model: model);
     }
     
     private func _emptyImageView(imageView: UIImageView, imageName: String? = "empty") {
         imageView.image = UIImage(named: imageName!);
         imageView.tag = -1;
-    }
-    
-    private func _endTurn() {
-        gameHandler.endTurn();
     }
     
     //
@@ -182,15 +191,31 @@ class ViewController: UIViewController {
         guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
         
         /// play the cards.
-        gameHandler.playCard(playerIndex: playerIndex, card: model);
+        let cardPlayed = gameHandler.playCard(playerIndex: playerIndex, card: model);
+        if (!cardPlayed) { return };
+        
+        /// render the new game state.
         render();
         
         /// end the turn after a delay.
+        gameHandler.endTurn();
+        /// and render the new state.
         let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
-            self._endTurn();
             self.render();
         })
+    }
+    
+    //
+    // MARK: Navigation
+    
+     public func goToNextView() {
+        let nextController = ResultsController();
+
+        /// setting properties of new controller
+        nextController.gameInstance = gameHandler;
+
+        self.navigationController!.pushViewController(nextController, animated: true)
     }
 }
 
