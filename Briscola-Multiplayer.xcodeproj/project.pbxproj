@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A0203EB23CA0F1A00D7F469 /* Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2A0203E923CA0F1A00D7F469 /* Player.xcdatamodeld */; };
 		2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */; };
 		2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */; };
 		2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A0203EA23CA0F1A00D7F469 /* Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Player.xcdatamodel; sourceTree = "<group>"; };
 		2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AI-PlayerEmulator.swift"; sourceTree = "<group>"; };
 		2AA9C1AF23B79DA400B3E4A4 /* Briscola-Multiplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Briscola-Multiplayer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A0203E823CA0F0000D7F469 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				2A0203E923CA0F1A00D7F469 /* Player.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		2AA9C1A623B79DA400B3E4A4 = {
 			isa = PBXGroup;
 			children = (
@@ -119,12 +129,13 @@
 		2AA9C1B123B79DA400B3E4A4 /* Briscola-Multiplayer */ = {
 			isa = PBXGroup;
 			children = (
+				2A0203E823CA0F0000D7F469 /* CoreData */,
 				2AA9C1F623B8AC0500B3E4A4 /* Utilities */,
-				2AA9C1E623B7A3E200B3E4A4 /* Game */,
-				2AA9C1E523B7A3D700B3E4A4 /* Model */,
-				2AA9C1E423B79F6500B3E4A4 /* Delegate */,
-				2AA9C1E323B79F2F00B3E4A4 /* Controller */,
-				2AA9C1E223B79F2400B3E4A4 /* Storyboard */,
+				2AA9C1E623B7A3E200B3E4A4 /* Libraries */,
+				2AA9C1E523B7A3D700B3E4A4 /* Models */,
+				2AA9C1E423B79F6500B3E4A4 /* Delegates */,
+				2AA9C1E323B79F2F00B3E4A4 /* Controllers */,
+				2AA9C1E223B79F2400B3E4A4 /* Storyboards */,
 				2AA9C1BB23B79DA800B3E4A4 /* Assets.xcassets */,
 				2AA9C1C023B79DA800B3E4A4 /* Info.plist */,
 			);
@@ -149,16 +160,16 @@
 			path = "Briscola-MultiplayerUITests";
 			sourceTree = "<group>";
 		};
-		2AA9C1E223B79F2400B3E4A4 /* Storyboard */ = {
+		2AA9C1E223B79F2400B3E4A4 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
 				2AA9C1BD23B79DA800B3E4A4 /* LaunchScreen.storyboard */,
 				2AA9C1B823B79DA400B3E4A4 /* Main.storyboard */,
 			);
-			path = Storyboard;
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		2AA9C1E323B79F2F00B3E4A4 /* Controller */ = {
+		2AA9C1E323B79F2F00B3E4A4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				2AA9C1B623B79DA400B3E4A4 /* GameViewController.swift */,
@@ -167,35 +178,35 @@
 				2AFAFA5523C3D8CB00F186EE /* NavigationController.swift */,
 				2AFAFA5723C3DE2700F186EE /* GameRunnerController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		2AA9C1E423B79F6500B3E4A4 /* Delegate */ = {
+		2AA9C1E423B79F6500B3E4A4 /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
 				2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */,
 				2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */,
 			);
-			path = Delegate;
+			path = Delegates;
 			sourceTree = "<group>";
 		};
-		2AA9C1E523B7A3D700B3E4A4 /* Model */ = {
+		2AA9C1E523B7A3D700B3E4A4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				2AA9C1E923B7A3FD00B3E4A4 /* Card.swift */,
 				2AA9C1EB23B7A40700B3E4A4 /* Game.swift */,
 				2AA9C1F423B7CED400B3E4A4 /* Player.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		2AA9C1E623B7A3E200B3E4A4 /* Game */ = {
+		2AA9C1E623B7A3E200B3E4A4 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
 				2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */,
 				2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */,
 			);
-			path = Game;
+			path = Libraries;
 			sourceTree = "<group>";
 		};
 		2AA9C1F623B8AC0500B3E4A4 /* Utilities */ = {
@@ -339,6 +350,7 @@
 			files = (
 				2AA9C1EC23B7A40700B3E4A4 /* Game.swift in Sources */,
 				2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */,
+				2A0203EB23CA0F1A00D7F469 /* Player.xcdatamodeld in Sources */,
 				2AA9C1B723B79DA400B3E4A4 /* GameViewController.swift in Sources */,
 				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,
 				2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */,
@@ -680,6 +692,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2A0203E923CA0F1A00D7F469 /* Player.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2A0203EA23CA0F1A00D7F469 /* Player.xcdatamodel */,
+			);
+			currentVersion = 2A0203EA23CA0F1A00D7F469 /* Player.xcdatamodel */;
+			path = Player.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2AA9C1A723B79DA400B3E4A4 /* Project object */;
 }
