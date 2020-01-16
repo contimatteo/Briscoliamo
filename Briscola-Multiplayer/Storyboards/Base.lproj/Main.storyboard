@@ -187,12 +187,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xc-Ne-h9Q">
-                                <rect key="frame" x="104.5" y="266" width="111" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xc-Ne-h9Q">
+                                <rect key="frame" x="105" y="170" width="111" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Inizia il gioco"/>
                                 <connections>
                                     <segue destination="BYZ-38-t0r" kind="show" identifier="inizio-gioco" id="Wih-HE-cFV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyc-pD-Yih">
+                                <rect key="frame" x="139" y="308" width="42" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Social"/>
+                                <connections>
+                                    <segue destination="uvO-MQ-D3M" kind="show" id="8uj-07-pSs"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -204,9 +212,6 @@
                         <viewLayoutGuide key="safeArea" id="Ile-ha-NVA"/>
                     </view>
                     <navigationItem key="navigationItem" title="INIZIO" id="JCM-8Z-dny"/>
-                    <connections>
-                        <segue destination="uvO-MQ-D3M" kind="show" identifier="inizio-socials" id="xDa-xj-Qd6"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mg6-uN-1K9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -235,10 +240,23 @@
                     <view key="view" contentMode="scaleToFill" id="c2P-KI-9yG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccV-Ni-2Xp">
+                                <rect key="frame" x="137" y="128" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="performFBLogin:" destination="uvO-MQ-D3M" eventType="touchUpInside" id="avh-pl-d4L"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="zdv-9b-Xwd"/>
                     </view>
                     <navigationItem key="navigationItem" id="ruQ-Dw-am7"/>
+                    <connections>
+                        <outlet property="FBCustomLoginButton" destination="ccV-Ni-2Xp" id="T7w-og-0gr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JoW-5C-AIM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
