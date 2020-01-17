@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A0203EB23CA0F1A00D7F469 /* Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2A0203E923CA0F1A00D7F469 /* Player.xcdatamodeld */; };
+		2A2CDAC223D206300050F840 /* FacebookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2CDAC123D206300050F840 /* FacebookManager.swift */; };
 		2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */; };
 		2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */; };
 		2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */; };
@@ -53,6 +54,7 @@
 		028C934E08CBC2926FADB59B /* Pods-Briscola-Multiplayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Briscola-Multiplayer.release.xcconfig"; path = "Target Support Files/Pods-Briscola-Multiplayer/Pods-Briscola-Multiplayer.release.xcconfig"; sourceTree = "<group>"; };
 		09FA54492C54FEBAD683E207 /* Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests.debug.xcconfig"; path = "Target Support Files/Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests/Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2A0203EA23CA0F1A00D7F469 /* Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Player.xcdatamodel; sourceTree = "<group>"; };
+		2A2CDAC123D206300050F840 /* FacebookManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookManager.swift; sourceTree = "<group>"; };
 		2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AI-PlayerEmulator.swift"; sourceTree = "<group>"; };
 		2AA9C1AF23B79DA400B3E4A4 /* Briscola-Multiplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Briscola-Multiplayer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			children = (
 				2AA9C1EF23B7A4F300B3E4A4 /* Handler.swift */,
 				2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */,
+				2A2CDAC123D206300050F840 /* FacebookManager.swift */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				2AFAFA5623C3D8CB00F186EE /* NavigationController.swift in Sources */,
 				2AFAFA5423C3D8AD00F186EE /* SocialsController.swift in Sources */,
 				2AA9C1F023B7A4F300B3E4A4 /* Handler.swift in Sources */,
+				2A2CDAC223D206300050F840 /* FacebookManager.swift in Sources */,
 				2AFAFA5223C3D83C00F186EE /* ResultsController.swift in Sources */,
 				2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */,
 			);
