@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SinglePlayerController.swift
 //  Briscola-Multiplayer
 //
 //  Created by Matteo Conti on 28/12/2019.
@@ -8,7 +8,8 @@
 
 import UIKit
 
-class GameViewController: UIViewController {
+class SinglePlayerController: UIViewController {
+    
     //
     // MARK: @IBOutlets
     
