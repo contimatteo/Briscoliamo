@@ -33,6 +33,7 @@ class MultiPlayerController: UIViewController {
     @IBOutlet weak var p1LabelPoints: UILabel!
     @IBOutlet weak var p2labelName: UILabel!
     @IBOutlet weak var p2LabelPoints: UILabel!
+
     //
     // MARK: Variables
     
@@ -42,9 +43,7 @@ class MultiPlayerController: UIViewController {
     private var tableCardImgViews: Array<UIImageView> = [];
     private var playersPointsLabels: Array<UILabel> = [];
     
-    var peerID: MCPeerID!
-    var mcSession: MCSession!
-    var mcAdvertiserAssistant: MCAdvertiserAssistant!
+    let sessionManager = SessionManager()
     
     //
     // MARK: Methods
@@ -65,9 +64,8 @@ class MultiPlayerController: UIViewController {
         render();
         
         // Multiplayer
-        peerID = MCPeerID(displayName: UIDevice.current.name)
-        mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-        mcSession.delegate = self
+        sessionManager.delegate = self;
+        title = "MCSession: \(sessionManager.displayName)"
     }
     
     private func prepareAssets() {
@@ -237,12 +235,25 @@ class MultiPlayerController: UIViewController {
     
     
     @IBAction func shareSession(_ sender: Any) {
-        self.startHosting();
+        
     }
     
     @IBAction func joinToSession(_ sender: Any) {
-        self.joinSession();
+        // sessionManager.send(img: UIImage(named: "1-bastoni")!);
+        let _ = sessionManager.send(array: ["ciao1", "1-bastoni", "pippo", "{weeee}"]);
     }
     
+}
+
+
+extension MultiPlayerController: SessionControllerDelegate {
+
+    func sessionDidChangeState() {
+        // Ensure UI updates occur on the main queue.
+        DispatchQueue.main.async(execute: { [weak self] in
+            // self?.tableView.reloadData()
+            // TODO: ...
+        })
+    }
 }
 
