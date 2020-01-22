@@ -28,6 +28,11 @@ class FacebookManager {
         self.currentUserProfile = nil;
         
         /// TODO: auto login user if token is already setted.
+        fetchUserProfile { userFetched in
+            if userFetched != nil {
+                self.currentUserProfile = userFetched!;
+            }
+        };
     }
     
     //
@@ -35,6 +40,7 @@ class FacebookManager {
     
     public func login(from: UIViewController, didCompleteHandler: LoginManagerLoginResultBlock!) {
         // self.loginManager.logIn(permissions: self.permissions, from: from, handler: handler);
+        if (AccessToken.current != nil) { return; }
         
         self.loginManager.logIn(permissions: self.permissions, from: from) { (result, error) in
             self.loginDidComplete(result, error: error, didComplete: didCompleteHandler);
@@ -94,14 +100,15 @@ class FacebookManager {
     }
     
     private func removeCurrentUserData() {
-        self.loginManager.logOut()
-        
         // TODO: check this...
         // AccessToken.setCurrentAccessToken(nil)
         AccessToken.current = nil
         
         // empty current user var
         currentUserProfile = nil;
+        
+        // assing to FB method the priority.
+        self.loginManager.logOut()
     }
     
 }

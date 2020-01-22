@@ -26,7 +26,12 @@ class SocialsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.facebookManager = FacebookManager(permissions: ["public_profile", "user_friends"]);
+        // self.facebookManager = FacebookManager(permissions: ["public_profile", "user_friends"]);
+        self.facebookManager = FacebookManager(permissions: ["public_profile"]);
+        
+        if AccessToken.current != nil {
+            print("/// current access token \(AccessToken.current!)")
+        }
     }
     
     @IBAction func performFBLogin(_ sender: Any) {
