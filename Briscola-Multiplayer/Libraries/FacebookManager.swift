@@ -8,6 +8,7 @@
 
 import Foundation
 import FBSDKLoginKit
+import FBSDKShareKit
 
 
 class FacebookManager {
@@ -77,6 +78,13 @@ class FacebookManager {
         let userId = userProfile["id"] as! String;
         
         return "https://graph.facebook.com/\(userId)/picture?type=large";
+    }
+    
+    public func shareTextOnFaceBook(controller: SocialsController) {
+        let shareContent = ShareLinkContent()
+        shareContent.contentURL = URL.init(string: "https://developers.facebook.com")! //your link
+        shareContent.quote = "Text to be shared"
+        ShareDialog(fromViewController: controller, content: shareContent, delegate: controller).show()
     }
     
     //

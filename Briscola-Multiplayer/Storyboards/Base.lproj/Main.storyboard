@@ -195,9 +195,8 @@
                                     <segue destination="BYZ-38-t0r" kind="show" identifier="inizio-gioco" id="Wih-HE-cFV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyc-pD-Yih">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyc-pD-Yih">
                                 <rect key="frame" x="139" y="308" width="42" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Social"/>
                                 <connections>
                                     <segue destination="uvO-MQ-D3M" kind="show" id="8uj-07-pSs"/>
@@ -206,8 +205,11 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="6xc-Ne-h9Q" firstAttribute="centerY" secondItem="uhY-ni-uJM" secondAttribute="centerY" id="Dir-CT-8gT"/>
-                            <constraint firstItem="6xc-Ne-h9Q" firstAttribute="centerX" secondItem="uhY-ni-uJM" secondAttribute="centerX" id="cLE-jN-G4t"/>
+                            <constraint firstItem="6xc-Ne-h9Q" firstAttribute="leading" secondItem="Ile-ha-NVA" secondAttribute="leading" constant="105" id="1LK-JB-V65"/>
+                            <constraint firstItem="6xc-Ne-h9Q" firstAttribute="top" secondItem="Ile-ha-NVA" secondAttribute="top" constant="126" id="5Ky-76-2VP"/>
+                            <constraint firstItem="6xc-Ne-h9Q" firstAttribute="centerX" secondItem="uhY-ni-uJM" secondAttribute="centerX" id="IFI-3f-ulM"/>
+                            <constraint firstItem="Ile-ha-NVA" firstAttribute="bottom" secondItem="iyc-pD-Yih" secondAttribute="bottom" constant="230" id="T7Q-Ta-IYQ"/>
+                            <constraint firstItem="iyc-pD-Yih" firstAttribute="centerX" secondItem="6xc-Ne-h9Q" secondAttribute="centerX" id="VDu-cg-GXR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ile-ha-NVA"/>
                     </view>
@@ -241,12 +243,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccV-Ni-2Xp">
-                                <rect key="frame" x="137" y="128" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEI-tG-hny">
+                                <rect key="frame" x="123" y="326" width="64" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Condividi"/>
                                 <connections>
-                                    <action selector="performFBLogin:" destination="uvO-MQ-D3M" eventType="touchUpInside" id="avh-pl-d4L"/>
+                                    <action selector="performFBShare:" destination="uvO-MQ-D3M" eventType="touchUpInside" id="3Pj-AB-qHz"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -255,7 +257,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ruQ-Dw-am7"/>
                     <connections>
-                        <outlet property="FBCustomLoginButton" destination="ccV-Ni-2Xp" id="T7w-og-0gr"/>
+                        <outlet property="FBCustomSharingButton" destination="dEI-tG-hny" id="fCA-gg-V8U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JoW-5C-AIM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

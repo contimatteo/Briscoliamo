@@ -9,70 +9,61 @@
 import Foundation
 import UIKit
 import FBSDKLoginKit
+import FBSDKShareKit
 
 
 class SocialsController: UIViewController {
     
     //
-    // MARK:
+    // MARK: Variables
     
     var facebookManager: FacebookManager?;
     
-    @IBOutlet weak var FBCustomLoginButton: UIButton!
+    //
+    // MARK: @IBOutlet
+    
+    @IBOutlet weak var FBCustomSharingButton: UIButton!
     
     //
-    // MARK:
+    // MARK: Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // self.facebookManager = FacebookManager(permissions: ["public_profile", "user_friends"]);
-        self.facebookManager = FacebookManager(permissions: ["public_profile"]);
-        
-        if AccessToken.current != nil {
-            print("/// current access token \(AccessToken.current!)")
-        }
+        facebookManager = FacebookManager(permissions: ["public_profile"]);
     }
     
-    @IBAction func performFBLogin(_ sender: Any) {
-        facebookManager!.login(from: self, didCompleteHandler: self.loginDidComplete);
+    //
+    // MARK: @IBAction
+    
+    @IBAction private func performFBShare(_ sender: Any) {
+        facebookManager?.shareTextOnFaceBook(controller: self);
+        
+        // response is in the { self } extension.
     }
     
-    @IBAction private func performFBLogout() {
-        facebookManager!.logout();
-        print("//// FB logout done!");
+    //
+    // MARK: Callbacks
+    
+}
+
+//
+// MARK: Facebook
+
+extension SocialsController: SharingDelegate {
+    
+    func sharer(_ sharer: Sharing, didCompleteWithResults results: [String : Any]) {
+        if sharer.shareContent.pageID != nil {
+            print("Share: Success")
+        }
+    }
+
+    func sharer(_ sharer: Sharing, didFailWithError error: Error) {
+        print("Share: Fail")
     }
     
-    func loginDidComplete(_ result: LoginManagerLoginResult?, errors: Error?) {
-        if errors != nil {
-            // Process error
-            print("//// FB Login failed with error \(errors!)");
-            
-            return;
-        }
-        
-        guard let loginResult = result else {
-            print("//// FB Login: something went wrong.");
-            return;
-        }
-        
-        // LOGIN EXECUTED
-            
-        print("//// FB login result \(result!)");
-        
-        // IS CANCELED ?
-        if (loginResult.isCancelled) {
-            print("//// FB User cancelled login.");
-            return
-        }
-        
-        // LOGIN COMPLETED SUCCESSFULLY
-        // If you ask for multiple permissions at once, you
-        // should check if specific permissions missing
-        if loginResult.grantedPermissions.contains("email")
-        {
-            // Do work
-        }
+    func sharerDidCancel(_ sharer: Sharing) {
+        print("Share: Cancel")
     }
     
 }
