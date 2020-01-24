@@ -68,7 +68,7 @@ class SessionManager: NSObject {
         
         super.init()
         
-        startServices()
+        // startServices()
     }
     
     //
@@ -105,7 +105,7 @@ class SessionManager: NSObject {
     //
     // MARK: senders
     
-    func send(image: UIImage) -> Bool {
+    public func send(image: UIImage) -> Bool {
         //        if (session.connectedPeers.count < 1) { return; }
         //
         //        if let imageData = img.pngData() {
@@ -118,7 +118,7 @@ class SessionManager: NSObject {
         return false;
     }
     
-    func send(array: [Any]) -> Bool {
+    public func send(array: [Any]) -> Bool {
         if (session.connectedPeers.count < 1) { return false; }
         
         guard let data = UtilityHelper.arrayToData(array) else { return false; }

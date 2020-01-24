@@ -1,5 +1,5 @@
 //
-//  SinglePlayerController.swift
+//  MultiPlayerController.swift
 //  Briscola-Multiplayer
 //
 //  Created by Matteo Conti on 28/12/2019.
@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import MultipeerConnectivity
 
-class SinglePlayerController: UIViewController {
+
+class GameController: UIViewController {
     
     //
-    // MARK: @IBOutlets
+    // MARK: Graphic Variables
     
     @IBOutlet weak var trumpImgView: UIImageView! // trump card
     
@@ -29,14 +31,18 @@ class SinglePlayerController: UIViewController {
     @IBOutlet weak var p1LabelPoints: UILabel!
     @IBOutlet weak var p2labelName: UILabel!
     @IBOutlet weak var p2LabelPoints: UILabel!
-    //
-    // MARK: Variables
-    
-    private var gameHandler: GameHandler = GameHandler.init();
     
     private var playersCardImgViews: Array<Array<UIImageView>> = [];
     private var tableCardImgViews: Array<UIImageView> = [];
     private var playersPointsLabels: Array<UILabel> = [];
+    
+    //
+    // MARK: Functional Variables
+    
+    public var localPlayerIndex: Int?;
+    public var gameOptions: GameOptions!;
+    private var gameHandler: GameHandler = GameHandler.init();
+    private var sessionManager: SessionManager?;
     
     //
     // MARK: Methods
@@ -49,13 +55,29 @@ class SinglePlayerController: UIViewController {
         
         /// load all the cards and load 3 cards foreach player, load
         /// the trump card, create players and load 3 cards for these.
-        gameHandler.initializeGame(mode: .singleplayer, numberOfPlayers: CONSTANTS.NUMBER_OF_PLAYERS, playersType: [.human, .virtual]);
-        
-        /// gestures
-        initGestures()
-        
-        render();
+        var playersTypes: [PlayerType] = [];
+        if (gameOptions.mode == .multiplayer) {
+            /// MULTI-PLAYER
+            //            sessionManager = SessionManager();
+            //            sessionManager!.delegate = self;
+            //            title = "MCSession: \(sessionManager!.displayName)";
+            //
+            //            shareSession();
+        } else {
+            /// SINGLE-PLAYER
+            playersTypes = [.local, .emulator];
+            gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: 1, playersType: playersTypes);
+            
+            self.localPlayerIndex = 0;
+            
+            /// gestures
+            initGestures()
+            
+            /// render
+            render();
+        }
     }
+    
     
     private func prepareAssets() {
         var player1Cards: Array<UIImageView> = [];
@@ -130,15 +152,28 @@ class SinglePlayerController: UIViewController {
     }
     
     private func initGestures() {
-        let currentHumanPlayerIndex: Int = gameHandler.players.firstIndex(where: {$0.type == .human})!;
-        let currentPlayerHand = playersCardImgViews[currentHumanPlayerIndex];
+        // TODO: improve this logic
+        // let localPlayerIndex: Int = self.localPlayerIndex!;
+        //let currentLocalPlayerIndex: Int = gameHandler.players.firstIndex(where: {$0.type == .local})!;
         
-        for cIndex in currentPlayerHand.indices {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
-            
-            playersCardImgViews[currentHumanPlayerIndex][cIndex].isUserInteractionEnabled = true;
-            playersCardImgViews[currentHumanPlayerIndex][cIndex].addGestureRecognizer(tapGestureRecognizer);
-        }
+        // let currentPlayerHand = playersCardImgViews[currentLocalPlayerIndex];
+        // for cIndex in currentPlayerHand.indices {
+        //     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: // #selector(cardTapped(tapGestureRecognizer:)));
+        //
+        //    playersCardImgViews[currentLocalPlayerIndex][cIndex].isUserInteractionEnabled = true;
+        //    playersCardImgViews[currentLocalPlayerIndex][cIndex].addGestureRecognizer(tapGestureRecognizer);
+        //}
+        
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
+        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
+        
+        p1c1ImgView.isUserInteractionEnabled = true;
+        p1c1ImgView.addGestureRecognizer(tapRecognizer1);
+        p1c2ImgView.isUserInteractionEnabled = true;
+        p1c2ImgView.addGestureRecognizer(tapRecognizer2);
+        p1c3ImgView.isUserInteractionEnabled = true;
+        p1c3ImgView.addGestureRecognizer(tapRecognizer3);
     }
     
     private func _getModelFromImageView(imgView: UIImageView) -> (model: CardModel, playerIndex: Int, cardIndex: Int)? {
@@ -210,13 +245,52 @@ class SinglePlayerController: UIViewController {
     //
     // MARK: Navigation
     
-     public func goToNextView() {
+    public func goToNextView() {
         let nextController = ResultsController();
-
+        
         /// setting properties of new controller
         nextController.gameInstance = gameHandler;
-
+        
         self.navigationController!.pushViewController(nextController, animated: true)
     }
+    
+    //
+    // MARK:
+    
+    func shareSession() {
+        sessionManager?.startServices();
+    }
+    
+    func shareCardsDeck() {
+        // sessionManager.send(img: UIImage(named: "1-bastoni")!);
+        // let _ = sessionManager?.send(array: ["ciao1", "1-bastoni", "pippo", "{weeee}"]);
+        
+        
+        let playersTypes: [PlayerType] = [.local, .emulator];
+        gameHandler.initMultiPlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: 1, playersType: playersTypes, deckCards: nil);
+    }
+    
+}
+
+
+extension GameController: SessionControllerDelegate {
+    
+    func sessionDidChangeState() {
+        // Ensure UI updates occur on the main queue.
+        DispatchQueue.main.async(execute: { [weak self] in
+            // self?.tableView.reloadData()
+            // TODO: ...
+            
+            print("// NUMERO DI GIOCATORI: \(self!.gameOptions.numberOfPlayers)");
+            print("// NUMERO DI PEER CONNESSI: \(self!.sessionManager!.connectedPeers.count)")
+        })
+    }
+}
+
+
+struct GameOptions {
+    var mode: GameType;
+    var numberOfPlayers: Int;
+    var indexOfStarterPlayer: Int;
 }
 

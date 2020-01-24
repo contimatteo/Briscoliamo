@@ -27,16 +27,34 @@ public class GameHandler {
     //
     // MARK: Public Methods
     
-    public func extractCardFromDeck() -> CardModel? {
-        guard let card = deckCards.first else { return nil; }
-        self.deckCards.remove(at: 0);
-        
-        return card;
-    }
+//    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
+//        /// game settings
+//        self.mode = mode;
+//        gameEnded = false;
+//
+//        /// cards
+//        let cards = _loadCards();
+//        initialCards = cards;
+//        deckCards = cards;
+//        trumpCard = cards.last!;
+//
+//        /// players
+//        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
+//
+//        /// virtual AI assistant
+//        aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
+//
+//        /// intialize the cards hands: this avoid error on setting specific array index.
+//        _initializeCardsHands()
+//
+//        /// check if the ai emulator player should start playing.
+//        if (players[playerTurn].type == .emulator) {
+//            let _ = playCard(playerIndex: playerTurn);
+//        }
+//    }
     
-    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
-        /// game settings
-        self.mode = mode;
+    public func initSinglePlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersType: [PlayerType]) {
+        self.mode = .singleplayer;
         gameEnded = false;
         
         /// cards
@@ -46,6 +64,14 @@ public class GameHandler {
         trumpCard = cards.last!;
         
         /// players
+        var playersType: [PlayerType] = []
+        for i in 0..<numberOfPlayers {
+            if (i == localPlayerIndex) {
+                playersType.insert(.local, at: i);
+            } else {
+                playersType.insert(.emulator, at: i);
+            }
+        }
         _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
         
         /// virtual AI assistant
@@ -55,7 +81,41 @@ public class GameHandler {
         _initializeCardsHands()
         
         /// check if the ai emulator player should start playing.
-        if (players[playerTurn].type == .virtual) {
+        if (players[playerTurn].type == .emulator) {
+            let _ = playCard(playerIndex: playerTurn);
+        }
+    }
+    
+    public func initMultiPlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersType: [PlayerType], deckCards: [CardModel]? = nil) {
+        self.mode = .multiplayer;
+        gameEnded = false;
+        
+        /// cards
+        var cards: [CardModel] = [];
+        if (deckCards != nil) {
+            cards = deckCards!; /// use the share deck.
+            self.deckCards = cards;
+            self.initialCards = cards;
+        } else {
+            cards = _loadCards(); /// generare the deck
+            self.initialCards = cards;
+            self.deckCards = cards;
+        }
+        trumpCard = cards.last!;
+        
+        /// players
+        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
+        
+        /// check if i should instance the virtual AI assistant.
+        if (playersType.firstIndex(where: { $0 == .emulator }) != nil) {
+            aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
+        }
+        
+        /// intialize the cards hands: this avoid error on setting specific array index.
+        _initializeCardsHands()
+        
+        /// check if the ai emulator player should start playing.
+        if (players[playerTurn].type == .emulator) {
             let _ = playCard(playerIndex: playerTurn);
         }
     }
@@ -64,13 +124,13 @@ public class GameHandler {
         if (playerIndex != playerTurn || gameEnded) { return false; }
         
         /// HUMAN
-        if (players[playerIndex].type == .human) {
+        if (players[playerIndex].type == .local) {
             /// human player play a card.
             _humanPlayCard(playerIndex: playerIndex, card: card!);
         }
         
         /// EMULATOR
-        while players[playerTurn].type != .human && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
+        while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
             /// AI player will be play a card.
             _aiPlayCard(playerIndex: playerTurn);
         }
@@ -109,13 +169,20 @@ public class GameHandler {
         _initializeCardsHands();
         
         /// play a card if the winner is a {.virtual} player
-        if (players[playerIndexWhoWinTheTurn].type == .virtual) {
+        if (players[playerIndexWhoWinTheTurn].type == .emulator) {
             let _ = playCard(playerIndex: playerTurn);
         }
     }
     
     //
     // MARK: Private Methods
+    
+    private func extractCardFromDeck() -> CardModel? {
+        guard let card = deckCards.first else { return nil; }
+        self.deckCards.remove(at: 0);
+        
+        return card;
+    }
     
     private func _loadCards() -> Array<CardModel> {
         var initialCards: Array<CardModel> = [];

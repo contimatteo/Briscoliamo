@@ -13,7 +13,6 @@
 		2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D8FA123B9417A00B40C1D /* AI-PlayerEmulator.swift */; };
 		2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */; };
 		2AA9C1B523B79DA400B3E4A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */; };
-		2AA9C1B723B79DA400B3E4A4 /* SinglePlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B623B79DA400B3E4A4 /* SinglePlayerController.swift */; };
 		2AA9C1BA23B79DA400B3E4A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9C1B823B79DA400B3E4A4 /* Main.storyboard */; };
 		2AA9C1BC23B79DA800B3E4A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9C1BB23B79DA800B3E4A4 /* Assets.xcassets */; };
 		2AA9C1BF23B79DA800B3E4A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA9C1BD23B79DA800B3E4A4 /* LaunchScreen.storyboard */; };
@@ -25,12 +24,12 @@
 		2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1F423B7CED400B3E4A4 /* Player.swift */; };
 		2AA9C1FC23B8FED700B3E4A4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */; };
 		2AA9F59B23D3626B00AE69B4 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9F59A23D3626B00AE69B4 /* SessionManager.swift */; };
-		2AA9F59D23D363AF00AE69B4 /* MultiPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9F59C23D363AF00AE69B4 /* MultiPlayerController.swift */; };
+		2AA9F59D23D363AF00AE69B4 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9F59C23D363AF00AE69B4 /* GameController.swift */; };
 		2AA9F59F23D3646F00AE69B4 /* SessionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9F59E23D3646F00AE69B4 /* SessionManagerDelegate.swift */; };
 		2AFAFA5223C3D83C00F186EE /* ResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5123C3D83C00F186EE /* ResultsController.swift */; };
 		2AFAFA5423C3D8AD00F186EE /* SocialsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5323C3D8AD00F186EE /* SocialsController.swift */; };
 		2AFAFA5623C3D8CB00F186EE /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5523C3D8CB00F186EE /* NavigationController.swift */; };
-		2AFAFA5823C3DE2700F186EE /* GameRunnerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5723C3DE2700F186EE /* GameRunnerController.swift */; };
+		2AFAFA5823C3DE2700F186EE /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFAFA5723C3DE2700F186EE /* MenuController.swift */; };
 		88E0A91621DC02CD48DD7A87 /* Pods_Briscola_Multiplayer_Briscola_MultiplayerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88AA94EBE5798D378EA6C4BB /* Pods_Briscola_Multiplayer_Briscola_MultiplayerUITests.framework */; };
 		A9AA5F3C31709ABB2CDF8585 /* Pods_Briscola_MultiplayerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EC743F719BE43E349E7170 /* Pods_Briscola_MultiplayerTests.framework */; };
 		FB8DDE961B0498450210AF60 /* Pods_Briscola_Multiplayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD14A3BF1FF1F988C1ACC2D /* Pods_Briscola_Multiplayer.framework */; };
@@ -64,7 +63,6 @@
 		2AA9C1AF23B79DA400B3E4A4 /* Briscola-Multiplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Briscola-Multiplayer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA9C1B223B79DA400B3E4A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AA9C1B423B79DA400B3E4A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2AA9C1B623B79DA400B3E4A4 /* SinglePlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePlayerController.swift; sourceTree = "<group>"; };
 		2AA9C1B923B79DA400B3E4A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2AA9C1BB23B79DA800B3E4A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2AA9C1BE23B79DA800B3E4A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -81,12 +79,12 @@
 		2AA9C1F423B7CED400B3E4A4 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2AA9C1FB23B8FED700B3E4A4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2AA9F59A23D3626B00AE69B4 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
-		2AA9F59C23D363AF00AE69B4 /* MultiPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPlayerController.swift; sourceTree = "<group>"; };
+		2AA9F59C23D363AF00AE69B4 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		2AA9F59E23D3646F00AE69B4 /* SessionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerDelegate.swift; sourceTree = "<group>"; };
 		2AFAFA5123C3D83C00F186EE /* ResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsController.swift; sourceTree = "<group>"; };
 		2AFAFA5323C3D8AD00F186EE /* SocialsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialsController.swift; sourceTree = "<group>"; };
 		2AFAFA5523C3D8CB00F186EE /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		2AFAFA5723C3DE2700F186EE /* GameRunnerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRunnerController.swift; sourceTree = "<group>"; };
+		2AFAFA5723C3DE2700F186EE /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		2BD14A3BF1FF1F988C1ACC2D /* Pods_Briscola_Multiplayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Briscola_Multiplayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		330A35C1C5BB54A431822299 /* Pods-Briscola-MultiplayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Briscola-MultiplayerTests.debug.xcconfig"; path = "Target Support Files/Pods-Briscola-MultiplayerTests/Pods-Briscola-MultiplayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		72971DC91ECADC91A9C86DFA /* Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests.release.xcconfig"; path = "Target Support Files/Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests/Pods-Briscola-Multiplayer-Briscola-MultiplayerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -199,12 +197,11 @@
 		2AA9C1E323B79F2F00B3E4A4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2AA9C1B623B79DA400B3E4A4 /* SinglePlayerController.swift */,
 				2AFAFA5123C3D83C00F186EE /* ResultsController.swift */,
 				2AFAFA5323C3D8AD00F186EE /* SocialsController.swift */,
 				2AFAFA5523C3D8CB00F186EE /* NavigationController.swift */,
-				2AFAFA5723C3DE2700F186EE /* GameRunnerController.swift */,
-				2AA9F59C23D363AF00AE69B4 /* MultiPlayerController.swift */,
+				2AFAFA5723C3DE2700F186EE /* MenuController.swift */,
+				2AA9F59C23D363AF00AE69B4 /* GameController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -515,13 +512,12 @@
 				2AA9F59F23D3646F00AE69B4 /* SessionManagerDelegate.swift in Sources */,
 				2A3D8FA223B9417A00B40C1D /* AI-PlayerEmulator.swift in Sources */,
 				2A0203EB23CA0F1A00D7F469 /* Player.xcdatamodeld in Sources */,
-				2AA9C1B723B79DA400B3E4A4 /* SinglePlayerController.swift in Sources */,
 				2AA9F59B23D3626B00AE69B4 /* SessionManager.swift in Sources */,
 				2AA9C1EA23B7A3FD00B3E4A4 /* Card.swift in Sources */,
 				2AA9C1B323B79DA400B3E4A4 /* AppDelegate.swift in Sources */,
 				2AA9C1FC23B8FED700B3E4A4 /* Constants.swift in Sources */,
-				2AA9F59D23D363AF00AE69B4 /* MultiPlayerController.swift in Sources */,
-				2AFAFA5823C3DE2700F186EE /* GameRunnerController.swift in Sources */,
+				2AA9F59D23D363AF00AE69B4 /* GameController.swift in Sources */,
+				2AFAFA5823C3DE2700F186EE /* MenuController.swift in Sources */,
 				2AA9C1F523B7CED400B3E4A4 /* Player.swift in Sources */,
 				2AFAFA5623C3D8CB00F186EE /* NavigationController.swift in Sources */,
 				2A2CB76123D6E2BA009E4C51 /* Utilities.swift in Sources */,

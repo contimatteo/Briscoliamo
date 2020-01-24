@@ -32,7 +32,7 @@ public class PlayerModel {
     //
     // MARK: Variables
     
-    init(index: Int, initialHand: Array<CardModel>, type: PlayerType = .human) {
+    init(index: Int, initialHand: Array<CardModel>, type: PlayerType) {
         self.index = index;
         self.name = "player-\(index)";
         self.cardsHand = initialHand;
@@ -57,7 +57,8 @@ public class PlayerModel {
 // ////////////////////////////////////////////////////////////////////////
 
 public enum PlayerType {
-    case human;
-    case virtual;
+    case local;
+    case remote;
+    case emulator;
 }
 
