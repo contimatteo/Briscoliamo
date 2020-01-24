@@ -40,6 +40,7 @@ class GameController: UIViewController {
     // MARK: Functional Variables
     
     public var localPlayerIndex: Int?;
+    public var numberOfPlayers: Int?;
     public var gameOptions: GameOptions!;
     private var gameHandler: GameHandler = GameHandler.init();
     private var sessionManager: SessionManager?;
@@ -52,36 +53,43 @@ class GameController: UIViewController {
         
         self.localPlayerIndex = 1;
         let playersTypes: [PlayerType] = [.local, .emulator];
+        self.numberOfPlayers = gameOptions.numberOfPlayers;
         
-        /// prepare player's cards variables.
+        // prepare player's cards variables.
         prepareAssets();
         
-        /// load all the cards and load 3 cards foreach player, load
-        /// the trump card, create players and load 3 cards for these.
+        // load all the cards and load 3 cards foreach player, load
+        // the trump card, create players and load 3 cards for these.
         if (gameOptions.mode == .multiplayer) {
-            /// MULTI-PLAYER
-            //            sessionManager = SessionManager();
-            //            sessionManager!.delegate = self;
-            //            title = "MCSession: \(sessionManager!.displayName)";
-            //
-            //            shareSession();
+            // MULTI-PLAYER
+            sessionManager = SessionManager();
+            sessionManager!.delegate = self;
+            title = "MCSession: \(sessionManager!.displayName)";
+            
+            shareSession();
         } else {
-            /// SINGLE-PLAYER
-            gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: localPlayerIndex!, playersType: playersTypes);
+            // SINGLE-PLAYER
+            gameHandler.initSinglePlayer(numberOfPlayers: numberOfPlayers!, localPlayerIndex: localPlayerIndex!, playersType: playersTypes);
             
             
-            /// gestures
+            // gestures
             initGestures()
             
-            /// render
+            // render
             render();
         }
     }
     
     
     private func prepareAssets() {
-        playersPointsLabels.append(lp_LabelPoints);
-        playersPointsLabels.append(rp1_LabelPoints);
+        playersCardImgViews.append([]);
+        playersCardImgViews.append([]);
+        
+        tableCardImgViews.append(UIImageView(image: nil));
+        tableCardImgViews.append(UIImageView(image: nil));
+        
+        playersPointsLabels.append(UILabel());
+        playersPointsLabels.append(UILabel());
         
         // hand cards
         
@@ -95,26 +103,25 @@ class GameController: UIViewController {
         rp1Cards.append(rp1_c2ImgView);
         rp1Cards.append(rp1_c3ImgView);
         
-        playersCardImgViews.append([]);
-        playersCardImgViews.append([]);
-        
-        let currentPlayerIndex: Int = self.localPlayerIndex!;
-        let remotePlayer1Index: Int = (currentPlayerIndex + 1) % CONSTANTS.NUMBER_OF_PLAYERS;
+        let currentPlayerIndex: Int = localPlayerIndex!;
+        let remotePlayer1Index: Int = (currentPlayerIndex + 1) % numberOfPlayers!;
         
         playersCardImgViews[currentPlayerIndex] = lpCards;
         playersCardImgViews[remotePlayer1Index] = rp1Cards;
         
         // cards on table
         
-        tableCardImgViews.append(UIImageView(image: nil));
-        tableCardImgViews.append(UIImageView(image: nil));
-        
         tableCardImgViews[currentPlayerIndex] = tc1ImgView;
         tableCardImgViews[remotePlayer1Index] = tc2ImgView;
+        
+        // player's points and name labels
+        
+        playersPointsLabels[currentPlayerIndex] = lp_LabelPoints;
+        playersPointsLabels[remotePlayer1Index] = rp1_LabelPoints;
     }
     
     public func render() {
-        /// STEP 1: render all players hands.
+        // STEP 1: render all players hands.
         for (pIndex, playerImgs) in playersCardImgViews.enumerated() {
             if (gameHandler.players.indices.contains(pIndex)) {
                 let playerHand: Array<CardModel> = gameHandler.players[pIndex].cardsHand;
@@ -129,7 +136,7 @@ class GameController: UIViewController {
             }
         }
         
-        /// STEP 2: render all cards on table.
+        // STEP 2: render all cards on table.
         for (cIndex, cardImg) in tableCardImgViews.enumerated() {
             if (gameHandler.cardsOnTable.indices.contains(cIndex) && gameHandler.cardsOnTable[cIndex] != nil) {
                 _updateImageView(images: tableCardImgViews, imageIndex: cIndex, model: gameHandler.cardsOnTable[cIndex]!);
@@ -138,41 +145,30 @@ class GameController: UIViewController {
             }
         }
         
-        /// trump card
+        // trump card
         _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
         
-        /// display points
+        // display points
         for (pIndex, player) in gameHandler.players.enumerated() {
             playersPointsLabels[pIndex].text = String(player.deckPoints);
         }
         
-        /// if game is ended go to the results page.
+        // if game is ended go to the results page.
         if (gameHandler.gameEnded) {
             goToNextView();
         }
     }
     
     private func initGestures() {
-        // TODO: improve this logic
-        // let localPlayerIndex: Int = self.localPlayerIndex!;
-        //let currentLocalPlayerIndex: Int = gameHandler.players.firstIndex(where: {$0.type == .local})!;
-        
-        // let currentPlayerHand = playersCardImgViews[currentLocalPlayerIndex];
-        // for cIndex in currentPlayerHand.indices {
-        //     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: // #selector(cardTapped(tapGestureRecognizer:)));
-        //
-        //    playersCardImgViews[currentLocalPlayerIndex][cIndex].isUserInteractionEnabled = true;
-        //    playersCardImgViews[currentLocalPlayerIndex][cIndex].addGestureRecognizer(tapGestureRecognizer);
-        //}
-        
         let tapRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
-        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
-        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
-        
         lp_c1ImgView.isUserInteractionEnabled = true;
         lp_c1ImgView.addGestureRecognizer(tapRecognizer1);
+        
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
         lp_c2ImgView.isUserInteractionEnabled = true;
         lp_c2ImgView.addGestureRecognizer(tapRecognizer2);
+        
+        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
         lp_c3ImgView.isUserInteractionEnabled = true;
         lp_c3ImgView.addGestureRecognizer(tapRecognizer3);
     }
@@ -204,8 +200,8 @@ class GameController: UIViewController {
     private func _updateImageView(images: Array<UIImageView>, imageIndex: Int, model: CardModel) {
         if (!images.indices.contains(imageIndex)) { return; }
         
-        /// imageView.image = model.image;
-        //// imageView.tag = model.tag;
+        // imageView.image = model.image;
+        // imageView.tag = model.tag;
         images[imageIndex].image = model.image;
         images[imageIndex].tag = model.tag;
     }
@@ -223,20 +219,20 @@ class GameController: UIViewController {
     // MARK: Gestures
     
     @objc func cardTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        /// recognize the image tapped.
+        // recognize the image tapped.
         guard let tappedImg: UIImageView = tapGestureRecognizer.view as? UIImageView else { return };
         guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
         
-        /// play the cards.
+        // play the cards.
         let cardPlayed = gameHandler.playCard(playerIndex: playerIndex, card: model);
         if (!cardPlayed) { return };
         
-        /// render the new game state.
+        // render the new game state.
         render();
         
-        /// end the turn after a delay.
+        // end the turn after a delay.
         gameHandler.endTurn();
-        /// and render the new state.
+        // and render the new state.
         let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
             self.render();
@@ -249,7 +245,7 @@ class GameController: UIViewController {
     public func goToNextView() {
         let nextController = ResultsController();
         
-        /// setting properties of new controller
+        // setting properties of new controller
         nextController.gameInstance = gameHandler;
         
         self.navigationController!.pushViewController(nextController, animated: true)
@@ -282,8 +278,8 @@ extension GameController: SessionControllerDelegate {
             // self?.tableView.reloadData()
             // TODO: ...
             
-            print("// NUMERO DI GIOCATORI: \(self!.gameOptions.numberOfPlayers)");
-            print("// NUMERO DI PEER CONNESSI: \(self!.sessionManager!.connectedPeers.count)")
+            print("[INFO] NUMERO DI GIOCATORI: \(self!.gameOptions.numberOfPlayers)");
+            print("[INFO] NUMERO DI PEER CONNESSI: \(self!.sessionManager!.connectedPeers.count)")
         })
     }
 }

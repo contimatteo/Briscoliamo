@@ -18,7 +18,7 @@ public class GameHandler {
     private var aiPlayerEmulator: AIPlayerEmulator? = nil;
     
     public var players: Array<PlayerModel> = [];
-    public var playerTurn: Int = CONSTANTS.STARTER_PLAYER_INDEX;
+    public var playerTurn: Int = 0;
     public var initialCards: Array<CardModel> = [];
     public var deckCards: Array<CardModel> = [];
     public var cardsOnTable: Array<CardModel?> = [];
@@ -28,26 +28,26 @@ public class GameHandler {
     // MARK: Public Methods
     
 //    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
-//        /// game settings
+//        // game settings
 //        self.mode = mode;
 //        gameEnded = false;
 //
-//        /// cards
+//        // cards
 //        let cards = _loadCards();
 //        initialCards = cards;
 //        deckCards = cards;
 //        trumpCard = cards.last!;
 //
-//        /// players
+//        // players
 //        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
 //
-//        /// virtual AI assistant
+//        // virtual AI assistant
 //        aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
 //
-//        /// intialize the cards hands: this avoid error on setting specific array index.
+//        // intialize the cards hands: this avoid error on setting specific array index.
 //        _initializeCardsHands()
 //
-//        /// check if the ai emulator player should start playing.
+//        // check if the ai emulator player should start playing.
 //        if (players[playerTurn].type == .emulator) {
 //            let _ = playCard(playerIndex: playerTurn);
 //        }
@@ -57,13 +57,13 @@ public class GameHandler {
         self.mode = .singleplayer;
         gameEnded = false;
         
-        /// cards
+        // cards
         let cards = _loadCards();
         initialCards = cards;
         deckCards = cards;
         trumpCard = cards.last!;
         
-        /// players
+        // players
         var playersType: [PlayerType] = []
         for i in 0..<numberOfPlayers {
             if (i == localPlayerIndex) {
@@ -74,13 +74,13 @@ public class GameHandler {
         }
         _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
         
-        /// virtual AI assistant
+        // virtual AI assistant
         aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
         
-        /// intialize the cards hands: this avoid error on setting specific array index.
+        // intialize the cards hands: this avoid error on setting specific array index.
         _initializeCardsHands()
         
-        /// check if the ai emulator player should start playing.
+        // check if the ai emulator player should start playing.
         if (players[playerTurn].type == .emulator) {
             let _ = playCard(playerIndex: playerTurn);
         }
@@ -90,31 +90,31 @@ public class GameHandler {
         self.mode = .multiplayer;
         gameEnded = false;
         
-        /// cards
+        // cards
         var cards: [CardModel] = [];
         if (deckCards != nil) {
-            cards = deckCards!; /// use the share deck.
+            cards = deckCards!; // use the share deck.
             self.deckCards = cards;
             self.initialCards = cards;
         } else {
-            cards = _loadCards(); /// generare the deck
+            cards = _loadCards(); // generare the deck
             self.initialCards = cards;
             self.deckCards = cards;
         }
         trumpCard = cards.last!;
         
-        /// players
+        // players
         _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
         
-        /// check if i should instance the virtual AI assistant.
+        // check if i should instance the virtual AI assistant.
         if (playersType.firstIndex(where: { $0 == .emulator }) != nil) {
             aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
         }
         
-        /// intialize the cards hands: this avoid error on setting specific array index.
+        // intialize the cards hands: this avoid error on setting specific array index.
         _initializeCardsHands()
         
-        /// check if the ai emulator player should start playing.
+        // check if the ai emulator player should start playing.
         if (players[playerTurn].type == .emulator) {
             let _ = playCard(playerIndex: playerTurn);
         }
@@ -123,15 +123,15 @@ public class GameHandler {
     public func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
         if (playerIndex != playerTurn || gameEnded) { return false; }
         
-        /// HUMAN
+        // HUMAN
         if (players[playerIndex].type == .local) {
-            /// human player play a card.
+            // human player play a card.
             _humanPlayCard(playerIndex: playerIndex, card: card!);
         }
         
-        /// EMULATOR
+        // EMULATOR
         while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
-            /// AI player will be play a card.
+            // AI player will be play a card.
             _aiPlayCard(playerIndex: playerTurn);
         }
         
@@ -139,36 +139,36 @@ public class GameHandler {
     }
     
     public func nextTurn() {
-        playerTurn = (playerTurn + 1) % CONSTANTS.NUMBER_OF_PLAYERS;
+        playerTurn = (playerTurn + 1) % players.count;
     }
     
     public func endTurn() {
-        /// find the winner card index (this is also the index of the winner player).
+        // find the winner card index (this is also the index of the winner player).
         let playerIndexWhoWinTheTurn: Int = _findWinnerCardOnTable();
-        /// move each card into the winner deck.
+        // move each card into the winner deck.
         for card in cardsOnTable {
             players[playerIndexWhoWinTheTurn].currentDeck.append(card!);
         }
         
-        /// set the turn to current winner player index.
+        // set the turn to current winner player index.
         playerTurn = playerIndexWhoWinTheTurn;
-        /// empty the cards on table.
+        // empty the cards on table.
         cardsOnTable.removeAll();
         
-        /// get new card from deck.
+        // get new card from deck.
         var newCard: CardModel? = nil;
         for player in players {
             newCard = extractCardFromDeck();
             if newCard != nil { player.cardsHand.append(newCard!); }
         }
         
-        /// is the game ended ?
+        // is the game ended ?
         if (_isGameEnded()) { gameEnded = true; }
         
-        /// intialize the cards hands: this avoid error on setting specific array index.
+        // intialize the cards hands: this avoid error on setting specific array index.
         _initializeCardsHands();
         
-        /// play a card if the winner is a {.virtual} player
+        // play a card if the winner is a {.virtual} player
         if (players[playerIndexWhoWinTheTurn].type == .emulator) {
             let _ = playCard(playerIndex: playerTurn);
         }
@@ -189,14 +189,14 @@ public class GameHandler {
         var cards: Array<CardModel> = [];
         let types: Array<CardType> = [.bastoni, .denari, .coppe, .spade];
         
-        /// load all cards images
+        // load all cards images
         for type: CardType in types {
             for index in 0..<10 {
                 initialCards.append(CardModel.init(type: type, number: index + 1));
             }
         }
         
-        /// shuffle the cards
+        // shuffle the cards
         while (!initialCards.isEmpty) {
             let card = initialCards.randomElement()!;
             
@@ -208,50 +208,50 @@ public class GameHandler {
     }
     
     private func _initializePlayers(numberOfPlayers: Int, playersType: Array<PlayerType>) {
-        /// foreach player: create the first hand and instance the model.
+        // foreach player: create the first hand and instance the model.
         for playerIndex in 0..<numberOfPlayers {
-            /// create an array with the initial cards (this will be the first cards hand).
+            // create an array with the initial cards (this will be the first cards hand).
             var initialHand: Array<CardModel> = [];
             for _ in 0..<CONSTANTS.PLAYER_CARDS_HAND_SISZE {
                 let newCard: CardModel = extractCardFromDeck()!;
                 initialHand.append(newCard);
             }
             
-            /// instance a new Player Model.
+            // instance a new Player Model.
             let player = PlayerModel.init(index: playerIndex, initialHand: initialHand, type: playersType[playerIndex]);
-            /// add the player into {players} array.
+            // add the player into {players} array.
             players.append(player);
         }
     }
     
     private func _humanPlayCard(playerIndex: Int, card: CardModel) {
-        /// move this card into the table.
+        // move this card into the table.
         cardsOnTable[playerIndex] = card;
         // cardsOnTable.insert(card, at: playerIndex);
         
-        /// remove this card from player hand.
+        // remove this card from player hand.
         players[playerIndex].playCard(card: card);
         
-        /// calculare next player turn.
+        // calculare next player turn.
         nextTurn();
     }
     
     private func _aiPlayCard(playerIndex: Int) {
-        /// prepare array with the hand cards of each player.
+        // prepare array with the hand cards of each player.
         let playersHands:Array<Array<CardModel>> = _getAllPlayersHands();
         
-        /// aks to AI the card to play;
+        // aks to AI the card to play;
         let cardToPlayIndex: Int = aiPlayerEmulator!.playCard(playerIndex: playerIndex, playersHands: playersHands, cardsOnTable: cardsOnTable);
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
         
-        /// move this card into the table.
+        // move this card into the table.
         // cardsOnTable.insert(cardToPlay, at: playerIndex);
         cardsOnTable[playerIndex] = cardToPlay;
         
-        /// remove this card from player hand.
+        // remove this card from player hand.
         players[playerIndex].playCard(card: cardToPlay);
         
-        /// calculare next player turn.
+        // calculare next player turn.
         nextTurn();
     }
     

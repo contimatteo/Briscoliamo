@@ -35,29 +35,29 @@ class SocialsController: UIViewController {
     
     @IBAction private func performFBLogout() {
         facebookManager!.logout();
-        print("//// FB logout done!");
+        print("[INFO] FB logout done!");
     }
     
     func loginDidComplete(_ result: LoginManagerLoginResult?, errors: Error?) {
         if errors != nil {
             // Process error
-            print("//// FB Login failed with error \(errors!)");
+            print("[INFO] FB Login failed with error \(errors!)");
             
             return;
         }
         
         guard let loginResult = result else {
-            print("//// FB Login: something went wrong.");
+            print("[INFO] FB Login: something went wrong.");
             return;
         }
         
         // LOGIN EXECUTED
             
-        print("//// FB login result \(result!)");
+        print("[INFO] FB login result \(result!)");
         
         // IS CANCELED ?
         if (loginResult.isCancelled) {
-            print("//// FB User cancelled login.");
+            print("[INFO] FB User cancelled login.");
             return
         }
         

@@ -27,7 +27,7 @@ class FacebookManager {
         self.loginManager = LoginManager();
         self.currentUserProfile = nil;
         
-        /// TODO: auto login user if token is already setted.
+        // TODO: auto login user if token is already setted.
     }
     
     //

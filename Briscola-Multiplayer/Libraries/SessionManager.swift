@@ -32,7 +32,7 @@ class SessionManager: NSObject {
         get { return session.myPeerID.displayName }
     }
     
-    /// An object that implements the `SessionControllerDelegate` protocol
+    // An object that implements the `SessionControllerDelegate` protocol
     weak var delegate: SessionControllerDelegate?
     
     //
@@ -49,8 +49,8 @@ class SessionManager: NSObject {
     public var serviceAdvertiser: MCNearbyServiceAdvertiser
     public var serviceBrowser: MCNearbyServiceBrowser
     
-    /// Connected peers are stored in the MCSession
-    /// Manually track connecting and disconnected peers
+    // Connected peers are stored in the MCSession
+    // Manually track connecting and disconnected peers
     public var connectingPeersDictionary = NSMutableDictionary()
     public var disconnectedPeersDictionary = NSMutableDictionary()
     
@@ -112,7 +112,7 @@ class SessionManager: NSObject {
         //            do {
         //                try session.send(imageData, toPeers: session.connectedPeers, with: .reliable)
         //            } catch let error as NSError {
-        //                print("/// send data generate an error: \(error.localizedDescription)")
+        //                print("[INFO] send data generate an error: \(error.localizedDescription)")
         //            }
         //        }
         return false;
@@ -127,7 +127,7 @@ class SessionManager: NSObject {
             try session.send(data, toPeers: session.connectedPeers, with: .reliable);
             return true;
         } catch let error as NSError {
-            print("/// send data generate an error: \(error.localizedDescription)");
+            print("[INFO] send data generate an error: \(error.localizedDescription)");
         }
         
         return false;
@@ -148,11 +148,11 @@ protocol SessionControllerDelegate: class {
 // MARK: Extension
 
 extension MCSession {
-    /// Gets the string for a peer connection state
-    ///
-    /// - parameter state: Peer connection state, an MCSessionState enum value
-    /// - returns: String for peer connection state
-    ///
+    // Gets the string for a peer connection state
+    //
+    // - parameter state: Peer connection state, an MCSessionState enum value
+    // - returns: String for peer connection state
+    //
     class func stringForPeerConnectionState(_ state: MCSessionState) -> String {
         switch state {
         case .connecting:

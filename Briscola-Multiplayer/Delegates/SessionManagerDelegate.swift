@@ -48,15 +48,15 @@ extension SessionManager: MCSessionDelegate {
         let object: [String: Any]? = UtilityHelper.dataToObject(data);
         
         if image != nil {
-            DispatchQueue.main.async { print("/// image receveid: \(image!)"); }
+            DispatchQueue.main.async { print("[INFO] image receveid: \(image!)"); }
         }
         
         if array != nil {
-            DispatchQueue.main.async { print("/// array receveid: \(array!)"); }
+            DispatchQueue.main.async { print("[INFO] array receveid: \(array!)"); }
         }
         
         if object != nil {
-            DispatchQueue.main.async { print("/// object receveid: \(object!)"); }
+            DispatchQueue.main.async { print("[INFO] object receveid: \(object!)"); }
         }
     }
     

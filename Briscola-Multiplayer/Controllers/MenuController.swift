@@ -28,7 +28,7 @@ class MenuController: UIViewController {
     private func goToNextView() {
         let nextController = GameController();
         
-        /// setting properties of new controller
+        // setting properties of new controller
         nextController.gameOptions = self.gameOptions!;
         
         self.navigationController!.pushViewController(nextController, animated: true);
