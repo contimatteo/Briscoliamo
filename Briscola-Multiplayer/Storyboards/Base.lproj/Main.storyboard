@@ -96,16 +96,16 @@
                     </view>
                     <navigationItem key="navigationItem" title="GIOCO" id="Zy3-Ci-eYd"/>
                     <connections>
-                        <outlet property="p1LabelPoints" destination="hOY-sK-zSu" id="iEV-fN-iZo"/>
-                        <outlet property="p1c1ImgView" destination="BvT-tn-DAb" id="x3Q-Rd-d3n"/>
-                        <outlet property="p1c2ImgView" destination="Lpd-SD-WjI" id="hQU-bh-wvR"/>
-                        <outlet property="p1c3ImgView" destination="NQm-Gm-E1V" id="MPk-pa-Idl"/>
-                        <outlet property="p1labelName" destination="Asv-5E-kxw" id="4F4-zT-ZPf"/>
-                        <outlet property="p2LabelPoints" destination="efs-7a-EBs" id="JVo-TV-HKc"/>
-                        <outlet property="p2c1ImgView" destination="IJN-qo-05L" id="LMM-ub-0cR"/>
-                        <outlet property="p2c2ImgView" destination="Uhk-f1-i8f" id="fvK-ha-Nl0"/>
-                        <outlet property="p2c3ImgView" destination="RrD-Rq-WVI" id="vmq-O7-Vwc"/>
-                        <outlet property="p2labelName" destination="Ua2-Yp-28D" id="BHo-cH-sEn"/>
+                        <outlet property="lp_LabelPoints" destination="hOY-sK-zSu" id="zxg-AZ-y3Z"/>
+                        <outlet property="lp_c1ImgView" destination="BvT-tn-DAb" id="F6R-OY-T5p"/>
+                        <outlet property="lp_c2ImgView" destination="Lpd-SD-WjI" id="fpV-rp-dbI"/>
+                        <outlet property="lp_c3ImgView" destination="NQm-Gm-E1V" id="e0g-ae-hor"/>
+                        <outlet property="lp_labelName" destination="Asv-5E-kxw" id="eQk-Kd-iIY"/>
+                        <outlet property="rp1_LabelPoints" destination="efs-7a-EBs" id="3WA-Kx-hrt"/>
+                        <outlet property="rp1_c1ImgView" destination="IJN-qo-05L" id="xUe-kc-7pr"/>
+                        <outlet property="rp1_c2ImgView" destination="Uhk-f1-i8f" id="j93-6h-LdJ"/>
+                        <outlet property="rp1_c3ImgView" destination="RrD-Rq-WVI" id="RAU-0u-oF5"/>
+                        <outlet property="rp1_labelName" destination="Ua2-Yp-28D" id="YLJ-RO-jtf"/>
                         <outlet property="tc1ImgView" destination="4hI-6r-InF" id="J2d-0c-3De"/>
                         <outlet property="tc2ImgView" destination="rvo-8g-CEk" id="yh0-lf-yC8"/>
                         <outlet property="trumpImgView" destination="lG0-zt-8DC" id="j3H-12-fHb"/>

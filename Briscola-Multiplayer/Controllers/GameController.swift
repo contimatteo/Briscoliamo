@@ -17,20 +17,20 @@ class GameController: UIViewController {
     
     @IBOutlet weak var trumpImgView: UIImageView! // trump card
     
-    @IBOutlet weak var p1c1ImgView: UIImageView! // player 1 card 1
-    @IBOutlet weak var p1c2ImgView: UIImageView!
-    @IBOutlet weak var p1c3ImgView: UIImageView!
-    @IBOutlet weak var p2c1ImgView: UIImageView!
-    @IBOutlet weak var p2c2ImgView: UIImageView!
-    @IBOutlet weak var p2c3ImgView: UIImageView!
+    @IBOutlet weak var lp_c1ImgView: UIImageView! // player 1 card 1
+    @IBOutlet weak var lp_c2ImgView: UIImageView!
+    @IBOutlet weak var lp_c3ImgView: UIImageView!
+    @IBOutlet weak var rp1_c1ImgView: UIImageView! // remote-player 1 card 1
+    @IBOutlet weak var rp1_c2ImgView: UIImageView!
+    @IBOutlet weak var rp1_c3ImgView: UIImageView!
     
     @IBOutlet weak var tc1ImgView: UIImageView! // table card 1
     @IBOutlet weak var tc2ImgView: UIImageView!
     
-    @IBOutlet weak var p1labelName: UILabel!
-    @IBOutlet weak var p1LabelPoints: UILabel!
-    @IBOutlet weak var p2labelName: UILabel!
-    @IBOutlet weak var p2LabelPoints: UILabel!
+    @IBOutlet weak var lp_labelName: UILabel!
+    @IBOutlet weak var lp_LabelPoints: UILabel!
+    @IBOutlet weak var rp1_labelName: UILabel!
+    @IBOutlet weak var rp1_LabelPoints: UILabel!
     
     private var playersCardImgViews: Array<Array<UIImageView>> = [];
     private var tableCardImgViews: Array<UIImageView> = [];
@@ -50,12 +50,14 @@ class GameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.localPlayerIndex = 1;
+        let playersTypes: [PlayerType] = [.local, .emulator];
+        
         /// prepare player's cards variables.
         prepareAssets();
         
         /// load all the cards and load 3 cards foreach player, load
         /// the trump card, create players and load 3 cards for these.
-        var playersTypes: [PlayerType] = [];
         if (gameOptions.mode == .multiplayer) {
             /// MULTI-PLAYER
             //            sessionManager = SessionManager();
@@ -65,10 +67,8 @@ class GameController: UIViewController {
             //            shareSession();
         } else {
             /// SINGLE-PLAYER
-            playersTypes = [.local, .emulator];
-            gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: 1, playersType: playersTypes);
+            gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: localPlayerIndex!, playersType: playersTypes);
             
-            self.localPlayerIndex = 0;
             
             /// gestures
             initGestures()
@@ -80,36 +80,37 @@ class GameController: UIViewController {
     
     
     private func prepareAssets() {
-        var player1Cards: Array<UIImageView> = [];
-        player1Cards.append(p1c1ImgView);
-        player1Cards.append(p1c2ImgView);
-        player1Cards.append(p1c3ImgView);
+        playersPointsLabels.append(lp_LabelPoints);
+        playersPointsLabels.append(rp1_LabelPoints);
         
-        var player2Cards: Array<UIImageView> = [];
-        player2Cards.append(p2c1ImgView);
-        player2Cards.append(p2c2ImgView);
-        player2Cards.append(p2c3ImgView);
+        // hand cards
         
-        var player3Cards: Array<UIImageView> = [];
-        player3Cards.append(p2c1ImgView);
-        player3Cards.append(p2c2ImgView);
-        player3Cards.append(p2c3ImgView);
+        var lpCards: Array<UIImageView> = [];
+        lpCards.append(lp_c1ImgView);
+        lpCards.append(lp_c2ImgView);
+        lpCards.append(lp_c3ImgView);
         
-        var player4Cards: Array<UIImageView> = [];
-        player4Cards.append(p2c1ImgView);
-        player4Cards.append(p2c2ImgView);
-        player4Cards.append(p2c3ImgView);
+        var rp1Cards: Array<UIImageView> = [];
+        rp1Cards.append(rp1_c1ImgView);
+        rp1Cards.append(rp1_c2ImgView);
+        rp1Cards.append(rp1_c3ImgView);
         
-        playersCardImgViews.append(player1Cards);
-        playersCardImgViews.append(player2Cards);
-        playersCardImgViews.append(player3Cards);
-        playersCardImgViews.append(player4Cards);
+        playersCardImgViews.append([]);
+        playersCardImgViews.append([]);
         
-        tableCardImgViews.append(tc1ImgView);
-        tableCardImgViews.append(tc2ImgView);
+        let currentPlayerIndex: Int = self.localPlayerIndex!;
+        let remotePlayer1Index: Int = (currentPlayerIndex + 1) % CONSTANTS.NUMBER_OF_PLAYERS;
         
-        playersPointsLabels.append(p1LabelPoints);
-        playersPointsLabels.append(p2LabelPoints);
+        playersCardImgViews[currentPlayerIndex] = lpCards;
+        playersCardImgViews[remotePlayer1Index] = rp1Cards;
+        
+        // cards on table
+        
+        tableCardImgViews.append(UIImageView(image: nil));
+        tableCardImgViews.append(UIImageView(image: nil));
+        
+        tableCardImgViews[currentPlayerIndex] = tc1ImgView;
+        tableCardImgViews[remotePlayer1Index] = tc2ImgView;
     }
     
     public func render() {
@@ -168,12 +169,12 @@ class GameController: UIViewController {
         let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
         let tapRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(cardTapped(tapGestureRecognizer:)));
         
-        p1c1ImgView.isUserInteractionEnabled = true;
-        p1c1ImgView.addGestureRecognizer(tapRecognizer1);
-        p1c2ImgView.isUserInteractionEnabled = true;
-        p1c2ImgView.addGestureRecognizer(tapRecognizer2);
-        p1c3ImgView.isUserInteractionEnabled = true;
-        p1c3ImgView.addGestureRecognizer(tapRecognizer3);
+        lp_c1ImgView.isUserInteractionEnabled = true;
+        lp_c1ImgView.addGestureRecognizer(tapRecognizer1);
+        lp_c2ImgView.isUserInteractionEnabled = true;
+        lp_c2ImgView.addGestureRecognizer(tapRecognizer2);
+        lp_c3ImgView.isUserInteractionEnabled = true;
+        lp_c3ImgView.addGestureRecognizer(tapRecognizer3);
     }
     
     private func _getModelFromImageView(imgView: UIImageView) -> (model: CardModel, playerIndex: Int, cardIndex: Int)? {
