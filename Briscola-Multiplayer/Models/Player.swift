@@ -56,9 +56,4 @@ public class PlayerModel {
 
 // ////////////////////////////////////////////////////////////////////////
 
-public enum PlayerType {
-    case local;
-    case remote;
-    case emulator;
-}
 

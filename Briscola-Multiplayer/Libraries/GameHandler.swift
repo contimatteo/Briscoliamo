@@ -27,38 +27,38 @@ public class GameHandler {
     //
     // MARK: Public Methods
     
-//    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
-//        // game settings
-//        self.mode = mode;
-//        gameEnded = false;
-//
-//        // cards
-//        let cards = _loadCards();
-//        initialCards = cards;
-//        deckCards = cards;
-//        trumpCard = cards.last!;
-//
-//        // players
-//        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
-//
-//        // virtual AI assistant
-//        aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
-//
-//        // intialize the cards hands: this avoid error on setting specific array index.
-//        _initializeCardsHands()
-//
-//        // check if the ai emulator player should start playing.
-//        if (players[playerTurn].type == .emulator) {
-//            let _ = playCard(playerIndex: playerTurn);
-//        }
-//    }
+    //    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
+    //        // game settings
+    //        self.mode = mode;
+    //        gameEnded = false;
+    //
+    //        // cards
+    //        let cards = _loadCards();
+    //        initialCards = cards;
+    //        deckCards = cards;
+    //        trumpCard = cards.last!;
+    //
+    //        // players
+    //        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
+    //
+    //        // virtual AI assistant
+    //        aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
+    //
+    //        // intialize the cards hands: this avoid error on setting specific array index.
+    //        _initializeCardsHands()
+    //
+    //        // check if the ai emulator player should start playing.
+    //        if (players[playerTurn].type == .emulator) {
+    //            let _ = playCard(playerIndex: playerTurn);
+    //        }
+    //    }
     
     public func initSinglePlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersType: [PlayerType]) {
         self.mode = .singleplayer;
         gameEnded = false;
         
         // cards
-        let cards = _loadCards();
+        let cards = loadCards();
         initialCards = cards;
         deckCards = cards;
         trumpCard = cards.last!;
@@ -94,13 +94,11 @@ public class GameHandler {
         var cards: [CardModel] = [];
         if (deckCards != nil) {
             cards = deckCards!; // use the share deck.
-            self.deckCards = cards;
-            self.initialCards = cards;
         } else {
-            cards = _loadCards(); // generare the deck
-            self.initialCards = cards;
-            self.deckCards = cards;
+            cards = loadCards(); // generare the deck
         }
+        self.deckCards = cards;
+        self.initialCards = cards;
         trumpCard = cards.last!;
         
         // players
@@ -136,6 +134,29 @@ public class GameHandler {
         }
         
         return true;
+    }
+    
+    public func loadCards() -> Array<CardModel> {
+        var initialCards: Array<CardModel> = [];
+        var cards: Array<CardModel> = [];
+        let types: Array<CardType> = [.bastoni, .denari, .coppe, .spade];
+        
+        // load all cards images
+        for type: CardType in types {
+            for index in 0..<10 {
+                initialCards.append(CardModel.init(type: type, number: index + 1));
+            }
+        }
+        
+        // shuffle the cards
+        while (!initialCards.isEmpty) {
+            let card = initialCards.randomElement()!;
+            
+            initialCards.remove(at: initialCards.firstIndex(of: card)!);
+            cards.append(card);
+        }
+        
+        return cards;
     }
     
     public func nextTurn() {
@@ -182,29 +203,6 @@ public class GameHandler {
         self.deckCards.remove(at: 0);
         
         return card;
-    }
-    
-    private func _loadCards() -> Array<CardModel> {
-        var initialCards: Array<CardModel> = [];
-        var cards: Array<CardModel> = [];
-        let types: Array<CardType> = [.bastoni, .denari, .coppe, .spade];
-        
-        // load all cards images
-        for type: CardType in types {
-            for index in 0..<10 {
-                initialCards.append(CardModel.init(type: type, number: index + 1));
-            }
-        }
-        
-        // shuffle the cards
-        while (!initialCards.isEmpty) {
-            let card = initialCards.randomElement()!;
-            
-            initialCards.remove(at: initialCards.firstIndex(of: card)!);
-            cards.append(card);
-        }
-        
-        return cards;
     }
     
     private func _initializePlayers(numberOfPlayers: Int, playersType: Array<PlayerType>) {
@@ -308,11 +306,4 @@ public class GameHandler {
         return players[playerIndex].cardsHand.count < CONSTANTS.PLAYER_CARDS_HAND_SISZE;
     }
     
-}
-
-
-
-public enum GameType {
-    case singleplayer;
-    case multiplayer;
 }

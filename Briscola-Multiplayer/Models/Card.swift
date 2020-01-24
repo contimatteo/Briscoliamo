@@ -99,11 +99,3 @@ public class CardModel: Equatable {
         }
     }
 }
-
-
-public enum CardType: String, Equatable {
-    case coppe
-    case bastoni
-    case spade
-    case denari
-}

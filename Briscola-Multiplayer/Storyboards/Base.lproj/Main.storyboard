@@ -109,6 +109,7 @@
                         <outlet property="tc1ImgView" destination="4hI-6r-InF" id="J2d-0c-3De"/>
                         <outlet property="tc2ImgView" destination="rvo-8g-CEk" id="yh0-lf-yC8"/>
                         <outlet property="trumpImgView" destination="lG0-zt-8DC" id="j3H-12-fHb"/>
+                        <segue destination="NMa-uC-oIc" kind="show" id="BEg-23-phf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -9,6 +9,13 @@
 
 import Foundation
 
+//
+// MARK: Env Variables
+
+public var _SESSION_DEBUG_: Bool = true;
+
+//
+// MARK: Functional Variables
 
 public struct CONSTANTS {
     static public let MAX_NUMBER_OF_PLAYERS: Int = 2;

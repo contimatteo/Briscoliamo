@@ -10,7 +10,6 @@ import Foundation
 import MultipeerConnectivity
 
 
-
 class SessionManager: NSObject {
     
     //
@@ -34,9 +33,6 @@ class SessionManager: NSObject {
     
     // An object that implements the `SessionControllerDelegate` protocol
     weak var delegate: SessionControllerDelegate?
-    
-    //
-    // MARK: Private properties
     
     public let peerID = MCPeerID(displayName: UIDevice.current.name)
     
@@ -105,24 +101,7 @@ class SessionManager: NSObject {
     //
     // MARK: senders
     
-    public func send(image: UIImage) -> Bool {
-        //        if (session.connectedPeers.count < 1) { return; }
-        //
-        //        if let imageData = img.pngData() {
-        //            do {
-        //                try session.send(imageData, toPeers: session.connectedPeers, with: .reliable)
-        //            } catch let error as NSError {
-        //                print("[INFO] send data generate an error: \(error.localizedDescription)")
-        //            }
-        //        }
-        return false;
-    }
-    
-    public func send(array: [Any]) -> Bool {
-        if (session.connectedPeers.count < 1) { return false; }
-        
-        guard let data = UtilityHelper.arrayToData(array) else { return false; }
-        
+    private func send(_ data: Data) -> Bool {
         do {
             try session.send(data, toPeers: session.connectedPeers, with: .reliable);
             return true;
@@ -132,41 +111,143 @@ class SessionManager: NSObject {
         
         return false;
     }
+    
+    public func sendData(data: [Any]) -> Bool {
+        if (session.connectedPeers.count < 1) { return false; }
+        guard let data = UtilityHelper.arrayToData(data) else { return false; }
+        
+        return send(data);
+    }
+    
+    public func sendData(data: Data) -> Bool {
+        if (session.connectedPeers.count < 1) { return false; }
+        
+        return send(data);
+    }
+    
+    
 }
 
 
 //
-// MARK: Protocol
+// MARK: MCSessionDelegate
 
-protocol SessionControllerDelegate: class {
-    // Multipeer Connectivity session changed state - connecting, connected and disconnected peers changed
-    func sessionDidChangeState()
-}
-
-
-//
-// MARK: Extension
-
-extension MCSession {
-    // Gets the string for a peer connection state
-    //
-    // - parameter state: Peer connection state, an MCSessionState enum value
-    // - returns: String for peer connection state
-    //
-    class func stringForPeerConnectionState(_ state: MCSessionState) -> String {
+extension SessionManager: MCSessionDelegate {
+    
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        let displayName = peerID.displayName
+        
+        NSLog("\(#function) \(displayName) \(MCSession.stringForPeerConnectionState(state))")
+        
         switch state {
         case .connecting:
-            return "Connecting"
+            connectingPeersDictionary.setObject(peerID, forKey: displayName as NSCopying)
+            disconnectedPeersDictionary.removeObject(forKey: displayName)
             
         case .connected:
-            return "Connected"
+            connectingPeersDictionary.removeObject(forKey: displayName)
+            disconnectedPeersDictionary.removeObject(forKey: displayName)
             
         case .notConnected:
-            return "Not Connected"
+            connectingPeersDictionary.removeObject(forKey: displayName)
+            disconnectedPeersDictionary.setObject(peerID, forKey: displayName as NSCopying)
             
         @unknown default:
-            return "Uknown state"
+            fatalError("Uknown connection status.");
         }
         
+        delegate?.sessionDidChangeState()
+    }
+    
+    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        if (_SESSION_DEBUG_) { NSLog("\(#function) from [\(peerID.displayName)]"); }
+        
+        //        let image: UIImage? = UIImage(data: data);
+        //        let array: [Any]? = UtilityHelper.dataToArray(data);
+        //        let object: [String: Any]? = UtilityHelper.dataToObject(data);
+        //
+        //        if image != nil {
+        //            DispatchQueue.main.async { print("[INFO] image receveid: \(image!)"); }
+        //        }
+        //
+        //        if array != nil {
+        //            DispatchQueue.main.async { print("[INFO] array receveid: \(array!)"); }
+        //        }
+        //
+        //        if object != nil {
+        //            DispatchQueue.main.async { print("[INFO] object receveid: \(object!)"); }
+        //        }
+        
+        delegate?.didReceivedData(data);
+    }
+    
+    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+        if (_SESSION_DEBUG_) { 
+            NSLog("\(#function) \(resourceName) from [\(peerID.displayName)] with progress [\(progress)]");
+        }
+    }
+    
+    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
+        // If error is not nil something went wrong
+        if (error != nil) {
+            if (_SESSION_DEBUG_) { NSLog("\(#function) Error \(String(describing: error)) from [\(peerID.displayName)]"); }
+        } else {
+            if (_SESSION_DEBUG_) { NSLog("\(#function) \(resourceName) from [\(peerID.displayName)]"); }
+        }
+    }
+    
+    // Streaming API not utilized in this sample code
+    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+        if (_SESSION_DEBUG_) { NSLog("\(#function) \(streamName) from [\(peerID.displayName)]"); }
+    }
+}
+
+
+//
+// MARK: MCNearbyServiceBrowserDelegate
+
+extension SessionManager: MCNearbyServiceBrowserDelegate {
+    
+    // Found a nearby advertising peer
+    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        let remotePeerName = peerID.displayName
+        
+        let myPeerID = session.myPeerID
+        
+        let shouldInvite = (myPeerID.displayName.compare(remotePeerName) == .orderedDescending)
+        
+        if shouldInvite {
+            if (_SESSION_DEBUG_) { NSLog("\(#function) Inviting [\(remotePeerName)]"); }
+            browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30.0)
+        } else {
+            if (_SESSION_DEBUG_) { NSLog("\(#function) Not inviting [\(remotePeerName)]"); }
+        }
+        
+        delegate?.sessionDidChangeState()
+    }
+    
+    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        if (_SESSION_DEBUG_) { NSLog("\(#function) [\(peerID.displayName)]"); }
+    }
+    
+    func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
+        if (_SESSION_DEBUG_) { NSLog("\(#function) \(error)"); }
+    }
+}
+
+
+//
+// MARK: MCNearbyServiceAdvertiserDelegate
+
+extension SessionManager: MCNearbyServiceAdvertiserDelegate {
+    
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        if (_SESSION_DEBUG_) { NSLog("\(#function) Accepting invitation from [\(peerID.displayName)]"); }
+        
+        invitationHandler(true, session)
+    }
+    
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
+        if (_SESSION_DEBUG_) { NSLog("\(#function) \(error)"); }
     }
 }
