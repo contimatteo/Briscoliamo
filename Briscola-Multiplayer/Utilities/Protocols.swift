@@ -22,5 +22,5 @@ protocol SessionControllerDelegate: class {
     //
     // MARK: Custom Receivers
     
-    func didReceivedData(_ data: Data);
+    func didReceivedDataFromPeer(_ data: Data);
 }

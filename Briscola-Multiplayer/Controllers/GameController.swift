@@ -90,8 +90,6 @@ class GameController: UIViewController {
     }
     
     private func initMultiPlayerGame(localPlayerIndex localPlayerNewIndex: Int, deckCards: [String]?) {
-        print("\(#function) -> ready");
-        
         var deckCardsConverted: [CardModel]? = nil;
         if (deckCards != nil) {
             deckCardsConverted = [];
@@ -119,7 +117,7 @@ class GameController: UIViewController {
             
             // gestures
             self.initGestures()
-        
+            
             // render
             self.render();
         }
@@ -205,8 +203,10 @@ class GameController: UIViewController {
         _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
         
         // display points
-        for (pIndex, player) in gameHandler.players.enumerated() {
-            playersPointsLabels[pIndex].text = String(player.deckPoints);
+        DispatchQueue.main.async {
+            for (pIndex, player) in self.gameHandler.players.enumerated() {
+                self.playersPointsLabels[pIndex].text = String(player.deckPoints);
+            }
         }
         
         // if game is ended go to the results page.
@@ -214,6 +214,30 @@ class GameController: UIViewController {
             stopSession();
             goToNextView();
         }
+    }
+    
+    private func playCard(card model: CardModel, playerIndex: Int) {
+        // play the cards.
+        let cardPlayed = gameHandler.playCard(playerIndex: playerIndex, card: model);
+        if (!cardPlayed) { return };
+        
+        // render the new game state.
+        render();
+        
+        // SESSION: share the card played but only if the player who played this card is me.
+        // remeber that this function is called each time i will received card played by another remote player.
+        if (gameOptions.mode == .multiplayer && playerIndex == localPlayerIndex!) {
+            let ssCardPlayed: SS_CardPlayed = SS_CardPlayed(type: model.type.rawValue, number: model.number, senderPlayerIndex: localPlayerIndex!);
+            let _ = self.sessionManager!.sendData(data: ssCardPlayed.toData());
+        }
+        
+        // end the turn after a delay.
+        gameHandler.endTurn();
+        // and render the new state.
+        let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
+        DispatchQueue.main.asyncAfter(deadline: delay, execute: {
+            self.render();
+        })
     }
     
     //
@@ -231,7 +255,6 @@ class GameController: UIViewController {
             let sended = self.sessionManager!.sendData(data: initObject.toData());
             
             if (sended) {
-                print("\n[INFO] {\(self.sessionManager!.displayName)} deck shared ? \(sended) \n");
                 self.initMultiPlayerGame(localPlayerIndex: self.localPlayerIndex!, deckCards: sharedCardsDeck);
             }
         }
@@ -240,36 +263,12 @@ class GameController: UIViewController {
     //
     // MARK: Gestures
     
-    private func _playCard(card model: CardModel, playerIndex: Int) {
-        // play the cards.
-        let cardPlayed = gameHandler.playCard(playerIndex: playerIndex, card: model);
-        if (!cardPlayed) { return };
-        
-        // render the new game state.
-        render();
-        
-        // multiplayer mode: share the card played by this user.
-        if (gameOptions.mode == .multiplayer) {
-            let ssCardPlayed: SS_CardPlayed = SS_CardPlayed(type: model.type.rawValue, number: model.number, senderPlayerIndex: localPlayerIndex!);
-            let _ = self.sessionManager!.sendData(data: ssCardPlayed.toData());
-            print("\n[INFO] {\(self.sessionManager!.displayName)} play the card -> \(model.name) \n");
-        }
-        
-        // end the turn after a delay.
-        gameHandler.endTurn();
-        // and render the new state.
-        let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
-        DispatchQueue.main.asyncAfter(deadline: delay, execute: {
-            self.render();
-        })
-    }
-    
     @objc func cardTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         // recognize the image tapped.
         guard let tappedImg: UIImageView = tapGestureRecognizer.view as? UIImageView else { return };
         guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
         
-        _playCard(card: model, playerIndex: playerIndex);
+        playCard(card: model, playerIndex: playerIndex);
     }
     
     //
@@ -283,18 +282,7 @@ class GameController: UIViewController {
         
         self.navigationController!.pushViewController(nextController, animated: true)
     }
-    
-    //
-    // MARK: Custom Methods
-    
-    func startSession() {
-        sessionManager!.startServices();
-    }
-    
-    func stopSession() {
-        sessionManager!.stopServices();
-    }
-    
+
 }
 
 //
@@ -313,12 +301,7 @@ extension GameController: SessionControllerDelegate {
         }
     }
     
-    //
-    // MARK: Receiver
-    
-    func didReceivedData(_ data: Data) {
-        print("\n[INFO] data received");
-        
+    func didReceivedDataFromPeer(_ data: Data) {
         var dataConverted: Any? = nil;
         var end: Bool = false;
         
@@ -340,19 +323,31 @@ extension GameController: SessionControllerDelegate {
 }
 
 //
-// MARK: Session Data Receiver (decoders)
+// MARK: Session + Receivers
 
 extension GameController {
+    
+    //
+    // MARK: Session
+    
+    func startSession() {
+        sessionManager!.startServices();
+    }
+    
+    func stopSession() {
+        sessionManager!.stopServices();
+    }
+    
+    //
+    // MARK: Receivers
     
     private func _receveidSSInitObject(_ data: Any?) -> Bool {
         // avoid `nil` value.
         guard let dataConverted = data else { return false; }
-        // avoid `server` agent role.
-        // if (sessionManager!.currentAgentRole == .server) { return false; }
         // avoid not matching objects.
         guard let initObj: SS_InitObj = dataConverted as? SS_InitObj else { return false; };
         
-        let newLocalPlayerIndex = (initObj.senderPlayerIndex + 1) % gameOptions.numberOfPlayers;
+        let newLocalPlayerIndex: Int = (initObj.senderPlayerIndex + 1) % gameOptions.numberOfPlayers;
         initMultiPlayerGame(localPlayerIndex: newLocalPlayerIndex, deckCards: initObj.cardsDeck);
         
         return true;
@@ -367,10 +362,11 @@ extension GameController {
         
         let cardType: CardType = CardType(rawValue: ssCardPlayed.type!)!;
         let cardModel = CardModel(type: cardType, number: ssCardPlayed.number!);
-        _playCard(card: cardModel, playerIndex: ssCardPlayed.senderPlayerIndex);
         
-        print("\n\n[INFO] remote player play the card \(cardModel.name) \n\n");
-        
+        let senderPlayerIndex: Int = ssCardPlayed.senderPlayerIndex!;
+        // if (senderPlayerIndex == localPlayerIndex!) { return true; }
+    
+        playCard(card: cardModel, playerIndex: senderPlayerIndex);
         return true;
     }
     
@@ -408,10 +404,10 @@ extension GameController {
     private func _updateImageView(images: Array<UIImageView>, imageIndex: Int, model: CardModel) {
         if (!images.indices.contains(imageIndex)) { return; }
         
-        // imageView.image = model.image;
-        // imageView.tag = model.tag;
-        images[imageIndex].image = model.image;
-        images[imageIndex].tag = model.tag;
+        DispatchQueue.main.async {
+            images[imageIndex].image = model.image;
+            images[imageIndex].tag = model.tag;
+        }
     }
     
     private func _updateImageView(image: UIImageView, model: CardModel) {
@@ -419,8 +415,10 @@ extension GameController {
     }
     
     private func _emptyImageView(imageView: UIImageView, imageName: String? = "empty") {
-        imageView.image = UIImage(named: imageName!);
-        imageView.tag = -1;
+        DispatchQueue.main.async {
+            imageView.image = UIImage(named: imageName!);
+            imageView.tag = -1;
+        }
     }
     
 }

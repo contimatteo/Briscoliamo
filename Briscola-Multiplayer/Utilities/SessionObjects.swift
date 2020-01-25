@@ -68,7 +68,7 @@ class SS_CardPlayed: NSObject, NSCoding {
     func encode(with coder: NSCoder) {
         coder.encode(type, forKey: "type");
         coder.encode(number, forKey: "number");
-        coder.encode(number, forKey: "senderPlayerIndex");
+        coder.encode(senderPlayerIndex, forKey: "senderPlayerIndex");
     }
     
     func toData() -> Data {

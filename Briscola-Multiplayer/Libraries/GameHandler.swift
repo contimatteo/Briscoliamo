@@ -27,32 +27,6 @@ public class GameHandler {
     //
     // MARK: Public Methods
     
-    //    public func initializeGame(mode: GameType, numberOfPlayers: Int, playersType: Array<PlayerType>) {
-    //        // game settings
-    //        self.mode = mode;
-    //        gameEnded = false;
-    //
-    //        // cards
-    //        let cards = _loadCards();
-    //        initialCards = cards;
-    //        deckCards = cards;
-    //        trumpCard = cards.last!;
-    //
-    //        // players
-    //        _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType);
-    //
-    //        // virtual AI assistant
-    //        aiPlayerEmulator = AIPlayerEmulator.init(trumpCard: trumpCard!);
-    //
-    //        // intialize the cards hands: this avoid error on setting specific array index.
-    //        _initializeCardsHands()
-    //
-    //        // check if the ai emulator player should start playing.
-    //        if (players[playerTurn].type == .emulator) {
-    //            let _ = playCard(playerIndex: playerTurn);
-    //        }
-    //    }
-    
     public func initSinglePlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersType: [PlayerType]) {
         self.mode = .singleplayer;
         gameEnded = false;
@@ -128,10 +102,10 @@ public class GameHandler {
         }
         
         // EMULATOR
-        while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
-            // AI player will be play a card.
-            _aiPlayCard(playerIndex: playerTurn);
-        }
+        //        while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
+        //            // AI player will be play a card.
+        //            _aiPlayCard(playerIndex: playerTurn);
+        //        }
         
         return true;
     }
@@ -231,7 +205,6 @@ public class GameHandler {
     private func _humanPlayCard(playerIndex: Int, card: CardModel) {
         // move this card into the table.
         cardsOnTable[playerIndex] = card;
-        // cardsOnTable.insert(card, at: playerIndex);
         
         // remove this card from player hand.
         players[playerIndex].playCard(card: card);
@@ -249,7 +222,6 @@ public class GameHandler {
         let cardToPlay = players[playerIndex].cardsHand[cardToPlayIndex];
         
         // move this card into the table.
-        // cardsOnTable.insert(cardToPlay, at: playerIndex);
         cardsOnTable[playerIndex] = cardToPlay;
         
         // remove this card from player hand.

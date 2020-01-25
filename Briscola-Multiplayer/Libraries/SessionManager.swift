@@ -162,7 +162,7 @@ extension SessionManager: MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) from [\(peerID.displayName)]"); }
         
-        delegate?.didReceivedData(data);
+        delegate?.didReceivedDataFromPeer(data);
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
