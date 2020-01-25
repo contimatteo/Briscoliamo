@@ -25,30 +25,25 @@ class MenuController: UIViewController {
         gameOptions = GameOptions(mode: .singleplayer, numberOfPlayers: 2, indexOfStarterPlayer: 0);
     }
     
-    private func goToNextView() {
-        let nextController = GameController();
-        
-        // setting properties of new controller
-        nextController.gameOptions = self.gameOptions!;
-        
-        self.navigationController!.pushViewController(nextController, animated: true);
-    }
-    
     //
     // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let nextController = segue.destination as! GameController;
-        
-        if (segue.identifier == "singlePlayerButton") {
-            self.gameOptions?.mode = .singleplayer
+        let gameController = segue.destination as? GameController;
+        if (gameController != nil) {
+            if (segue.identifier == "singlePlayerButton") {
+                self.gameOptions?.mode = .singleplayer
+            }
+            
+            if (segue.identifier == "multiPlayerButton") {
+                self.gameOptions?.mode = .multiplayer
+            }
+            
+            gameController!.gameOptions = self.gameOptions!;
         }
         
-        if (segue.identifier == "multiPlayerButton") {
-            self.gameOptions?.mode = .multiplayer
-        }
-        
-        nextController.gameOptions = self.gameOptions!;
+        let socialsController = segue.destination as? SocialsController;
+        if (socialsController != nil) {}
     }
     
     
