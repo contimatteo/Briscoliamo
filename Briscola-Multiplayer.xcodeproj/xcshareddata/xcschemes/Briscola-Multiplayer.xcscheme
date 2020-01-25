@@ -28,6 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2AA9C1C423B79DA900B3E4A4"
+               BuildableName = "Briscola-MultiplayerTests.xctest"
+               BlueprintName = "Briscola-MultiplayerTests"
+               ReferencedContainer = "container:Briscola-Multiplayer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2AA9C1CF23B79DA900B3E4A4"
+               BuildableName = "Briscola-MultiplayerUITests.xctest"
+               BlueprintName = "Briscola-MultiplayerUITests"
+               ReferencedContainer = "container:Briscola-Multiplayer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -50,6 +70,13 @@
             ReferencedContainer = "container:Briscola-Multiplayer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "OS_ACTIVITY_MODE"
+            value = "false"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

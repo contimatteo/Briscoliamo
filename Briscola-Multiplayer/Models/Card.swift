@@ -36,20 +36,20 @@ public class CardModel: Equatable {
     // MARK: Initialzers
     
     init(type: CardType, number: Int) {
-        /// card descriptor
+        // card descriptor
         self.type = type;
         self.number = number;
         name = "\(number)-\(type.rawValue)";
         points = 0;
         
-        /// image
+        // image
         imageUrl = self.name;
         image = UIImage(named: imageUrl)!;
         
-        /// points
+        // points
         _initCardPoints(number: number);
         
-        /// generate unique tag.
+        // generate unique tag.
         _generateCardTag();
     }
     
@@ -98,12 +98,4 @@ public class CardModel: Equatable {
             self.points = 0;
         }
     }
-}
-
-
-public enum CardType: String, Equatable {
-    case coppe
-    case bastoni
-    case spade
-    case denari
 }

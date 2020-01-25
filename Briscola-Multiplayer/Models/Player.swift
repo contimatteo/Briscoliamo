@@ -32,7 +32,7 @@ public class PlayerModel {
     //
     // MARK: Variables
     
-    init(index: Int, initialHand: Array<CardModel>, type: PlayerType = .human) {
+    init(index: Int, initialHand: Array<CardModel>, type: PlayerType) {
         self.index = index;
         self.name = "player-\(index)";
         self.cardsHand = initialHand;
@@ -48,7 +48,7 @@ public class PlayerModel {
     }
     
     public func playCard(card: CardModel) {
-        /// remove this card from {currentCardHand}.
+        // remove this card from {currentCardHand}.
         let cardPlayed = cardsHand.enumerated().first(where: {$0.element == card})!;
         cardsHand.remove(at: cardPlayed.offset);
     }
