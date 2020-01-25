@@ -42,6 +42,11 @@ class SocialsController: UIViewController {
         // response is in the { self } extension.
     }
     
+    @IBAction private func performFBLogout() {
+        facebookManager!.logout();
+        print("[INFO] FB logout done!");
+    }
+    
     //
     // MARK: Callbacks
     
@@ -55,9 +60,7 @@ extension SocialsController: SharingDelegate {
     func sharer(_ sharer: Sharing, didCompleteWithResults results: [String : Any]) {
         if sharer.shareContent.pageID != nil {
             print("Share: Success")
-    @IBAction private func performFBLogout() {
-        facebookManager!.logout();
-        print("[INFO] FB logout done!");
+        }
     }
     
     func loginDidComplete(_ result: LoginManagerLoginResult?, errors: Error?) {

@@ -30,7 +30,7 @@ public struct GameOptions {
     var indexOfStarterPlayer: Int;
 }
 
-public enum PlayerType {
+public enum PlayerType: String {
     case local;
     case remote;
     case emulator;

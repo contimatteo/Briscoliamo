@@ -53,11 +53,3 @@ public class PlayerModel {
         cardsHand.remove(at: cardPlayed.offset);
     }
 }
-
-// ////////////////////////////////////////////////////////////////////////
-
-public enum PlayerType: String {
-    case human;
-    case virtual;
-}
-

@@ -59,8 +59,8 @@ class DatabaseHandler {
         let results = container.getContext(request: request) ?? [];
         for data in results as! [NSManagedObject] {
             print(data.value(forKey: "playersCount") as! Int);
-            print(data.value(forKey: "player1"));
-            print(data.value(forKey: "player2"));
+            print(data.value(forKey: "player1") ?? "[INFO] value not found");
+            print(data.value(forKey: "player2") ?? "[INFO] value not found");
         }
         
         return results;
