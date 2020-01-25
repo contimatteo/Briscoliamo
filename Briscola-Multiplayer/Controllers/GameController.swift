@@ -40,7 +40,6 @@ class GameController: UIViewController {
     // MARK: Functional Variables
     
     public var localPlayerIndex: Int?;
-    public var numberOfPlayers: Int?;
     public var gameOptions: GameOptions!;
     private var gameHandler: GameHandler = GameHandler.init();
     private var sessionManager: SessionManager?;
@@ -52,7 +51,7 @@ class GameController: UIViewController {
         super.viewDidLoad()
         
         localPlayerIndex = 0;
-        numberOfPlayers = gameOptions.numberOfPlayers;
+        // numberOfPlayers = gameOptions.numberOfPlayers;
         
         switch gameOptions.mode {
         // singleplayer
@@ -81,7 +80,7 @@ class GameController: UIViewController {
         
         // load all the cards and load 3 cards foreach player, load
         // the trump card, create players and load 3 cards for these.
-        gameHandler.initSinglePlayer(numberOfPlayers: numberOfPlayers!, localPlayerIndex: localPlayerIndex!, playersType: playersTypes);
+        gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: localPlayerIndex!, playersType: playersTypes);
         
         // gestures
         initGestures()
@@ -90,52 +89,77 @@ class GameController: UIViewController {
         render();
     }
     
-    private func initMultiPlayerGame(localPlayerIndex localPlIndex: Int, deckCards: [CardModel]?) {
-        localPlayerIndex = localPlIndex;
+    private func initMultiPlayerGame(localPlayerIndex localPlayerNewIndex: Int, deckCards: [String]?) {
+        print("\(#function) -> ready");
         
+        var deckCardsConverted: [CardModel]? = nil;
+        if (deckCards != nil) {
+            deckCardsConverted = [];
+            
+            for card in deckCards! {
+                let cardComponents = card.components(separatedBy: "-");
+                let typeName: String = String(cardComponents[1]);
+                let number: Int = Int(cardComponents[0])!;
+                deckCardsConverted!.append(CardModel(type: CardType(rawValue: typeName)!, number: number));
+            }
+        }
+        
+        // SINGLE-PLAYER
+        localPlayerIndex = localPlayerNewIndex;
         var playersTypes: [PlayerType] = [.remote, .remote];
         playersTypes[localPlayerIndex!] = .local;
         
-        gameHandler.initMultiPlayer(numberOfPlayers: numberOfPlayers!, localPlayerIndex: localPlayerIndex!, playersType: playersTypes, deckCards: deckCards);
+        DispatchQueue.main.async {
+            // prepare player's cards variables.
+            self.prepareAssets();
+            
+            // load all the cards and load 3 cards foreach player, load
+            // the trump card, create players and load 3 cards for these.
+            self.gameHandler.initMultiPlayer(numberOfPlayers: self.gameOptions.numberOfPlayers, localPlayerIndex: self.localPlayerIndex!, playersType: playersTypes, deckCards: deckCardsConverted);
+            
+            // gestures
+            self.initGestures()
+        
+            // render
+            self.render();
+        }
     }
     
     private func prepareAssets() {
-        playersCardImgViews.append([]);
-        playersCardImgViews.append([]);
+        let currentPlayerIndex: Int = localPlayerIndex!;
+        let remotePlayer1Index: Int = (currentPlayerIndex + 1) % gameOptions.numberOfPlayers;
         
-        tableCardImgViews.append(UIImageView(image: nil));
-        tableCardImgViews.append(UIImageView(image: nil));
-        
-        playersPointsLabels.append(UILabel());
-        playersPointsLabels.append(UILabel());
+        self.playersCardImgViews.append([]);
+        self.playersCardImgViews.append([]);
+        self.tableCardImgViews.append(UIImageView(image: nil));
+        self.tableCardImgViews.append(UIImageView(image: nil));
+        self.playersPointsLabels.append(UILabel());
+        self.playersPointsLabels.append(UILabel());
         
         // hand cards
         
         var lpCards: Array<UIImageView> = [];
-        lpCards.append(lp_c1ImgView);
-        lpCards.append(lp_c2ImgView);
-        lpCards.append(lp_c3ImgView);
+        lpCards.append(self.lp_c1ImgView);
+        lpCards.append(self.lp_c2ImgView);
+        lpCards.append(self.lp_c3ImgView);
         
         var rp1Cards: Array<UIImageView> = [];
-        rp1Cards.append(rp1_c1ImgView);
-        rp1Cards.append(rp1_c2ImgView);
-        rp1Cards.append(rp1_c3ImgView);
+        rp1Cards.append(self.rp1_c1ImgView);
+        rp1Cards.append(self.rp1_c2ImgView);
+        rp1Cards.append(self.rp1_c3ImgView);
         
-        let currentPlayerIndex: Int = localPlayerIndex!;
-        let remotePlayer1Index: Int = (currentPlayerIndex + 1) % numberOfPlayers!;
-        
-        playersCardImgViews[currentPlayerIndex] = lpCards;
-        playersCardImgViews[remotePlayer1Index] = rp1Cards;
+        self.playersCardImgViews[currentPlayerIndex] = lpCards;
+        self.playersCardImgViews[remotePlayer1Index] = rp1Cards;
         
         // cards on table
         
-        tableCardImgViews[currentPlayerIndex] = tc1ImgView;
-        tableCardImgViews[remotePlayer1Index] = tc2ImgView;
+        self.tableCardImgViews[currentPlayerIndex] = self.tc1ImgView;
+        self.tableCardImgViews[remotePlayer1Index] = self.tc2ImgView;
         
         // player's points and name labels
         
-        playersPointsLabels[currentPlayerIndex] = lp_LabelPoints;
-        playersPointsLabels[remotePlayer1Index] = rp1_LabelPoints;
+        self.playersPointsLabels[currentPlayerIndex] = self.lp_LabelPoints;
+        self.playersPointsLabels[remotePlayer1Index] = self.rp1_LabelPoints;
     }
     
     private func initGestures() {
@@ -193,19 +217,43 @@ class GameController: UIViewController {
     }
     
     //
+    // MARK: IBAction
+    
+    @IBAction private func startMultiplayerGame() {
+        if (gameHandler.deckCards.count > 0 || !gameHandler.gameEnded) { return; }
+        let allRequiredPlayersAreConnected: Bool = (sessionManager!.connectedPeers.count + 1) == gameOptions.numberOfPlayers;
+        if (!allRequiredPlayersAreConnected) { return; }
+        
+        let sharedCardsDeck: [String] = (gameHandler.loadCards()).map { $0.name; };
+        let initObject: SS_InitObj = SS_InitObj(senderPlayerIndex: localPlayerIndex!, cardsDeck: sharedCardsDeck);
+        
+        DispatchQueue.main.async {
+            let sended = self.sessionManager!.sendData(data: initObject.toData());
+            
+            if (sended) {
+                print("\n[INFO] {\(self.sessionManager!.displayName)} deck shared ? \(sended) \n");
+                self.initMultiPlayerGame(localPlayerIndex: self.localPlayerIndex!, deckCards: sharedCardsDeck);
+            }
+        }
+    }
+    
+    //
     // MARK: Gestures
     
-    @objc func cardTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        // recognize the image tapped.
-        guard let tappedImg: UIImageView = tapGestureRecognizer.view as? UIImageView else { return };
-        guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
-        
+    private func _playCard(card model: CardModel, playerIndex: Int) {
         // play the cards.
         let cardPlayed = gameHandler.playCard(playerIndex: playerIndex, card: model);
         if (!cardPlayed) { return };
         
         // render the new game state.
         render();
+        
+        // multiplayer mode: share the card played by this user.
+        if (gameOptions.mode == .multiplayer) {
+            let ssCardPlayed: SS_CardPlayed = SS_CardPlayed(type: model.type.rawValue, number: model.number, senderPlayerIndex: localPlayerIndex!);
+            let _ = self.sessionManager!.sendData(data: ssCardPlayed.toData());
+            print("\n[INFO] {\(self.sessionManager!.displayName)} play the card -> \(model.name) \n");
+        }
         
         // end the turn after a delay.
         gameHandler.endTurn();
@@ -214,6 +262,14 @@ class GameController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
             self.render();
         })
+    }
+    
+    @objc func cardTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        // recognize the image tapped.
+        guard let tappedImg: UIImageView = tapGestureRecognizer.view as? UIImageView else { return };
+        guard let (model, playerIndex, _) = _getModelFromImageView(imgView: tappedImg) else { return };
+        
+        _playCard(card: model, playerIndex: playerIndex);
     }
     
     //
@@ -239,21 +295,6 @@ class GameController: UIViewController {
         sessionManager!.stopServices();
     }
     
-    func shareCardsDeck() {
-        // let _ = sessionManager?.send(array: ["ciao1", "1-bastoni", "pippo", "{weeee}"]);
-        
-        // let playersTypes: [PlayerType] = [.local, .emulator];
-        // gameHandler.initMultiPlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: 1, playersType: playersTypes, deckCards: nil);
-        
-        if (gameHandler.deckCards.count > 0 || !gameHandler.gameEnded) { return; }
-        
-        let potentialSharedCardsDeck = gameHandler.loadCards();
-        let initObject: SS_InitObj = SS_InitObj(senderPlayerIndex: localPlayerIndex!, cardsDeck: potentialSharedCardsDeck);
-        let sended = sessionManager!.sendData(data: initObject.toData());
-        
-        print("\n[INFO] {\(sessionManager!.displayName)} deck sended ->  \(sended) \n");
-    }
-    
 }
 
 //
@@ -262,37 +303,75 @@ class GameController: UIViewController {
 extension GameController: SessionControllerDelegate {
     
     //
-    // MARK: Base
+    // MARK: Triggers
     
     func sessionDidChangeState() {
-        let connectedPeers = sessionManager!.connectedPeers.count + 1; /// peers plus local player.
-        let areAllRequiredPlayersConnected: Bool = connectedPeers == numberOfPlayers!;
-        
-        if (areAllRequiredPlayersConnected) { shareCardsDeck(); }
-        
         // Ensure UI updates occur on the main queue.
-        DispatchQueue.main.async(execute: { [weak self] in
+        DispatchQueue.main.async {
             // self?.tableView.reloadData()
             // TODO: ...
-            
-            if (areAllRequiredPlayersConnected) {
-                print("[INFO] NUMERO DI GIOCATORI: \(self!.gameOptions.numberOfPlayers)");
-                print("[INFO] NUMERO DI PEER CONNESSI: \(self!.sessionManager!.connectedPeers.count + 1)")
-            }
-        })
+        }
     }
     
     //
-    // MARK: Custom Receivers
+    // MARK: Receiver
     
     func didReceivedData(_ data: Data) {
-        var dataConverted: Any? = SS_InitObj.fromData(data);
+        print("\n[INFO] data received");
         
-        if dataConverted != nil {
-            guard let initObj: SS_InitObj = dataConverted as? SS_InitObj else { return; };
-            
-            print("\n\n[INFO] data received \(initObj.senderPlayerIndex!) \n\n")
+        var dataConverted: Any? = nil;
+        var end: Bool = false;
+        
+        // SS_InitObj
+        dataConverted = SS_InitObj.fromData(data);
+        if (gameHandler.deckCards.count < 1 && gameHandler.gameEnded) {
+            end = _receveidSSInitObject(dataConverted);
+            if end { return; }
         }
+        
+        // SS_CardPlayed
+        dataConverted = SS_CardPlayed.fromData(data);
+        if (!gameHandler.gameEnded) {
+            end = _receveidSSCardPlayed(dataConverted);
+            if end { return; }
+        }
+    }
+    
+}
+
+//
+// MARK: Session Data Receiver (decoders)
+
+extension GameController {
+    
+    private func _receveidSSInitObject(_ data: Any?) -> Bool {
+        // avoid `nil` value.
+        guard let dataConverted = data else { return false; }
+        // avoid `server` agent role.
+        // if (sessionManager!.currentAgentRole == .server) { return false; }
+        // avoid not matching objects.
+        guard let initObj: SS_InitObj = dataConverted as? SS_InitObj else { return false; };
+        
+        let newLocalPlayerIndex = (initObj.senderPlayerIndex + 1) % gameOptions.numberOfPlayers;
+        initMultiPlayerGame(localPlayerIndex: newLocalPlayerIndex, deckCards: initObj.cardsDeck);
+        
+        return true;
+    }
+    
+    private func _receveidSSCardPlayed(_ data: Any?) -> Bool {
+        // avoid `nil` value.
+        guard let dataConverted = data else { return false; }
+        
+        // avoid not matching objects.
+        guard let ssCardPlayed: SS_CardPlayed = dataConverted as? SS_CardPlayed else { return false; };
+        
+        let cardType: CardType = CardType(rawValue: ssCardPlayed.type!)!;
+        let cardModel = CardModel(type: cardType, number: ssCardPlayed.number!);
+        _playCard(card: cardModel, playerIndex: ssCardPlayed.senderPlayerIndex);
+        
+        print("\n\n[INFO] remote player play the card \(cardModel.name) \n\n");
+        
+        return true;
     }
     
 }

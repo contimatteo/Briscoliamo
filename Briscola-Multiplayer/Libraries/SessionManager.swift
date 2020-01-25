@@ -162,22 +162,6 @@ extension SessionManager: MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) from [\(peerID.displayName)]"); }
         
-        //        let image: UIImage? = UIImage(data: data);
-        //        let array: [Any]? = UtilityHelper.dataToArray(data);
-        //        let object: [String: Any]? = UtilityHelper.dataToObject(data);
-        //
-        //        if image != nil {
-        //            DispatchQueue.main.async { print("[INFO] image receveid: \(image!)"); }
-        //        }
-        //
-        //        if array != nil {
-        //            DispatchQueue.main.async { print("[INFO] array receveid: \(array!)"); }
-        //        }
-        //
-        //        if object != nil {
-        //            DispatchQueue.main.async { print("[INFO] object receveid: \(object!)"); }
-        //        }
-        
         delegate?.didReceivedData(data);
     }
     

@@ -43,3 +43,9 @@ public enum SS_Message {
     case success;
     case error;
 }
+
+public enum SessionAgentRole {
+    case server;
+    case client;
+}
+

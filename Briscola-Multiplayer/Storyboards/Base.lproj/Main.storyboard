@@ -82,6 +82,14 @@
                                         <rect key="frame" x="166" y="176" width="47" height="75"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OeK-CM-9G1">
+                                        <rect key="frame" x="44" y="221" width="32" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="start"/>
+                                        <connections>
+                                            <action selector="startMultiplayerGame" destination="BYZ-38-t0r" eventType="touchUpInside" id="MGb-EU-FTs"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </view>
                         </subviews>

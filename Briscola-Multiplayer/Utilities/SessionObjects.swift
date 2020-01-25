@@ -12,30 +12,31 @@ import Foundation
 // MARK: Session
 
 class SS_InitObj: NSObject, NSCoding {
-    // var cardsDeck: [CardModel]!;
+    var cardsDeck: [String]!;
     var senderPlayerIndex: Int!;
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         self.senderPlayerIndex = decoder.decodeObject(forKey: "senderPlayerIndex") as? Int
-        // self.cardsDeck = decoder.decodeObject(forKey: "cardsDeck") as? [CardModel]
+        self.cardsDeck = decoder.decodeObject(forKey: "cardsDeck") as? [String]
     }
     
-    convenience init(senderPlayerIndex: Int, cardsDeck: [CardModel]) {
+    convenience init(senderPlayerIndex: Int, cardsDeck: [String]) {
         self.init()
         self.senderPlayerIndex = senderPlayerIndex;
-        // self.cardsDeck = cardsDeck;
+        self.cardsDeck = cardsDeck;
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(senderPlayerIndex, forKey: "senderPlayerIndex");
-        // coder.encode(cardsDeck, forKey: "cardsDeck");
+        coder.encode(cardsDeck, forKey: "cardsDeck");
     }
     
     func toData() -> Data {
         do {
             return try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false);
-        } catch let _ as NSError {
+        } catch let error as NSError {
+            print("\n[ERROR] failed conversion from SS_InitObj to Data. Error: \(error.localizedDescription)");
             return Data();
         }
     }
@@ -45,24 +46,41 @@ class SS_InitObj: NSObject, NSCoding {
     }
 }
 
-class SS_InitConfirmationObj: NSObject, NSCoding {
-    var cardsDeckReceived: Bool!;
-    var message: SS_Message!;
+class SS_CardPlayed: NSObject, NSCoding {
+    var type: String!;
+    var number: Int!;
+    var senderPlayerIndex: Int!;
     
     required convenience init?(coder decoder: NSCoder) {
-        self.init()
-        self.cardsDeckReceived = decoder.decodeObject(forKey: "cardsDeckReceived") as? Bool
-        self.message = decoder.decodeObject(forKey: "message") as? SS_Message
+        self.init();
+        self.type = decoder.decodeObject(forKey: "type") as? String;
+        self.number = decoder.decodeObject(forKey: "number") as? Int;
+        self.senderPlayerIndex = decoder.decodeObject(forKey: "senderPlayerIndex") as? Int;
     }
     
-    convenience init(cardsDeckReceived: Bool, message: SS_Message) {
-        self.init()
-        self.cardsDeckReceived = cardsDeckReceived;
-        self.message = message;
+    convenience init(type: String, number: Int, senderPlayerIndex: Int) {
+        self.init();
+        self.type = type;
+        self.number = number;
+        self.senderPlayerIndex = senderPlayerIndex;
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(cardsDeckReceived, forKey: "cardsDeckReceived");
-        coder.encode(message, forKey: "message");
+        coder.encode(type, forKey: "type");
+        coder.encode(number, forKey: "number");
+        coder.encode(number, forKey: "senderPlayerIndex");
+    }
+    
+    func toData() -> Data {
+        do {
+            return try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false);
+        } catch let error as NSError {
+            print("\n[ERROR] failed conversion from SS_CardPlayed to Data. Error: \(error.localizedDescription)");
+            return Data();
+        }
+    }
+    
+    static func fromData(_ data: Data) -> SS_CardPlayed? {
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? SS_CardPlayed;
     }
 }

@@ -113,16 +113,16 @@ public class GameHandler {
         _initializeCardsHands()
         
         // check if the ai emulator player should start playing.
-        if (players[playerTurn].type == .emulator) {
-            let _ = playCard(playerIndex: playerTurn);
-        }
+        // if (players[playerTurn].type == .emulator) {
+        //    let _ = playCard(playerIndex: playerTurn);
+        // }
     }
     
     public func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
         if (playerIndex != playerTurn || gameEnded) { return false; }
         
         // HUMAN
-        if (players[playerIndex].type == .local) {
+        if (players[playerIndex].type != .emulator) {
             // human player play a card.
             _humanPlayCard(playerIndex: playerIndex, card: card!);
         }
@@ -164,6 +164,12 @@ public class GameHandler {
     }
     
     public func endTurn() {
+        // some player hasn't been played the card yet.
+        let isTurnReadyToEnd: Bool = cardsOnTable.first(where: {$0 == nil}) == nil;
+        if (!isTurnReadyToEnd) {
+            return;
+        }
+        
         // find the winner card index (this is also the index of the winner player).
         let playerIndexWhoWinTheTurn: Int = _findWinnerCardOnTable();
         // move each card into the winner deck.
