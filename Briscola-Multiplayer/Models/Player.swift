@@ -14,12 +14,12 @@ public class PlayerModel {
     //
     // MARK: Variables
     
-    private var name: String;
-    private var index: Int;
+    public var name: String;
+    public var index: Int;
+    public var type: PlayerType;
     
     public var cardsHand: Array<CardModel>;
     public var currentDeck: Array<CardModel> = [];
-    public var type: PlayerType;
     
     public var deckPoints: Int {
         get {
@@ -56,7 +56,7 @@ public class PlayerModel {
 
 // ////////////////////////////////////////////////////////////////////////
 
-public enum PlayerType {
+public enum PlayerType: String {
     case human;
     case virtual;
 }
