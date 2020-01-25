@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MultiPlayerController.swift
 //  Briscola-Multiplayer
 //
 //  Created by Matteo Conti on 28/12/2019.
@@ -7,9 +7,13 @@
 //
 
 import UIKit
-import CoreData
+import MultipeerConnectivity
 
-class GameViewController: UIViewController {
+
+class MultiPlayerController: UIViewController {
+    
+    @IBOutlet weak var GameModeOptionView: UIView!
+    
     //
     // MARK: @IBOutlets
     
@@ -29,17 +33,17 @@ class GameViewController: UIViewController {
     @IBOutlet weak var p1LabelPoints: UILabel!
     @IBOutlet weak var p2labelName: UILabel!
     @IBOutlet weak var p2LabelPoints: UILabel!
-    
+
     //
     // MARK: Variables
     
-    public var container: PersistentContainer!;
     private var gameHandler: GameHandler = GameHandler.init();
-    private var databaseHandler: DatabaseHandler?;
     
     private var playersCardImgViews: Array<Array<UIImageView>> = [];
     private var tableCardImgViews: Array<UIImageView> = [];
     private var playersPointsLabels: Array<UILabel> = [];
+    
+    let sessionManager = SessionManager()
     
     //
     // MARK: Methods
@@ -57,11 +61,11 @@ class GameViewController: UIViewController {
         /// gestures
         initGestures()
         
-        /// first render
         render();
         
-        /// database handler initializer
-        databaseHandler = DatabaseHandler.init(container);
+        // Multiplayer
+        sessionManager.delegate = self;
+        title = "MCSession: \(sessionManager.displayName)"
     }
     
     private func prepareAssets() {
@@ -132,10 +136,6 @@ class GameViewController: UIViewController {
         
         /// if game is ended go to the results page.
         if (gameHandler.gameEnded) {
-            /// TODO: missing params and logic ...
-            databaseHandler!.saveMatch(players: gameHandler.players);
-            
-            /// redirect
             goToNextView();
         }
     }
@@ -228,6 +228,32 @@ class GameViewController: UIViewController {
         nextController.gameInstance = gameHandler;
 
         self.navigationController!.pushViewController(nextController, animated: true)
+    }
+    
+    //
+    // MARK:
+    
+    
+    @IBAction func shareSession(_ sender: Any) {
+        
+    }
+    
+    @IBAction func joinToSession(_ sender: Any) {
+        // sessionManager.send(img: UIImage(named: "1-bastoni")!);
+        let _ = sessionManager.send(array: ["ciao1", "1-bastoni", "pippo", "{weeee}"]);
+    }
+    
+}
+
+
+extension MultiPlayerController: SessionControllerDelegate {
+
+    func sessionDidChangeState() {
+        // Ensure UI updates occur on the main queue.
+        DispatchQueue.main.async(execute: { [weak self] in
+            // self?.tableView.reloadData()
+            // TODO: ...
+        })
     }
 }
 

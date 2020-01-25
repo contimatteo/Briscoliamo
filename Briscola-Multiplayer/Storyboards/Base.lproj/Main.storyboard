@@ -10,7 +10,7 @@
         <!--GIOCO-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="GameViewController" customModule="Briscola_Multiplayer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MultiPlayerController" customModule="Briscola_Multiplayer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -86,6 +86,29 @@
                                     <constraint firstAttribute="height" constant="75" id="fXK-fk-uC6"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="drr-mZ-RdD">
+                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hBO-re-ZgJ">
+                                        <rect key="frame" x="96" y="125" width="129" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="SHARE A SESSION"/>
+                                        <connections>
+                                            <action selector="shareSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wdf-1g-0SZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jkI-2y-2uT">
+                                        <rect key="frame" x="91" y="274" width="139" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="JOIN TO A SESSION"/>
+                                        <connections>
+                                            <action selector="joinToSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bir-Mc-fdj"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -131,6 +154,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="GIOCO" id="Zy3-Ci-eYd"/>
                     <connections>
+                        <outlet property="GameModeOptionView" destination="drr-mZ-RdD" id="WWp-Q5-e8i"/>
                         <outlet property="p1LabelPoints" destination="hOY-sK-zSu" id="l3T-aN-Sqy"/>
                         <outlet property="p1c1ImgView" destination="BvT-tn-DAb" id="MUN-gA-S2y"/>
                         <outlet property="p1c2ImgView" destination="Lpd-SD-WjI" id="eFJ-TX-JLm"/>
@@ -149,7 +173,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1577" y="146"/>
+            <point key="canvasLocation" x="1576.875" y="145.77464788732394"/>
         </scene>
         <!--RISULTATI-->
         <scene sceneID="jEY-Dy-zlj">
@@ -195,8 +219,9 @@
                                     <segue destination="BYZ-38-t0r" kind="show" identifier="inizio-gioco" id="Wih-HE-cFV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyc-pD-Yih">
-                                <rect key="frame" x="139" y="308" width="42" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iyc-pD-Yih">
+                                <rect key="frame" x="139" y="243" width="42" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Social"/>
                                 <connections>
                                     <segue destination="uvO-MQ-D3M" kind="show" id="8uj-07-pSs"/>
