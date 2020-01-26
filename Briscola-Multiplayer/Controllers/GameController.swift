@@ -15,7 +15,8 @@ class GameController: UIViewController {
     //
     // MARK: Graphic Variables
     
-    @IBOutlet weak var trumpImgView: UIImageView! // trump card
+    @IBOutlet weak var gameStatusLabel: UILabel!
+    @IBOutlet weak var startGameButton: UIButton!
     
     @IBOutlet weak var lp_c1ImgView: UIImageView! // player 1 card 1
     @IBOutlet weak var lp_c2ImgView: UIImageView!
@@ -24,6 +25,7 @@ class GameController: UIViewController {
     @IBOutlet weak var rp1_c2ImgView: UIImageView!
     @IBOutlet weak var rp1_c3ImgView: UIImageView!
     
+    @IBOutlet weak var trumpImgView: UIImageView! // trump card
     @IBOutlet weak var tc1ImgView: UIImageView! // table card 1
     @IBOutlet weak var tc2ImgView: UIImageView!
     
@@ -51,24 +53,16 @@ class GameController: UIViewController {
         super.viewDidLoad()
         
         localPlayerIndex = 0;
-        // numberOfPlayers = gameOptions.numberOfPlayers;
         
-        switch gameOptions.mode {
-        // singleplayer
-        case .singleplayer:
-            initSinglePlayerGame();
-            break;
-        // multiplayer
-        case .multiplayer:
+        if (gameOptions.mode == .multiplayer) {
             sessionManager = SessionManager();
             sessionManager!.delegate = self;
+            
+            // start the session's services.
             // title = "[session] \(sessionManager!.displayName)";
-            startSession(); /// start the session's services.
-            break;
-            // ...
-            // default:
-            //     fatalError("[ERROR] Invalid game mode. '\(gameOptions.mode)' mode not found.")
+            startSession();
         }
+        
     }
     
     private func initSinglePlayerGame() {
@@ -175,6 +169,18 @@ class GameController: UIViewController {
     }
     
     private func render() {
+        // STEP 0: render buttons and dialogs.
+        startGameButton.isHidden = !gameHandler.gameEnded;
+        if (gameHandler.gameEnded) {
+            gameStatusLabel.text = "pronto per iniziare ?";
+        } else {
+            if (localPlayerIndex! == gameHandler.playerTurn) {
+                gameStatusLabel.text = "è il tuo turno.";
+            } else {
+                gameStatusLabel.text = "aspetta ...";
+            }
+        }
+        
         // STEP 1: render all players hands.
         for (pIndex, playerImgs) in playersCardImgViews.enumerated() {
             if (gameHandler.players.indices.contains(pIndex)) {
@@ -200,7 +206,11 @@ class GameController: UIViewController {
         }
         
         // trump card
-        _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
+        if (gameHandler.deckCards.count > 0) {
+            _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
+        } else {
+            _emptyImageView(imageView: trumpImgView);
+        }
         
         // display points
         DispatchQueue.main.async {
@@ -211,7 +221,7 @@ class GameController: UIViewController {
         
         // if game is ended go to the results page.
         if (gameHandler.gameEnded) {
-            stopSession();
+            if (gameOptions.mode == .multiplayer) { stopSession(); }
             goToNextView();
         }
     }
@@ -244,18 +254,24 @@ class GameController: UIViewController {
     // MARK: IBAction
     
     @IBAction private func startMultiplayerGame() {
-        if (gameHandler.deckCards.count > 0 || !gameHandler.gameEnded) { return; }
-        let allRequiredPlayersAreConnected: Bool = (sessionManager!.connectedPeers.count + 1) == gameOptions.numberOfPlayers;
-        if (!allRequiredPlayersAreConnected) { return; }
-        
-        let sharedCardsDeck: [String] = (gameHandler.loadCards()).map { $0.name; };
-        let initObject: SS_InitObj = SS_InitObj(senderPlayerIndex: localPlayerIndex!, cardsDeck: sharedCardsDeck);
-        
-        DispatchQueue.main.async {
-            let sended = self.sessionManager!.sendData(data: initObject.toData());
+        if (gameOptions.mode == .singleplayer) {
+            // single-player
+            initSinglePlayerGame();
+        } else {
+            // multi-player
+            if (gameHandler.deckCards.count > 0 || !gameHandler.gameEnded) { return; }
+            let allRequiredPlayersAreConnected: Bool = (sessionManager!.connectedPeers.count + 1) == gameOptions.numberOfPlayers;
+            if (!allRequiredPlayersAreConnected) { return; }
             
-            if (sended) {
-                self.initMultiPlayerGame(localPlayerIndex: self.localPlayerIndex!, deckCards: sharedCardsDeck);
+            let sharedCardsDeck: [String] = (gameHandler.loadCards()).map { $0.name; };
+            let initObject: SS_InitObj = SS_InitObj(senderPlayerIndex: localPlayerIndex!, cardsDeck: sharedCardsDeck);
+            
+            DispatchQueue.main.async {
+                let sended = self.sessionManager!.sendData(data: initObject.toData());
+                
+                if (sended) {
+                    self.initMultiPlayerGame(localPlayerIndex: self.localPlayerIndex!, deckCards: sharedCardsDeck);
+                }
             }
         }
     }
@@ -282,7 +298,7 @@ class GameController: UIViewController {
         
         self.navigationController!.pushViewController(nextController, animated: true)
     }
-
+    
 }
 
 //
@@ -365,7 +381,7 @@ extension GameController {
         
         let senderPlayerIndex: Int = ssCardPlayed.senderPlayerIndex!;
         // if (senderPlayerIndex == localPlayerIndex!) { return true; }
-    
+        
         playCard(card: cardModel, playerIndex: senderPlayerIndex);
         return true;
     }

@@ -17,7 +17,7 @@ public enum GameType {
     case multiplayer;
 }
 
-public enum CardType: String, Equatable {
+public enum CardType: String {
     case coppe
     case bastoni
     case spade
