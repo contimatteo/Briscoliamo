@@ -87,9 +87,9 @@ public class GameHandler {
         _initializeCardsHands()
         
         // check if the ai emulator player should start playing.
-        // if (players[playerTurn].type == .emulator) {
-        //    let _ = playCard(playerIndex: playerTurn);
-        // }
+        if (players[playerTurn].type == .emulator) {
+            let _ = playCard(playerIndex: playerTurn);
+        }
     }
     
     public func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
@@ -102,10 +102,10 @@ public class GameHandler {
         }
         
         // EMULATOR
-        //        while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
-        //            // AI player will be play a card.
-        //            _aiPlayCard(playerIndex: playerTurn);
-        //        }
+        while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
+            // AI player will be play a card.
+            _aiPlayCard(playerIndex: playerTurn);
+        }
         
         return true;
     }
@@ -259,12 +259,13 @@ public class GameHandler {
     }
     
     private func _findWinnerCardOnTable() -> Int {
-        var winnerCardIndex: Int = cardsOnTable.firstIndex(where: {$0 != nil})!;
+        // var winnerCardIndex: Int = cardsOnTable.firstIndex(where: {$0 != nil})!;
+        var winnerCardIndex: Int = playerTurn;
         let winnerCard: CardModel = cardsOnTable[winnerCardIndex]!;
         
         for (cIndex, card) in cardsOnTable.enumerated() {
             if (card != nil) {
-                if (trumpCard!.type == card!.type && trumpCard!.type != winnerCard.type) { winnerCardIndex = cIndex; }
+                if (trumpCard!.type == card!.type && trumpCard!.type.rawValue != winnerCard.type.rawValue) { winnerCardIndex = cIndex; }
                 
                 if (card!.type == winnerCard.type) {
                     if (card!.points > winnerCard.points) { winnerCardIndex = cIndex; }
