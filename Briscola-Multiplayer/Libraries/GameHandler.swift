@@ -102,7 +102,7 @@ public class GameHandler {
         }
         
         // EMULATOR
-        while players[playerTurn].type == .emulator && !_hasPlayerAlreadyPlayACard(playerIndex: playerTurn) {
+        while players[playerTurn].type == .emulator && !_alreadyPlayedACardOnThisTurn(playerIndex: playerTurn) {
             // AI player will be play a card.
             _aiPlayCard(playerIndex: playerTurn);
         }
@@ -164,7 +164,9 @@ public class GameHandler {
         }
         
         // is the game ended ?
-        if (_isGameEnded()) { gameEnded = true; }
+        if (_isGameEnded()) {
+            gameEnded = true;
+        }
         
         // intialize the cards hands: this avoid error on setting specific array index.
         _initializeCardsHands();
@@ -281,8 +283,8 @@ public class GameHandler {
         for pIndex in players.indices { cardsOnTable.insert(nil, at: pIndex); }
     }
     
-    private func _hasPlayerAlreadyPlayACard(playerIndex: Int) -> Bool {
-        return players[playerIndex].cardsHand.count < CONSTANTS.PLAYER_CARDS_HAND_SISZE;
+    private func _alreadyPlayedACardOnThisTurn(playerIndex: Int) -> Bool {
+        return cardsOnTable[playerIndex] != nil;
     }
     
 }

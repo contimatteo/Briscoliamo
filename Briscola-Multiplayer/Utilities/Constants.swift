@@ -19,6 +19,6 @@ public var _SESSION_DEBUG_: Bool = true;
 
 public struct CONSTANTS {
     static public let MAX_NUMBER_OF_PLAYERS: Int = 2;
-    static public let TURN_SECONDS_DELAY: Double = 3.0;
+    static public let TURN_SECONDS_DELAY: Double = 1.5;
     static public let PLAYER_CARDS_HAND_SISZE: Int = 3;
 }

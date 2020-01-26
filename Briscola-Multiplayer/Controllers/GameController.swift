@@ -200,7 +200,11 @@ class GameController: UIViewController {
         }
         
         // trump card
-        _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
+        if (gameHandler.deckCards.count > 0) {
+            _updateImageView(image: trumpImgView, model: gameHandler.trumpCard!);
+        } else {
+            _emptyImageView(imageView: trumpImgView);
+        }
         
         // display points
         DispatchQueue.main.async {
@@ -211,7 +215,7 @@ class GameController: UIViewController {
         
         // if game is ended go to the results page.
         if (gameHandler.gameEnded) {
-            stopSession();
+            if (gameOptions.mode == .multiplayer) { stopSession(); }
             goToNextView();
         }
     }
