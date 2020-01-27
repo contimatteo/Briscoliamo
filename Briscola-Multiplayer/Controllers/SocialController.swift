@@ -62,7 +62,10 @@ class SocialController: UITableViewController {
     //
     // MARK: @IBAction
     
-    @IBAction private func performFBShare(_ sender: Any) {
+    @objc private func performFBShare(_ sender: UIButton) {
+        // use the tag of button as index
+        let matchToShare = dbMatchesRecords[sender.tag];
+        
         facebookManager?.shareTextOnFaceBook(controller: self);
         
         // response is in the { self } extension.
@@ -84,7 +87,12 @@ extension SocialController {
 
         let currentMatch = dbMatchesRecords[indexPath.row];
         cell.localPlayerLabel.text = String(describing: currentMatch.localPlayer.name);
-
+        
+        // assign the index of the match to button tag
+        cell.shareResultButton.tag = indexPath.row;
+        // call the performFBShare(_:) method when tapped
+        cell.shareResultButton.addTarget(self, action: #selector(performFBShare(_:)), for: .touchUpInside);
+        
         return cell;
     }
     
