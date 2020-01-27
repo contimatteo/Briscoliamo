@@ -80,7 +80,7 @@ class FacebookManager {
         return "https://graph.facebook.com/\(userId)/picture?type=large";
     }
     
-    public func shareTextOnFaceBook(controller: SocialsController) {
+    public func shareTextOnFaceBook(controller: SocialController) {
         let shareContent = ShareLinkContent()
         shareContent.contentURL = URL.init(string: "https://developers.facebook.com")! //your link
         shareContent.quote = "Text to be shared"

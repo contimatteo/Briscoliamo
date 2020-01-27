@@ -11,7 +11,7 @@ import UIKit
 
 class ResultsController: UIViewController {
     
-    public var gameInstance: GameHandler = GameHandler.init();
+    public var gameInstance: GameHandler!;
     
     override func viewDidLoad() {
         super.viewDidLoad();

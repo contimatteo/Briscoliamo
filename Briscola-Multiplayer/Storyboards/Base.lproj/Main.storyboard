@@ -158,25 +158,62 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xq2-tf-yYd">
-                                <rect key="frame" x="139" y="274" width="42" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="IL TUO PUNTEGGIO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYY-Px-mD1">
+                                <rect key="frame" x="83" y="72" width="154" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXi-bq-mxz">
+                                <rect key="frame" x="146" y="101" width="29" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PUNTEGGIO AVVERSARIO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jlv-S4-H4Q">
+                                <rect key="frame" x="59" y="173" width="203" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F2S-hN-GS9">
+                                <rect key="frame" x="150" y="211" width="21" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCZ-LD-pe1">
+                                <rect key="frame" x="89" y="408" width="143" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="SALVA IL RISULTATO"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ti ricordiamo che salvando il risultato potrai, nella schermata inizale, condividerlo sui social media." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czb-0p-3LY">
+                                <rect key="frame" x="24" y="446" width="272" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HAI VINTO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YdD-AR-E3U">
+                                <rect key="frame" x="101" y="295" width="118" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="Xq2-tf-yYd" firstAttribute="centerX" secondItem="jN5-3L-72x" secondAttribute="centerX" id="5bh-io-10t"/>
-                            <constraint firstItem="Xq2-tf-yYd" firstAttribute="centerY" secondItem="jN5-3L-72x" secondAttribute="centerY" id="r4W-QX-zyx"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="sbe-zy-Ca8"/>
                     </view>
                     <navigationItem key="navigationItem" title="RISULTATI" id="Wst-Jn-4xh"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WXx-v6-xgf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2565" y="146"/>
+            <point key="canvasLocation" x="2565" y="145.77464788732394"/>
         </scene>
         <!--INIZIO-->
         <scene sceneID="s1F-8o-4I4">
@@ -198,7 +235,7 @@
                                 <rect key="frame" x="139" y="346" width="42" height="30"/>
                                 <state key="normal" title="Social"/>
                                 <connections>
-                                    <segue destination="uvO-MQ-D3M" kind="show" id="8uj-07-pSs"/>
+                                    <segue destination="NOz-NJ-38e" kind="show" id="51h-ve-b8L"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2k-Uv-DjZ">
@@ -226,6 +263,53 @@
             </objects>
             <point key="canvasLocation" x="587" y="146"/>
         </scene>
+        <!--CONDIVIDI-->
+        <scene sceneID="VcX-2q-HnP">
+            <objects>
+                <tableViewController title="CONDIVIDI" id="NOz-NJ-38e" customClass="SocialController" customModule="Briscola_Multiplayer" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bD8-fl-AoK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DatabaseMatchRecord" rowHeight="67" id="Rme-fN-yVC" customClass="DatabseResultViewCell" customModule="Briscola_Multiplayer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="67"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rme-fN-yVC" id="YzK-qY-Gt7">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GIOCATORE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8J-sl-K0H">
+                                            <rect key="frame" x="33" y="23" width="94" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UlX-dh-oO6">
+                                            <rect key="frame" x="217" y="18" width="76" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="CONDIVIDI"/>
+                                        </button>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="localPlayerLabel" destination="w8J-sl-K0H" id="3hm-CC-duU"/>
+                                    <outlet property="shareResultButton" destination="UlX-dh-oO6" id="ZbR-5v-rFU"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="NOz-NJ-38e" id="V5U-Gg-cU1"/>
+                            <outlet property="delegate" destination="NOz-NJ-38e" id="x7Y-n6-RUq"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Acd-eA-sQz"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jiy-py-CDH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="586.875" y="990.84507042253517"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="vjU-OA-Rr8">
             <objects>
@@ -241,39 +325,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ko9-s1-E5G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-630" y="146"/>
-        </scene>
-        <!--Socials Controller-->
-        <scene sceneID="Ujh-ja-X9M">
-            <objects>
-                <viewController id="uvO-MQ-D3M" customClass="SocialsController" customModule="Briscola_Multiplayer" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="c2P-KI-9yG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEI-tG-hny">
-                                <rect key="frame" x="123" y="326" width="64" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Condividi"/>
-                                <connections>
-                                    <action selector="performFBShare:" destination="uvO-MQ-D3M" eventType="touchUpInside" id="3Pj-AB-qHz"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstAttribute="top" secondItem="zdv-9b-Xwd" secondAttribute="top" constant="84" id="LwQ-VB-Y9L"/>
-                            <constraint firstAttribute="centerX" secondItem="c2P-KI-9yG" secondAttribute="centerX" id="SVT-qy-siO"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="zdv-9b-Xwd"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="ruQ-Dw-am7"/>
-                    <connections>
-                        <outlet property="FBCustomSharingButton" destination="dEI-tG-hny" id="fCA-gg-V8U"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JoW-5C-AIM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="587" y="1042"/>
         </scene>
     </scenes>
     <resources>

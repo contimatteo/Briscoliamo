@@ -42,7 +42,7 @@ class MenuController: UIViewController {
             gameController!.gameOptions = self.gameOptions!;
         }
         
-        let socialsController = segue.destination as? SocialsController;
+        let socialsController = segue.destination as? SocialController;
         if (socialsController != nil) {}
     }
     
