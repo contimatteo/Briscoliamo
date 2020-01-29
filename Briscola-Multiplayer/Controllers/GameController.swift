@@ -291,12 +291,17 @@ class GameController: UIViewController {
     // MARK: Navigation
     
     public func goToNextView() {
-        let nextController = ResultsController();
+        self.performSegue(withIdentifier: "goToGameResultView", sender: self);
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let resultController = segue.destination as? ResultsController;
         
-        // setting properties of new controller
-        nextController.gameInstance = gameHandler;
-        
-        self.navigationController!.pushViewController(nextController, animated: true)
+        if resultController != nil {
+            if (segue.identifier == "goToGameResultView") {
+                resultController!.gameInstance = self.gameHandler;
+            }
+        }
     }
     
 }

@@ -16,8 +16,13 @@ import FBSDKShareKit
 
 class DatabseResultViewCell: UITableViewCell {
     
-    @IBOutlet weak var localPlayerLabel: UILabel!
-    @IBOutlet weak var shareResultButton: UIButton!
+    @IBOutlet weak var localPlayerNameLabel: UILabel!
+    @IBOutlet weak var remotePlayerNameLabel: UILabel!
+    
+    @IBOutlet weak var localPlayerPointsLabel: UILabel!
+    @IBOutlet weak var remotePlayerPointsLabel: UILabel!
+    
+    @IBOutlet weak var FBShareActionButton: UIButton!
     
 }
 
@@ -29,11 +34,6 @@ class SocialController: UITableViewController {
     var facebookManager: FacebookManager?;
     var databaseHandler: DatabaseHandler?;
     var dbMatchesRecords: [DB_Match] = [];
-    
-    //
-    // MARK: @IBOutlet
-    
-    @IBOutlet weak var FBCustomSharingButton: UIButton!
     
     //
     // MARK: Methods
@@ -86,12 +86,15 @@ extension SocialController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DatabaseMatchRecord") as! DatabseResultViewCell;
 
         let currentMatch = dbMatchesRecords[indexPath.row];
-        cell.localPlayerLabel.text = String(describing: currentMatch.localPlayer.name);
+        cell.localPlayerNameLabel.text = String(describing: currentMatch.localPlayer.name);
+        cell.remotePlayerNameLabel.text = String(describing: currentMatch.remotePlayer.name);
+        cell.localPlayerPointsLabel.text = String(describing: currentMatch.localPlayerResult.points);
+        cell.remotePlayerPointsLabel.text = String(describing: currentMatch.remotePlayerResult.points);
         
         // assign the index of the match to button tag
-        cell.shareResultButton.tag = indexPath.row;
+        cell.FBShareActionButton.tag = indexPath.row;
         // call the performFBShare(_:) method when tapped
-        cell.shareResultButton.addTarget(self, action: #selector(performFBShare(_:)), for: .touchUpInside);
+        cell.FBShareActionButton.addTarget(self, action: #selector(performFBShare(_:)), for: .touchUpInside);
         
         return cell;
     }
