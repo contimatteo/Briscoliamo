@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Matches" representedClassName="Matches" syncable="YES" codeGenerationType="class">
-        <attribute name="playersCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="player1" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Players"/>
-        <relationship name="player1Result" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Results"/>
-        <relationship name="player2" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Players"/>
-        <relationship name="player2Result" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Results"/>
-        <relationship name="player3" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Players"/>
-        <relationship name="player3Result" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Results"/>
+        <relationship name="localPlayer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Players"/>
+        <relationship name="localPlayerResult" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Results"/>
+        <relationship name="remotePlayer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Players"/>
+        <relationship name="remotePlayerResult" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Results"/>
     </entity>
     <entity name="Players" representedClassName="Players" syncable="YES" codeGenerationType="class">
         <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -20,8 +17,8 @@
         <attribute name="points" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Results" positionX="-54" positionY="-9" width="128" height="88"/>
+        <element name="Matches" positionX="-18" positionY="45" width="128" height="103"/>
         <element name="Players" positionX="-36" positionY="9" width="128" height="88"/>
-        <element name="Matches" positionX="-18" positionY="45" width="128" height="148"/>
+        <element name="Results" positionX="-54" positionY="-9" width="128" height="88"/>
     </elements>
 </model>

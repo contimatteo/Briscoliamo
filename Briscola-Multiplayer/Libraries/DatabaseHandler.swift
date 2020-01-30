@@ -31,11 +31,9 @@ class DatabaseHandler {
     //
     // MARK: Private Methods
     
-    private func savePlayer(_ player: PlayerModel) -> NSManagedObject {
-        let context = container.viewContext;
-        
-        let entity = NSEntityDescription.entity(forEntityName: PLAYER_TABLE_NAME, in: context)
-        let newPlayer = NSManagedObject(entity: entity!, insertInto: context);
+    private func savePlayer(_ player: DB_Player) -> NSManagedObject {
+        let entity = NSEntityDescription.entity(forEntityName: PLAYER_TABLE_NAME, in: container.viewContext)
+        let newPlayer = NSManagedObject(entity: entity!, insertInto: container.viewContext);
         
         newPlayer.setValue(player.index, forKey: "index");
         newPlayer.setValue(player.name, forKey: "name");
@@ -45,41 +43,56 @@ class DatabaseHandler {
         return newPlayer;
     }
     
+    private func savePlayerResult(_ result: DB_Result) -> NSManagedObject {
+        let entity = NSEntityDescription.entity(forEntityName: RESULT_TABLE_NAME, in: container.viewContext)
+        let newPlayerResult = NSManagedObject(entity: entity!, insertInto: container.viewContext);
+        
+        newPlayerResult.setValue(result.cards, forKey: "cards");
+        newPlayerResult.setValue(result.handsWon, forKey: "handsWon");
+        newPlayerResult.setValue(result.points, forKey: "points");
+        container.saveContext();
+        
+        return newPlayerResult;
+    }
+    
     
     //
     // MARK: Public Methods
     
     
-    public func getMatches() -> Array<Any> {
+    public func getMatches() -> [DB_Match] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: MATCH_TABLE_NAME);
         request.returnsObjectsAsFaults = false
         // request.predicate = NSPredicate(format: "age = %@", "12")
         
         // run the query
-        let results = container.getContext(request: request) ?? [];
-        for data in results as! [NSManagedObject] {
-            print(data.value(forKey: "playersCount") as! Int);
-            print(data.value(forKey: "player1") ?? "[INFO] value not found");
-            print(data.value(forKey: "player2") ?? "[INFO] value not found");
+        var results: [DB_Match] = [];
+        let dbQueryResults = container.getContext(request: request) ?? [];
+        for match in dbQueryResults as! [Matches] {
+            results.append(DB_Match.instanceFrom(match));
         }
         
         return results;
     }
     
-    public func saveMatch(players: Array<PlayerModel>) {
+    public func saveMatch(_ match: DB_Match) {
         let context = container.viewContext;
         
         let entity = NSEntityDescription.entity(forEntityName: MATCH_TABLE_NAME, in: context)
         let newMatch = NSManagedObject(entity: entity!, insertInto: context);
         
-        // create players
-        for (pIndex, player) in players.enumerated() {
-            let playerCreated: NSManagedObject = savePlayer(player);
-            // assign player to this match
-            newMatch.setValue(playerCreated, forKey: "player\(pIndex + 1)");
-        }
+        // players
+        let localPlayer: NSManagedObject = savePlayer(match.localPlayer);
+        let remotePlayer: NSManagedObject = savePlayer(match.remotePlayer);
+        newMatch.setValue(localPlayer, forKey: "localPlayer");
+        newMatch.setValue(remotePlayer, forKey: "remotePlayer");
         
-        newMatch.setValue(players.count, forKey: "playersCount");
+        // results
+        let localPlayerResult: NSManagedObject = savePlayerResult(match.localPlayerResult);
+        let remotePlayerResult: NSManagedObject = savePlayerResult(match.remotePlayerResult);
+        newMatch.setValue(localPlayerResult, forKey: "localPlayerResult");
+        newMatch.setValue(remotePlayerResult, forKey: "remotePlayerResult");
+        
         container.saveContext();
     }
     
