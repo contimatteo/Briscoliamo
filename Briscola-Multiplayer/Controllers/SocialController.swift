@@ -48,13 +48,6 @@ class SocialController: UITableViewController {
         let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate;
         self.databaseHandler = DatabaseHandler(appDelegate.persistentContainer);
         
-        //        let localP = DB_Player(index: 0, name: "matteo", type: .local);
-        //        let remoteP = DB_Player(index: 1, name: "remoto", type: .remote);
-        //        let localPResult = DB_Result(cards: "1-coppe;2-bastoni", handsWon: 2, points: 30);
-        //        let remotePResult = DB_Result(cards: "2-coppe;3-bastoni", handsWon: 5, points: 60);
-        //        let match = DB_Match(localPlayer: localP, localPlayerResult: localPResult, remotePlayer: remoteP, remotePlayerResult: remotePResult);
-        //        databaseHandler!.saveMatch(match);
-        
         // get all matches on database.
         dbMatchesRecords = databaseHandler!.getMatches();
     }
@@ -64,11 +57,12 @@ class SocialController: UITableViewController {
     
     @objc private func performFBShare(_ sender: UIButton) {
         // use the tag of button as index
-        let matchToShare = dbMatchesRecords[sender.tag];
+        let matchToShare: DB_Match = dbMatchesRecords[sender.tag];
         
-        facebookManager?.shareTextOnFaceBook(controller: self);
+        // show the facebook share dialog
+        facebookManager?.shareTextOnFaceBook(controller: self, match: matchToShare);
         
-        // response is in the { self } extension.
+        // {SharingDelegate} class handle the response
     }
     
 }

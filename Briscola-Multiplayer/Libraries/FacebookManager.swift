@@ -80,10 +80,22 @@ class FacebookManager {
         return "https://graph.facebook.com/\(userId)/picture?type=large";
     }
     
-    public func shareTextOnFaceBook(controller: SocialController) {
+    public func shareTextOnFaceBook(controller: SocialController, match: DB_Match) {
         let shareContent = ShareLinkContent()
-        shareContent.contentURL = URL.init(string: "https://developers.facebook.com")! //your link
-        shareContent.quote = "Text to be shared"
+        
+        // url
+        shareContent.contentURL = URL.init(string: CONSTANTS.APP_GITHUB_REPOSITORY_LINK)!;
+        
+        // message
+        var localPlayerMatchResultAction: String = "lost";
+        if (match.hasLocalPlayerWon()) {
+            localPlayerMatchResultAction = "won";
+        } else if (match.hasLocalPlayerDrew()) {
+            localPlayerMatchResultAction = "drew";
+        }
+        
+        // show share dialog
+        shareContent.quote = "I \(localPlayerMatchResultAction) a game against \(match.remotePlayer.name)";
         ShareDialog(fromViewController: controller, content: shareContent, delegate: controller).show()
     }
     

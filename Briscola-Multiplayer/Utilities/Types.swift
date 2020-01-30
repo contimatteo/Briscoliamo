@@ -86,4 +86,16 @@ struct DB_Match {
         
         return DB_Match(localPlayer: localPlayer, localPlayerResult: localPlayerResult, remotePlayer: remotePlayer, remotePlayerResult: remotePlayerResult);
     }
+    
+    public func hasLocalPlayerWon() -> Bool {
+        return localPlayerResult.points > remotePlayerResult.points;
+    }
+    
+    public func hasLocalPlayerDrew() -> Bool {
+        return localPlayerResult.points == remotePlayerResult.points;
+    }
+    
+    public func hasLocalPlayerLost() -> Bool {
+        return localPlayerResult.points < remotePlayerResult.points;
+    }
 }
