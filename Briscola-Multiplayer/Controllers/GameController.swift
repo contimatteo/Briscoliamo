@@ -36,6 +36,7 @@ class GameController: UIViewController {
     
     private var playersCardImgViews: Array<Array<UIImageView>> = [];
     private var tableCardImgViews: Array<UIImageView> = [];
+    private var playersNamesLabels: Array<UILabel> = [];
     private var playersPointsLabels: Array<UILabel> = [];
     
     //
@@ -67,14 +68,15 @@ class GameController: UIViewController {
     
     private func initSinglePlayerGame() {
         // SINGLE-PLAYER
-        let playersTypes: [PlayerType] = [.local, .emulator];
+        var playersNames: [String] = [CONSTANTS.EMULATOR_PLAYER_NAME, CONSTANTS.EMULATOR_PLAYER_NAME];
+        playersNames[localPlayerIndex!] = gameOptions.localPlayerName;
         
         // prepare player's cards variables.
         prepareAssets();
         
         // load all the cards and load 3 cards foreach player, load
         // the trump card, create players and load 3 cards for these.
-        gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: localPlayerIndex!, playersType: playersTypes);
+        gameHandler.initSinglePlayer(numberOfPlayers: gameOptions.numberOfPlayers, localPlayerIndex: localPlayerIndex!, playersName: playersNames);
         
         // gestures
         initGestures()
@@ -98,8 +100,12 @@ class GameController: UIViewController {
         
         // SINGLE-PLAYER
         localPlayerIndex = localPlayerNewIndex;
+        
         var playersTypes: [PlayerType] = [.remote, .remote];
         playersTypes[localPlayerIndex!] = .local;
+        
+        var playersNames: [String] = [CONSTANTS.REMOTE_PLAYER_NAME, CONSTANTS.REMOTE_PLAYER_NAME];
+        playersNames[localPlayerIndex!] = gameOptions.localPlayerName;
         
         DispatchQueue.main.async {
             // prepare player's cards variables.
@@ -107,7 +113,7 @@ class GameController: UIViewController {
             
             // load all the cards and load 3 cards foreach player, load
             // the trump card, create players and load 3 cards for these.
-            self.gameHandler.initMultiPlayer(numberOfPlayers: self.gameOptions.numberOfPlayers, localPlayerIndex: self.localPlayerIndex!, playersType: playersTypes, deckCards: deckCardsConverted);
+            self.gameHandler.initMultiPlayer(numberOfPlayers: self.gameOptions.numberOfPlayers, localPlayerIndex: self.localPlayerIndex!, playersType: playersTypes, playersName: playersNames, deckCards: deckCardsConverted);
             
             // gestures
             self.initGestures()
@@ -125,6 +131,8 @@ class GameController: UIViewController {
         self.playersCardImgViews.append([]);
         self.tableCardImgViews.append(UIImageView(image: nil));
         self.tableCardImgViews.append(UIImageView(image: nil));
+        self.playersNamesLabels.append(UILabel());
+        self.playersNamesLabels.append(UILabel());
         self.playersPointsLabels.append(UILabel());
         self.playersPointsLabels.append(UILabel());
         
@@ -150,6 +158,8 @@ class GameController: UIViewController {
         
         // player's points and name labels
         
+        self.playersNamesLabels[currentPlayerIndex] = self.lp_labelName;
+        self.playersNamesLabels[remotePlayer1Index] = self.rp1_labelName;
         self.playersPointsLabels[currentPlayerIndex] = self.lp_LabelPoints;
         self.playersPointsLabels[remotePlayer1Index] = self.rp1_LabelPoints;
     }
@@ -217,6 +227,7 @@ class GameController: UIViewController {
         // display points
         DispatchQueue.main.async {
             for (pIndex, player) in self.gameHandler.players.enumerated() {
+                self.playersNamesLabels[pIndex].text = String(player.name);
                 self.playersPointsLabels[pIndex].text = String(player.deckPoints);
             }
         }
@@ -266,7 +277,7 @@ class GameController: UIViewController {
             if (!allRequiredPlayersAreConnected) { return; }
             
             let sharedCardsDeck: [String] = (gameHandler.loadCards()).map { $0.name; };
-            let initObject: SS_InitObj = SS_InitObj(senderPlayerIndex: localPlayerIndex!, cardsDeck: sharedCardsDeck);
+            let initObject: SS_InitObj = SS_InitObj(senderPlayerIndex: localPlayerIndex!, cardsDeck: sharedCardsDeck, senderPlayerName: gameOptions.localPlayerName);
             
             DispatchQueue.main.async {
                 let sended = self.sessionManager!.sendData(data: initObject.toData());
@@ -312,9 +323,6 @@ class GameController: UIViewController {
 // MARK: SessionControllerDelegate (protocol extension)
 
 extension GameController: SessionControllerDelegate {
-    
-    //
-    // MARK: Triggers
     
     func sessionDidChangeState() {
         // Ensure UI updates occur on the main queue.

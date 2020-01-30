@@ -22,7 +22,7 @@ class MenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gameOptions = GameOptions(mode: .singleplayer, numberOfPlayers: 2, indexOfStarterPlayer: 0);
+        gameOptions = GameOptions(mode: .singleplayer, numberOfPlayers: 2, indexOfStarterPlayer: 0, localPlayerName: CONSTANTS.LOCAL_PLAYER_NAME);
     }
     
     //
@@ -32,7 +32,7 @@ class MenuController: UIViewController {
         let gameController = segue.destination as? GameController;
         if (gameController != nil) {
             if (segue.identifier == "singlePlayerButton") {
-                self.gameOptions?.mode = .singleplayer
+                self.gameOptions?.mode = .singleplayer;
             }
             
             if (segue.identifier == "multiPlayerButton") {

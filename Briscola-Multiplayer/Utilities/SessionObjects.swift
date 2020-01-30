@@ -14,20 +14,24 @@ import Foundation
 class SS_InitObj: NSObject, NSCoding {
     var cardsDeck: [String]!;
     var senderPlayerIndex: Int!;
+    var senderPlayerName: String!;
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
-        self.senderPlayerIndex = decoder.decodeObject(forKey: "senderPlayerIndex") as? Int
-        self.cardsDeck = decoder.decodeObject(forKey: "cardsDeck") as? [String]
+        self.senderPlayerName = decoder.decodeObject(forKey: "senderPlayerName") as? String;
+        self.senderPlayerIndex = decoder.decodeObject(forKey: "senderPlayerIndex") as? Int;
+        self.cardsDeck = decoder.decodeObject(forKey: "cardsDeck") as? [String];
     }
     
-    convenience init(senderPlayerIndex: Int, cardsDeck: [String]) {
-        self.init()
+    convenience init(senderPlayerIndex: Int, cardsDeck: [String], senderPlayerName: String) {
+        self.init();
+        self.senderPlayerName = senderPlayerName;
         self.senderPlayerIndex = senderPlayerIndex;
         self.cardsDeck = cardsDeck;
     }
     
     func encode(with coder: NSCoder) {
+        coder.encode(senderPlayerName, forKey: "senderPlayerName");
         coder.encode(senderPlayerIndex, forKey: "senderPlayerIndex");
         coder.encode(cardsDeck, forKey: "cardsDeck");
     }

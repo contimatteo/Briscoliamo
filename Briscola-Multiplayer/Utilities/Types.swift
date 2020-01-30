@@ -28,6 +28,7 @@ public struct GameOptions {
     var mode: GameType;
     var numberOfPlayers: Int;
     var indexOfStarterPlayer: Int;
+    var localPlayerName: String;
 }
 
 public enum PlayerType: String {

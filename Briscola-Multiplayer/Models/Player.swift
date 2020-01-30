@@ -32,12 +32,17 @@ public class PlayerModel {
     //
     // MARK: Variables
     
-    init(index: Int, initialHand: Array<CardModel>, type: PlayerType) {
+    init(index: Int, initialHand: Array<CardModel>, type: PlayerType, name: String?) {
         self.index = index;
-        self.name = "player-\(index)";
         self.cardsHand = initialHand;
         
         self.type = type;
+        
+        if name == nil {
+            self.name = "player-\(index)";
+        } else {
+            self.name = name!;
+        }
     }
     
     //
