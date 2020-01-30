@@ -170,14 +170,16 @@ class GameController: UIViewController {
     
     private func render() {
         // STEP 0: render buttons and dialogs.
-        startGameButton.isHidden = !gameHandler.gameEnded;
-        if (gameHandler.gameEnded) {
-            gameStatusLabel.text = "pronto per iniziare ?";
-        } else {
-            if (localPlayerIndex! == gameHandler.playerTurn) {
-                gameStatusLabel.text = "è il tuo turno.";
+         DispatchQueue.main.async {
+            self.startGameButton.isHidden = !self.gameHandler.gameEnded;
+            if (self.gameHandler.gameEnded) {
+                self.gameStatusLabel.text = "pronto per iniziare ?";
             } else {
-                gameStatusLabel.text = "aspetta ...";
+                if (self.localPlayerIndex! == self.gameHandler.playerTurn) {
+                    self.gameStatusLabel.text = "è il tuo turno.";
+                } else {
+                    self.gameStatusLabel.text = "aspetta ...";
+                }
             }
         }
         
