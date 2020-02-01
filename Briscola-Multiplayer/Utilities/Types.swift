@@ -26,9 +26,13 @@ public enum CardType: String {
 
 public struct GameOptions {
     var mode: GameType;
+    var gameSpeed: Double;
     var numberOfPlayers: Int;
     var indexOfStarterPlayer: Int;
     var localPlayerName: String;
+    var showLocalPlayerPoints: Bool;
+    var showRemotePlayerCards: Bool;
+    var showRemotePlayerPoints: Bool;
 }
 
 public enum PlayerType: String {
