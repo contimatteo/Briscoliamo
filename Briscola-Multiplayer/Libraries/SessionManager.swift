@@ -71,12 +71,12 @@ class SessionManager: NSObject {
     // MARK: Deinitialization
     
     deinit {
-        stopServices()
+        // stopServices()
         
-        session.disconnect()
+        // session.disconnect()
         
         // Nil out delegate
-        session.delegate = nil
+        // session.delegate = nil
     }
     
     //

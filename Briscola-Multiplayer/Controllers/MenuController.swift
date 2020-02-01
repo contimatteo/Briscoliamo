@@ -17,35 +17,81 @@ class MenuController: UIViewController {
     var gameOptions: GameOptions?;
     
     //
+    // MARK: @
+    
+    @IBOutlet weak var localPlayerName: UITextField!
+    @IBOutlet weak var gameMode: UISegmentedControl!
+    @IBOutlet weak var gameSpeed: UISlider!
+    @IBOutlet weak var showRemotePlayerCardsSwitcher: UISwitch!
+    @IBOutlet weak var showRemotePlayerPointsSwitcher: UISwitch!
+    @IBOutlet weak var startGameButton: UIButton!
+    
+    //
     // MARK: Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gameOptions = GameOptions(mode: .singleplayer, numberOfPlayers: 2, indexOfStarterPlayer: 0, localPlayerName: CONSTANTS.LOCAL_PLAYER_NAME);
+        // delegate
+        localPlayerName.delegate=self;
+        
+        // game options
+        gameOptions = GameOptions(mode: .singleplayer, gameSpeed: 3, numberOfPlayers: CONSTANTS.MAX_NUMBER_OF_PLAYERS, indexOfStarterPlayer: 0, localPlayerName: "", showLocalPlayerPoints: true, showRemotePlayerCards: true, showRemotePlayerPoints: true);
+        
+        // graphic
+        startGameButton.isEnabled = false;
+        
+        // event handler
+        localPlayerName.addTarget(self, action: #selector(localPlayerNameChanged), for: .editingChanged);
     }
     
     //
     // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let gameController = segue.destination as? GameController;
-        if (gameController != nil) {
-            if (segue.identifier == "singlePlayerButton") {
-                self.gameOptions?.mode = .singleplayer;
-            }
-            
-            if (segue.identifier == "multiPlayerButton") {
-                self.gameOptions?.mode = .multiplayer
-            }
-            
-            gameController!.gameOptions = self.gameOptions!;
+        switch segue.identifier {
+            case "startTheGame":
+                let gameController: GameController = segue.destination as! GameController;
+                
+                self.gameOptions!.localPlayerName = localPlayerName.text!;
+                self.gameOptions!.mode = self.gameMode.selectedSegmentIndex == 0 ? .singleplayer : .multiplayer;
+                self.gameOptions!.gameSpeed = CONSTANTS.TURN_SECONDS_DELAY - (Double(self.gameSpeed.value) * 0.5);
+                self.gameOptions!.showRemotePlayerCards = showRemotePlayerCardsSwitcher.isOn;
+                self.gameOptions!.showRemotePlayerPoints = showRemotePlayerPointsSwitcher.isOn;
+                self.gameOptions!.showLocalPlayerPoints = true;
+                
+                gameController.gameOptions = self.gameOptions!;
+                break;
+            default:
+                // nothing to do ...
+                // let socialsController = segue.destination as? SocialController;
+                print("[INFO] segue.identifier = \(segue.identifier ?? "?????")")
         }
-        
-        let socialsController = segue.destination as? SocialController;
-        if (socialsController != nil) {}
     }
     
+    //
+    // MARK:
     
+    @objc func localPlayerNameChanged(_ input: UITextField) {
+        guard let playerName: String = input.text else { return; }
+        
+        if (playerName.count > 0) {
+            startGameButton.isEnabled = true;
+        }
+    }
 
+}
+
+
+//
+// MARK: UITextFieldDelegate (extension)
+
+extension MenuController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        self.view.endEditing(true)
+        return true;
+    }
+    
 }

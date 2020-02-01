@@ -82,8 +82,8 @@ extension SocialController {
         let currentMatch = dbMatchesRecords[indexPath.row];
         cell.localPlayerNameLabel.text = String(describing: currentMatch.localPlayer.name);
         cell.remotePlayerNameLabel.text = String(describing: currentMatch.remotePlayer.name);
-        cell.localPlayerPointsLabel.text = String(describing: currentMatch.localPlayerResult.points);
-        cell.remotePlayerPointsLabel.text = String(describing: currentMatch.remotePlayerResult.points);
+        cell.localPlayerPointsLabel.text = String(describing: currentMatch.localPlayerResult.points) + " punti";
+        cell.remotePlayerPointsLabel.text = String(describing: currentMatch.remotePlayerResult.points) + " punti";
         
         // assign the index of the match to button tag
         cell.FBShareActionButton.tag = indexPath.row;

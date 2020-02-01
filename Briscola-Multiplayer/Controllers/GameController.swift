@@ -136,6 +136,10 @@ class GameController: UIViewController {
         self.playersPointsLabels.append(UILabel());
         self.playersPointsLabels.append(UILabel());
         
+        // set visible by game options condig
+        self.lp_LabelPoints.isHidden = !gameOptions.showLocalPlayerPoints;
+        self.rp1_LabelPoints.isHidden = !gameOptions.showRemotePlayerPoints;
+        
         // hand cards
         
         var lpCards: Array<UIImageView> = [];
@@ -199,10 +203,12 @@ class GameController: UIViewController {
                 let playerHand: Array<CardModel> = gameHandler.players[pIndex].cardsHand;
                 
                 for (cIndex, cardImg) in playerImgs.enumerated() {
-                    if (playerHand.indices.contains(cIndex)) {
-                        _updateImageView(images: playerImgs, imageIndex: cIndex, model: playerHand[cIndex]);
-                    } else {
-                        _emptyImageView(imageView: cardImg);
+                    if (pIndex == localPlayerIndex || gameOptions.showRemotePlayerCards) {
+                        if (playerHand.indices.contains(cIndex)) {
+                            _updateImageView(images: playerImgs, imageIndex: cIndex, model: playerHand[cIndex]);
+                        } else {
+                            _emptyImageView(imageView: cardImg);
+                        }
                     }
                 }
             }
@@ -257,7 +263,7 @@ class GameController: UIViewController {
         // end the turn after a delay.
         gameHandler.endTurn();
         // and render the new state.
-        let delay: DispatchTime = DispatchTime.now() + CONSTANTS.TURN_SECONDS_DELAY;
+        let delay: DispatchTime = DispatchTime.now() + gameOptions.gameSpeed;
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
             self.render();
         })
