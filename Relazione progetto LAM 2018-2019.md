@@ -67,6 +67,12 @@ contiene una variabile che identifica le carte che ha in mano e altre informazio
 ## Funzionalità (TODO)
 .. .. ..
 
+### Interfaccia Grafica (TODO)
+.. .. ..
+
+### Flusso Dati (TODO)
+.. .. ..
+
 ## Tecnologie Utilizzate (TODO)
 .. .. ..
 1. MultiPeer connectivity
