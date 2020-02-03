@@ -24,6 +24,7 @@ class MenuController: UIViewController {
     @IBOutlet weak var gameSpeed: UISlider!
     @IBOutlet weak var showRemotePlayerCardsSwitcher: UISwitch!
     @IBOutlet weak var showRemotePlayerPointsSwitcher: UISwitch!
+    @IBOutlet weak var showLocalPlayerPoints: UISwitch!
     @IBOutlet weak var startGameButton: UIButton!
     
     //
@@ -58,7 +59,7 @@ class MenuController: UIViewController {
                 self.gameOptions!.gameSpeed = CONSTANTS.TURN_SECONDS_DELAY - (Double(self.gameSpeed.value) * 0.5);
                 self.gameOptions!.showRemotePlayerCards = showRemotePlayerCardsSwitcher.isOn;
                 self.gameOptions!.showRemotePlayerPoints = showRemotePlayerPointsSwitcher.isOn;
-                self.gameOptions!.showLocalPlayerPoints = true;
+                self.gameOptions!.showLocalPlayerPoints = showLocalPlayerPoints.isOn;
                 
                 gameController.gameOptions = self.gameOptions!;
                 break;
