@@ -132,12 +132,10 @@ Avendo illustrato nel capitolo precedente le 4 view principali all’interno del
 3. Salvataggio dei risultati
 4. Condivisione dei risultati
 
-### Interfaccia Grafica (TODO)
-.. .. ..
+### Interfaccia Grafica
 La Figura sottostante mostra ciò che l’utente vede nel momento in cui viene avviata la partita. Notiamo come le nostre carte sono scoperte (al contrario di quelle dell’avversario) e per poter giocare una carta è necessario toccarla. Una volta che anche il nostro avversario (emulatore/giocatore remoto) avrà giocato una carta, il vincente della mano si aggiudicherà le carte, ed esse verranno aggiunte al suo mazzo (non visibile), e automaticamente verrà distribuita una nuova carta (ad ogni giocatore) e la mano sarà pronta per iniziare (partirà il giocatore che ha vinto quella precedente)
 
-FLUSSO IMMAGINI: gioco da iniziare, gioco iniziato, una carta giocata, due carte giocate.
-.. .. ..
+![Main.storyboard](https://github.com/contimatteo/briscola/raw/feature/report/Report/assets/flow.jpg)
 
 ### Flusso Dati (Database)
 Il flusso dei dati persistiti è piuttosto semplice:
