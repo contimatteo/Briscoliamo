@@ -58,14 +58,31 @@ Gli attributi fondamentali che ogni giocatore possiede sono:
 -  `currentDeck`: le carte vinte nel suo mazzo (in un determinato instante)
 -  `deckPoints`: (computed) I punti totali del suo mazzo (in un determinato instante)
 
-### Gestore Gioco (TODO)
-.. .. ..
+### Gestore Gioco
+I principali attributi interni sono:
+- `mode`: modalità di gioco (single/multi-player)
+- `gameEnded`: indica se il gioco è finito
+- `aiPlayerEmulator`: istanza dell’emulatore
+- `players`: array contente la lista dei giocatori all’interno di una partita
+- `playerTurn`: indica l’indice del giocatore che dovrà giocare una carta (è usato per evitare conflitti all’interno di una mano)
+- `initialCards`: lista delle carte iniziarli caricate
+- `deckCards`: lista delle carte nel mazzo principale (mescolate)
+- `cardsOnTable`: lista delle carte in tavola (corrispondenza tra l’indice di ogni carta e quello di ogni giocatore)
+- `trumpCard`: briscola in tavola (considerata la sua importanza nella gestione del gioco è slegata dal resto delle carte)
+    
+### Gestore Sessione (MultiPeer)
+I principali attributi interni sono:
+- `connectedPeers`: lista dei peers connessi
+- `connectingPeers`: lista dei peers in connessione
+- `disconnectedPeers`: lista dei peers non connessi
+- `peerID`: identificativo del peer locale
+- `session`: (lazy) variable che contiene l’istanza dell’utilità per la gestione  della sessione. 
 
-### Gestore Database (CoreData) (TODO)
-.. .. ..
-
-### Gestore Sessione (MultiPeer) (TODO)
-.. .. ..
+### Database (CoreData)
+Entità:
+- `Players`: contiene solo i campi incide, nome e tipo.
+- `Results`: contiene la serializzazione delle carte vinte e la somma dei loro punti.
+- `Matches`: contiene la coppia di relazioni sopra definite, sia per il giocatore locale che per quello remoto/emulato.
 
 ## Emulatore
 Questa classe si occupa di simulare la presenza (in modalità single-player) di un giocatore reale con cui giocare. È stata realizzata, infatti, come una macchina a stati che in base alla classificazione real-time delle carte in tavola e quelle in mano (dell’emulatore) elabora uno stato finale, che si traduce nella scelta di una carta da giocare (chiaramente tra quelle che ha in mano).
