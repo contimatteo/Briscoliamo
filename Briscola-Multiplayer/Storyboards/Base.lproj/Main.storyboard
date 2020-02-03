@@ -511,6 +511,7 @@
                         <outlet property="gameMode" destination="g5K-Ir-FYW" id="Eya-BK-Fxe"/>
                         <outlet property="gameSpeed" destination="FP1-aA-TEe" id="zF8-G4-xaE"/>
                         <outlet property="localPlayerName" destination="P2P-g5-l80" id="7MI-Sb-BNP"/>
+                        <outlet property="showLocalPlayerPoints" destination="ya7-82-pLc" id="fPU-nH-Wem"/>
                         <outlet property="showRemotePlayerCardsSwitcher" destination="OzO-Tt-uAr" id="JVb-fC-wMN"/>
                         <outlet property="showRemotePlayerPointsSwitcher" destination="n3i-rn-3Kr" id="W4q-xK-RRs"/>
                         <outlet property="startGameButton" destination="vm8-AD-Kf6" id="Tku-G0-65j"/>
