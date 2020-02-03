@@ -28,8 +28,10 @@ Lo scopo era quello di creare due ambienti di gioco: il primo (con la presenza d
 +++
 
 
-# Architettura generale
+# Architettura generale (TODO)
 Il pattern utilizzato nella realizzazione di questa applicazione è il Model-View-Controller (MVC). L’importanza di questo pattern consiste nella separazione della logica di presentazione dei dati rispetto alla logica di gestione di questi. Per questo progetto infatti, sono stati creati diversi modelli di dati corrispondenti alle varie entità in gioco (Carte, Giocatori, ..), tutti gestiti da diverse librerie di “gestione” (Handlers), le quali astraggono completamente il flusso di creazione/modifica dei dati rispetto alla loro presentazione (gestita all’interno dei Controllers).
+
+[Main.storyboard](./assets/main-storyboard.png)
 
 ## MVC
 All’interno dell’applicazione esiste un `NavigationController` attraverso il quale  è possibile muoversi attraverso la varie view che compongono l’applicazione. Esistono infatti 4 schermate:
@@ -63,7 +65,7 @@ contiene una variabile che identifica le carte che ha in mano e altre informazio
 .. .. ..
 
 ## Emulatore
-Questa classe si occupa di simulare la presenza (in modalità single-player) di un giocatore reale con cui giocare. È stata realizzata, infatti, come una macchina a stati che in base alla configurazione delle carte in tavola e quelle in mano (dell’emulatore) elabora uno stato finale, che si traduce nella scelta di una carta da giocare (chiaramente tra quelle che ha in mano).
+Questa classe si occupa di simulare la presenza (in modalità single-player) di un giocatore reale con cui giocare. È stata realizzata, infatti, come una macchina a stati che in base alla classificazione real-time delle carte in tavola e quelle in mano (dell’emulatore) elabora uno stato finale, che si traduce nella scelta di una carta da giocare (chiaramente tra quelle che ha in mano).
 Sono stati individuati due macro stati: il primo è quello nel quale l’emulatore si trova a dover giocare per primo, mentre il secondo è quando si trova a giocare per secondo (e abbiamo quindi già una carta in tavola).
 Di seguito riportiamo la sequenza di scelte dalla macchina a stati, dove quest’ultima si bloccherà al primo stato di match trovato nella sequenza di scelte disponibili.
 
@@ -184,11 +186,15 @@ Lista di alcune possibili estensioni:
 +++
 
 
-# Conclusione e Commenti Finali (TODO)
-.. .. ..
-Questo progetto ha dato l’opportunità di approfondire meglio le tecniche di sviluppo nel campo di iOS e le strategie di programmazione di questo campo, in oltre la scelta di progettare un gioco ha permesso una trattazione di alcuni aspetti molto importanti dal punto di vista grafico e di come integrare scenari animati all’interno di una applicazione. Un’altro aspetto molto importante e intrigante è stato quello di creare un avversario che possa comportarsi autonomamente, una specie di intelligenza artificiale. La realizzazione di un ente intelligente di questo genere è un procedimento che cerca di simulare un comportamento razionale in grado di percepire ed arricchire le proprie conoscenze e di agire di conseguenza con lo scopo di raggiungere il suo obbiettivo, ovvero vincere la partita di briscola. Affinché esso possa raggiungere il suo scopo è stata definita una strategia di gioco che esso seguirà per raggiungere il suo scopo .
-.. .. ..
+# Conclusione e Commenti Finali
+In primo luogo, questo progetto mi ha dato la possibilità di applicare le conoscenze teoriche acquisite a lezione (per il sistema operativo iOS) lasciandomi, allo stesso tempo, la completa libertà di scegliere le librerie Swift su cui concentrarmi.
+In secondo luogo, a monte delle librerie utilizzate, è stato interessante sviluppare un’applicazione da zero: la progettazione dell’applicazione ha richiesto tempo (considerata la mia inesperienza) e l’adattamento alle logiche di sviluppo mobile non sono state semplici all’inizio (per esempio il ruolo dei *Delegates* e la loro applicazione a diversi casi d’uso). 
+Sicuramente si potrebbero apportare diversi miglioramenti all’emulatore, ma essendo già presente una classificazione real-time delle carte in gioco, questi non dovrebbero richiedere molto sforzo.
+Riassumendo, posso affermare che l’aspetto principale su cui mi sono concentrato, durante tutto lo sviluppo, è stato quello della progettazione e della gestione del flusso di dati. Ho cercato di creare una code-base facilmente estendibile (come già detto in precedenza) e molto modularizzata. La grafica sicuramente è l’aspetto che ho curato meno.
 
+
+\
+\
 
 
 [#swift-multipeer]: [The MultiPeer Connectivity framework](https://developer.apple.com/documentation/multipeerconnectivity) supports the discovery of services provided by nearby devices and supports communicating with those services through message-based data, streaming data, and resources (such as files). In iOS, the framework uses infrastructure Wi-Fi networks, peer-to-peer Wi-Fi, and Bluetooth personal area networks for the underlying transport. In macOS and tvOS, it uses infrastructure Wi-Fi, peer-to-peer Wi-Fi, and Ethernet. 
