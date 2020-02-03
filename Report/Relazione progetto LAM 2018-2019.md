@@ -1,4 +1,4 @@
-******INDICE**
+**INDICE**
 
 {{TOC}}
 
@@ -28,10 +28,10 @@ Lo scopo era quello di creare due ambienti di gioco: il primo (con la presenza d
 +++
 
 
-# Architettura generale (TODO)
+# Architettura generale
 Il pattern utilizzato nella realizzazione di questa applicazione è il Model-View-Controller (MVC). L’importanza di questo pattern consiste nella separazione della logica di presentazione dei dati rispetto alla logica di gestione di questi. Per questo progetto infatti, sono stati creati diversi modelli di dati corrispondenti alle varie entità in gioco (Carte, Giocatori, ..), tutti gestiti da diverse librerie di “gestione” (Handlers), le quali astraggono completamente il flusso di creazione/modifica dei dati rispetto alla loro presentazione (gestita all’interno dei Controllers).
 
-[Main.storyboard](./assets/main-storyboard.png)
+![Main.storyboard](https://github.com/contimatteo/briscola/blob/master/Report/assets/main-storyboard.png?raw=true)
 
 ## MVC
 All’interno dell’applicazione esiste un `NavigationController` attraverso il quale  è possibile muoversi attraverso la varie view che compongono l’applicazione. Esistono infatti 4 schermate:
@@ -42,15 +42,21 @@ All’interno dell’applicazione esiste un `NavigationController` attraverso il
 
 Di seguito verranno riportati i principali modelli di dati utilizzati e le librerie a supporto di questi.
 
-### Carta (Modello Dati) (TODO)
-.. .. ..
-Gli attributi principali sono il tipo e il numero.
-.. .. ..
+### Carta (Modello Dati)
+Gli attributi fondamentali che ogni carta possiede sono:
+- `points`: ovvero il suo valore in punti in base alle regole della briscola.
+- `number`: il numero della carta (asso=1, ..,  re=10)
+- `type`: seme della carta
+- `name`: nome della carta composto dal numero e dal tipo (usato per referenziare l’immagine corrispondente)
 
-### Giocatore (Modello Dati) (TODO)
-.. .. ..
-contiene una variabile che identifica le carte che ha in mano e altre informazioni come il tipo (locale, emulatore), il nome e le carte conquistate presenti nel suo mazzo.
-.. .. ..
+### Giocatore (Modello Dati)
+Gli attributi fondamentali che ogni giocatore possiede sono:
+-  `name`: il nome del giocatore
+-  `index`: il suo indice (il nome è fuorviante, in realtà è usato come identificativo)
+-  `type`: la tipologia (locale, remoto o emulatore)
+-  `cardsHand`: le carte che ha in mano (in un determinato instante)
+-  `currentDeck`: le carte vinte nel suo mazzo (in un determinato instante)
+-  `deckPoints`: (computed) I punti totali del suo mazzo (in un determinato instante)
 
 ### Gestore Gioco (TODO)
 .. .. ..
@@ -59,9 +65,6 @@ contiene una variabile che identifica le carte che ha in mano e altre informazio
 .. .. ..
 
 ### Gestore Sessione (MultiPeer) (TODO)
-.. .. ..
-
-### Gestore Social (Facebook) (TODO)
 .. .. ..
 
 ## Emulatore
