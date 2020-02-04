@@ -14,7 +14,7 @@ class ResultsController: UIViewController {
     //
     // MARK: exposed variables
     
-    public var gameInstance: GameHandler!;
+    var gameInstance: GameHandler!;
     
     //
     // MARK: variables

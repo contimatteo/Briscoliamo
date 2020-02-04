@@ -31,7 +31,7 @@ class AIPlayerEmulator {
     //
     // MARK:
     
-    public func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel?>) -> Int {
+    func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel?>) -> Int {
         var cardToPlay: Int?;
         var classifToFind: CardClassification;
         let currentPlayerHand = playersHands[playerIndex];

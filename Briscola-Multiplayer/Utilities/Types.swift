@@ -12,19 +12,19 @@ import Foundation
 //
 // MARK: Game
 
-public enum GameType {
+enum GameType {
     case singleplayer;
     case multiplayer;
 }
 
-public enum CardType: String {
+enum CardType: String {
     case coppe
     case bastoni
     case spade
     case denari
 }
 
-public struct GameOptions {
+struct GameOptions {
     var mode: GameType;
     var gameSpeed: Double;
     var numberOfPlayers: Int;
@@ -35,7 +35,7 @@ public struct GameOptions {
     var showRemotePlayerPoints: Bool;
 }
 
-public enum PlayerType: String {
+enum PlayerType: String {
     case local;
     case remote;
     case emulator;
@@ -44,12 +44,12 @@ public enum PlayerType: String {
 //
 // MARK: Session
 
-public enum SS_Message {
+enum SS_Message {
     case success;
     case error;
 }
 
-public enum SessionAgentRole {
+enum SessionAgentRole {
     case server;
     case client;
 }
@@ -92,15 +92,15 @@ struct DB_Match {
         return DB_Match(localPlayer: localPlayer, localPlayerResult: localPlayerResult, remotePlayer: remotePlayer, remotePlayerResult: remotePlayerResult);
     }
     
-    public func hasLocalPlayerWon() -> Bool {
+    func hasLocalPlayerWon() -> Bool {
         return localPlayerResult.points > remotePlayerResult.points;
     }
     
-    public func hasLocalPlayerDrew() -> Bool {
+    func hasLocalPlayerDrew() -> Bool {
         return localPlayerResult.points == remotePlayerResult.points;
     }
     
-    public func hasLocalPlayerLost() -> Bool {
+    func hasLocalPlayerLost() -> Bool {
         return localPlayerResult.points < remotePlayerResult.points;
     }
 }

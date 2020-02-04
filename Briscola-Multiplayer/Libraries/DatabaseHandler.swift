@@ -60,7 +60,7 @@ class DatabaseHandler {
     // MARK: Public Methods
     
     
-    public func getMatches() -> [DB_Match] {
+    func getMatches() -> [DB_Match] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: MATCH_TABLE_NAME);
         request.returnsObjectsAsFaults = false
         // request.predicate = NSPredicate(format: "age = %@", "12")
@@ -75,7 +75,7 @@ class DatabaseHandler {
         return results;
     }
     
-    public func saveMatch(_ match: DB_Match) {
+    func saveMatch(_ match: DB_Match) {
         let context = container.viewContext;
         
         let entity = NSEntityDescription.entity(forEntityName: MATCH_TABLE_NAME, in: context)

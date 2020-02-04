@@ -256,7 +256,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ti ricordiamo che salvando il risultato potrai, nella schermata inizale, condividerlo sui social media." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czb-0p-3LY">
-                                <rect key="frame" x="32" y="428" width="272" height="98"/>
+                                <rect key="frame" x="24" y="428" width="272" height="98"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="272" id="Gdy-AN-wFt"/>
                                 </constraints>
@@ -303,11 +303,11 @@
                             <constraint firstItem="YdD-AR-E3U" firstAttribute="centerX" secondItem="jN5-3L-72x" secondAttribute="centerX" id="KrH-Xd-Q1h"/>
                             <constraint firstItem="eYY-Px-mD1" firstAttribute="top" secondItem="sbe-zy-Ca8" secondAttribute="top" constant="20" id="R7d-hG-Def"/>
                             <constraint firstItem="YdD-AR-E3U" firstAttribute="top" secondItem="F2S-hN-GS9" secondAttribute="bottom" constant="60" id="WAA-hd-Zhk"/>
+                            <constraint firstItem="czb-0p-3LY" firstAttribute="centerX" secondItem="jN5-3L-72x" secondAttribute="centerX" id="ade-23-TrP"/>
                             <constraint firstItem="F2S-hN-GS9" firstAttribute="top" secondItem="Jlv-S4-H4Q" secondAttribute="bottom" constant="15" id="bUZ-aT-qhu"/>
                             <constraint firstAttribute="centerX" secondItem="fCZ-LD-pe1" secondAttribute="centerX" id="c3q-xP-xXU"/>
                             <constraint firstItem="YXi-bq-mxz" firstAttribute="top" secondItem="eYY-Px-mD1" secondAttribute="bottom" constant="15" id="mG4-iv-SUt"/>
                             <constraint firstItem="sbe-zy-Ca8" firstAttribute="bottom" secondItem="czb-0p-3LY" secondAttribute="bottom" constant="42" id="qaT-zL-cNa"/>
-                            <constraint firstItem="czb-0p-3LY" firstAttribute="trailing" secondItem="jN5-3L-72x" secondAttribute="trailingMargin" id="xgo-LM-eeN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="sbe-zy-Ca8"/>
                     </view>
@@ -644,6 +644,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="back" width="1383" height="2201"/>
+        <image name="back" width="692" height="1102"/>
     </resources>
 </document>
