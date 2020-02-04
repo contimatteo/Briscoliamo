@@ -1,4 +1,4 @@
-******INDICE**
+**INDICE**
 
 {{TOC}}
 
@@ -28,10 +28,12 @@ Lo scopo era quello di creare due ambienti di gioco: il primo (con la presenza d
 +++
 
 
-# Architettura generale (TODO)
+# Architettura generale
 Il pattern utilizzato nella realizzazione di questa applicazione è il Model-View-Controller (MVC). L’importanza di questo pattern consiste nella separazione della logica di presentazione dei dati rispetto alla logica di gestione di questi. Per questo progetto infatti, sono stati creati diversi modelli di dati corrispondenti alle varie entità in gioco (Carte, Giocatori, ..), tutti gestiti da diverse librerie di “gestione” (Handlers), le quali astraggono completamente il flusso di creazione/modifica dei dati rispetto alla loro presentazione (gestita all’interno dei Controllers).
 
-[Main.storyboard](./assets/main-storyboard.png)
+![Main.storyboard](https://github.com/contimatteo/briscola/blob/master/Report/assets/main-storyboard.png?raw=true)
+
++++
 
 ## MVC
 All’interno dell’applicazione esiste un `NavigationController` attraverso il quale  è possibile muoversi attraverso la varie view che compongono l’applicazione. Esistono infatti 4 schermate:
@@ -42,27 +44,49 @@ All’interno dell’applicazione esiste un `NavigationController` attraverso il
 
 Di seguito verranno riportati i principali modelli di dati utilizzati e le librerie a supporto di questi.
 
-### Carta (Modello Dati) (TODO)
-.. .. ..
-Gli attributi principali sono il tipo e il numero.
-.. .. ..
+### Carta (Modello Dati)
+Gli attributi fondamentali che ogni carta possiede sono:
+- `points`: ovvero il suo valore in punti in base alle regole della briscola.
+- `number`: il numero della carta (asso=1, ..,  re=10)
+- `type`: seme della carta
+- `name`: nome della carta composto dal numero e dal tipo (usato per referenziare l’immagine corrispondente)
 
-### Giocatore (Modello Dati) (TODO)
-.. .. ..
-contiene una variabile che identifica le carte che ha in mano e altre informazioni come il tipo (locale, emulatore), il nome e le carte conquistate presenti nel suo mazzo.
-.. .. ..
+### Giocatore (Modello Dati)
+Gli attributi fondamentali che ogni giocatore possiede sono:
+-  `name`: il nome del giocatore
+-  `index`: il suo indice (il nome è fuorviante, in realtà è usato come identificativo)
+-  `type`: la tipologia (locale, remoto o emulatore)
+-  `cardsHand`: le carte che ha in mano (in un determinato instante)
+-  `currentDeck`: le carte vinte nel suo mazzo (in un determinato instante)
+-  `deckPoints`: (computed) I punti totali del suo mazzo (in un determinato instante)
 
-### Gestore Gioco (TODO)
-.. .. ..
+### Gestore Gioco
+I principali attributi interni sono:
+- `mode`: modalità di gioco (single/multi-player)
+- `gameEnded`: indica se il gioco è finito
+- `aiPlayerEmulator`: istanza dell’emulatore
+- `players`: array contente la lista dei giocatori all’interno di una partita
+- `playerTurn`: indica l’indice del giocatore che dovrà giocare una carta (è usato per evitare conflitti all’interno di una mano)
+- `initialCards`: lista delle carte iniziarli caricate
+- `deckCards`: lista delle carte nel mazzo principale (mescolate)
+- `cardsOnTable`: lista delle carte in tavola (corrispondenza tra l’indice di ogni carta e quello di ogni giocatore)
+- `trumpCard`: briscola in tavola (considerata la sua importanza nella gestione del gioco è slegata dal resto delle carte)
+    
+### Gestore Sessione (MultiPeer)
+I principali attributi interni sono:
+- `connectedPeers`: lista dei peers connessi
+- `connectingPeers`: lista dei peers in connessione
+- `disconnectedPeers`: lista dei peers non connessi
+- `peerID`: identificativo del peer locale
+- `session`: (lazy) variable che contiene l’istanza dell’utilità per la gestione  della sessione. 
 
-### Gestore Database (CoreData) (TODO)
-.. .. ..
+### Database (CoreData)
+Entità:
+- `Players`: contiene solo i campi incide, nome e tipo.
+- `Results`: contiene la serializzazione delle carte vinte e la somma dei loro punti.
+- `Matches`: contiene la coppia di relazioni sopra definite, sia per il giocatore locale che per quello remoto/emulato.
 
-### Gestore Sessione (MultiPeer) (TODO)
-.. .. ..
-
-### Gestore Social (Facebook) (TODO)
-.. .. ..
++++
 
 ## Emulatore
 Questa classe si occupa di simulare la presenza (in modalità single-player) di un giocatore reale con cui giocare. È stata realizzata, infatti, come una macchina a stati che in base alla classificazione real-time delle carte in tavola e quelle in mano (dell’emulatore) elabora uno stato finale, che si traduce nella scelta di una carta da giocare (chiaramente tra quelle che ha in mano).
@@ -112,12 +136,10 @@ Avendo illustrato nel capitolo precedente le 4 view principali all’interno del
 3. Salvataggio dei risultati
 4. Condivisione dei risultati
 
-### Interfaccia Grafica (TODO)
-.. .. ..
+### Interfaccia Grafica
 La Figura sottostante mostra ciò che l’utente vede nel momento in cui viene avviata la partita. Notiamo come le nostre carte sono scoperte (al contrario di quelle dell’avversario) e per poter giocare una carta è necessario toccarla. Una volta che anche il nostro avversario (emulatore/giocatore remoto) avrà giocato una carta, il vincente della mano si aggiudicherà le carte, ed esse verranno aggiunte al suo mazzo (non visibile), e automaticamente verrà distribuita una nuova carta (ad ogni giocatore) e la mano sarà pronta per iniziare (partirà il giocatore che ha vinto quella precedente)
 
-FLUSSO IMMAGINI: gioco da iniziare, gioco iniziato, una carta giocata, due carte giocate.
-.. .. ..
+![Main.storyboard](https://github.com/contimatteo/briscola/raw/feature/report/Report/assets/flow.jpg)
 
 ### Flusso Dati (Database)
 Il flusso dei dati persistiti è piuttosto semplice:
@@ -136,9 +158,9 @@ Nessun dato viene salvato automaticamente e non è possibile salvare nessuna inf
 - Editor: *Xcode (versione 11.2.1)*
 - Linguaggio di Programmazione: *Swift (versione 5.0)*
 
-
-+++
-
+\
+\
+\
 
 # Progettazione
 SCHERMATA GIOCO
@@ -187,8 +209,7 @@ Lista di alcune possibili estensioni:
 
 
 # Conclusione e Commenti Finali
-In primo luogo, questo progetto mi ha dato la possibilità di applicare le conoscenze teoriche acquisite a lezione (per il sistema operativo iOS) lasciandomi, allo stesso tempo, la completa libertà di scegliere le librerie Swift su cui concentrarmi.
-In secondo luogo, a monte delle librerie utilizzate, è stato interessante sviluppare un’applicazione da zero: la progettazione dell’applicazione ha richiesto tempo (considerata la mia inesperienza) e l’adattamento alle logiche di sviluppo mobile non sono state semplici all’inizio (per esempio il ruolo dei *Delegates* e la loro applicazione a diversi casi d’uso). 
+A monte delle librerie utilizzate, è stato interessante sviluppare un’applicazione da zero: la progettazione dell’applicazione ha richiesto tempo (considerata la mia inesperienza) e l’adattamento alle logiche di sviluppo mobile non sono state semplici all’inizio (per esempio il ruolo dei *Delegates* e la loro applicazione a diversi casi d’uso). 
 Sicuramente si potrebbero apportare diversi miglioramenti all’emulatore, ma essendo già presente una classificazione real-time delle carte in gioco, questi non dovrebbero richiedere molto sforzo.
 Riassumendo, posso affermare che l’aspetto principale su cui mi sono concentrato, durante tutto lo sviluppo, è stato quello della progettazione e della gestione del flusso di dati. Ho cercato di creare una code-base facilmente estendibile (come già detto in precedenza) e molto modularizzata. La grafica sicuramente è l’aspetto che ho curato meno.
 

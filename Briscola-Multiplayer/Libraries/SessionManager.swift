@@ -34,21 +34,21 @@ class SessionManager: NSObject {
     // An object that implements the `SessionControllerDelegate` protocol
     weak var delegate: SessionControllerDelegate?
     
-    public let peerID = MCPeerID(displayName: UIDevice.current.name)
+    let peerID = MCPeerID(displayName: UIDevice.current.name)
     
-    public lazy var session: MCSession = {
+    lazy var session: MCSession = {
         let session = MCSession(peer: self.peerID)
         session.delegate = self
         return session
     }()
     
-    public var serviceAdvertiser: MCNearbyServiceAdvertiser
-    public var serviceBrowser: MCNearbyServiceBrowser
+    var serviceAdvertiser: MCNearbyServiceAdvertiser
+    var serviceBrowser: MCNearbyServiceBrowser
     
     // Connected peers are stored in the MCSession
     // Manually track connecting and disconnected peers
-    public var connectingPeersDictionary = NSMutableDictionary()
-    public var disconnectedPeersDictionary = NSMutableDictionary()
+    var connectingPeersDictionary = NSMutableDictionary()
+    var disconnectedPeersDictionary = NSMutableDictionary()
     
     //
     // MARK: Initializer
@@ -82,7 +82,7 @@ class SessionManager: NSObject {
     //
     // MARK: Services start / stop
     
-    public func startServices() {
+    func startServices() {
         serviceBrowser.delegate = self
         serviceBrowser.startBrowsingForPeers()
         
@@ -90,7 +90,7 @@ class SessionManager: NSObject {
         serviceAdvertiser.startAdvertisingPeer()
     }
     
-    public func stopServices() {
+    func stopServices() {
         serviceAdvertiser.stopAdvertisingPeer()
         serviceAdvertiser.delegate = nil
         
@@ -112,14 +112,14 @@ class SessionManager: NSObject {
         return false;
     }
     
-    public func sendData(data: [Any]) -> Bool {
+    func sendData(data: [Any]) -> Bool {
         if (session.connectedPeers.count < 1) { return false; }
         guard let data = UtilityHelper.arrayToData(data) else { return false; }
         
         return send(data);
     }
     
-    public func sendData(data: Data) -> Bool {
+    func sendData(data: Data) -> Bool {
         if (session.connectedPeers.count < 1) { return false; }
         
         return send(data);

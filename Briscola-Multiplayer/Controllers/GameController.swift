@@ -184,7 +184,7 @@ class GameController: UIViewController {
     
     private func render() {
         // STEP 0: render buttons and dialogs.
-         DispatchQueue.main.async {
+        DispatchQueue.main.async {
             self.startGameButton.isHidden = !self.gameHandler.gameEnded;
             if (self.gameHandler.gameEnded) {
                 self.gameStatusLabel.text = "pronto per iniziare ?";

@@ -9,19 +9,19 @@
 import Foundation
 
 
-public class PlayerModel {
+class PlayerModel {
     
     //
     // MARK: Variables
     
-    public var name: String;
-    public var index: Int;
-    public var type: PlayerType;
+    var name: String;
+    var index: Int;
+    var type: PlayerType;
     
-    public var cardsHand: Array<CardModel>;
-    public var currentDeck: Array<CardModel> = [];
+    var cardsHand: Array<CardModel>;
+    var currentDeck: Array<CardModel> = [];
     
-    public var deckPoints: Int {
+    var deckPoints: Int {
         get {
             var sum = 0;
             for card in currentDeck { sum += card.points; }
@@ -48,11 +48,11 @@ public class PlayerModel {
     //
     // MARK: Methods
     
-    public func getIndex() -> Int {
+    func getIndex() -> Int {
         return index;
     }
     
-    public func playCard(card: CardModel) {
+    func playCard(card: CardModel) {
         // remove this card from {currentCardHand}.
         let cardPlayed = cardsHand.enumerated().first(where: {$0.element == card})!;
         cardsHand.remove(at: cardPlayed.offset);
