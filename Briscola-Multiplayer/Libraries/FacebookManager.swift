@@ -39,7 +39,7 @@ class FacebookManager {
     //
     // MARK
     
-    public func login(from: UIViewController, didCompleteHandler: LoginManagerLoginResultBlock!) {
+    func login(from: UIViewController, didCompleteHandler: LoginManagerLoginResultBlock!) {
         // self.loginManager.logIn(permissions: self.permissions, from: from, handler: handler);
         if (AccessToken.current != nil) { return; }
         
@@ -48,7 +48,7 @@ class FacebookManager {
         }
     }
     
-    public func logout() {
+    func logout() {
         self.loginManager.logOut()
         self.removeCurrentUserData()
     }
@@ -73,14 +73,14 @@ class FacebookManager {
         });
     }
     
-    public func getUserProfileUrl() -> String? {
+    func getUserProfileUrl() -> String? {
         guard let userProfile = self.currentUserProfile else { return nil; }
         let userId = userProfile["id"] as! String;
         
         return "https://graph.facebook.com/\(userId)/picture?type=large";
     }
     
-    public func shareTextOnFaceBook(controller: SocialController, match: DB_Match) {
+    func shareTextOnFaceBook(controller: SocialController, match: DB_Match) {
         let shareContent = ShareLinkContent()
         
         // url

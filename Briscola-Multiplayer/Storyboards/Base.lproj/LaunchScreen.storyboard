@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,10 +22,11 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="7Ob-UU-zKM">
                                 <rect key="frame" x="10" y="0.0" width="300" height="568"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BRISCOLA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUV-1S-z0S">
-                                <rect key="frame" x="101" y="367" width="118" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BRISCOLA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUV-1S-z0S">
+                                <rect key="frame" x="95" y="408" width="130" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="118" id="AFH-Ea-hbM"/>
+                                    <constraint firstAttribute="width" constant="130" id="YHt-7V-C0t"/>
+                                    <constraint firstAttribute="height" constant="40" id="rI6-UP-WsO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -35,14 +36,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="7Ob-UU-zKM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="0OH-yn-FeD"/>
+                            <constraint firstItem="CUV-1S-z0S" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="6bv-cR-hSY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7Ob-UU-zKM" secondAttribute="trailing" constant="10" id="E9R-Cd-8gO"/>
-                            <constraint firstItem="CUV-1S-z0S" firstAttribute="top" secondItem="7Ob-UU-zKM" secondAttribute="bottom" constant="-201" id="KgM-UU-SBl"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CUV-1S-z0S" secondAttribute="trailing" constant="101" id="PKb-Wb-w20"/>
                             <constraint firstItem="VKw-g8-gao" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="aKr-Ju-gFH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7Ob-UU-zKM" secondAttribute="bottom" id="aaG-Ze-l8d"/>
                             <constraint firstItem="VKw-g8-gao" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="aax-Ti-v6G"/>
-                            <constraint firstItem="CUV-1S-z0S" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="101" id="jd6-gg-KuW"/>
                             <constraint firstItem="7Ob-UU-zKM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nuw-dz-Fy2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="CUV-1S-z0S" secondAttribute="bottom" constant="120" id="vHt-QU-CWp"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="VKw-g8-gao" secondAttribute="trailing" id="ykJ-tL-fG2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="VKw-g8-gao" secondAttribute="bottom" id="yl1-yF-XPe"/>
                         </constraints>

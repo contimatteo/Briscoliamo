@@ -12,21 +12,21 @@ import Foundation
 //
 // MARK: Env Variables
 
-public var _SESSION_DEBUG_: Bool = true;
+var _SESSION_DEBUG_: Bool = true;
 
 //
 // MARK: Functional Variables
 
-public struct CONSTANTS {
+struct CONSTANTS {
     
-    static public let MAX_NUMBER_OF_PLAYERS: Int = 2;
-    static public let TURN_SECONDS_DELAY: Double = 4;
-    static public let PLAYER_CARDS_HAND_SISZE: Int = 3;
+    static let MAX_NUMBER_OF_PLAYERS: Int = 2;
+    static let TURN_SECONDS_DELAY: Double = 4;
+    static let PLAYER_CARDS_HAND_SISZE: Int = 3;
     
-    static public let REMOTE_PLAYER_NAME: String = "avversario";
-    static public let EMULATOR_PLAYER_NAME: String = "avversario";
-    static public let LOCAL_PLAYER_NAME: String = "TU";
+    static let REMOTE_PLAYER_NAME: String = "avversario";
+    static let EMULATOR_PLAYER_NAME: String = "avversario";
+    static let LOCAL_PLAYER_NAME: String = "TU";
     
-    static public let APP_GITHUB_REPOSITORY_LINK: String = "https://github.com/contimatteo/Briscola";
+    static let APP_GITHUB_REPOSITORY_LINK: String = "https://github.com/contimatteo/Briscola";
     
 }

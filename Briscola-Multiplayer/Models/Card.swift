@@ -9,28 +9,28 @@
 import Foundation
 import UIKit
 
-public class CardModel: Equatable {
+class CardModel: Equatable {
     
     //
     // MARK: Protocol Adapters
     
-    public static func == (lhs: CardModel, rhs: CardModel) -> Bool {
+    static func == (lhs: CardModel, rhs: CardModel) -> Bool {
         return lhs.number == rhs.number && lhs.type == rhs.type;
     }
     
     //
     // MARK: Variables
     
-    public var name: String;
-    public var type: CardType;
-    public var tag: Int = 0;
+    var name: String;
+    var type: CardType;
+    var tag: Int = 0;
     
-    public var number: Int;
-    public var points: Int;
-    public var imageUrl: String;
-    public var image: UIImage;
+    var number: Int;
+    var points: Int;
+    var imageUrl: String;
+    var image: UIImage;
     
-    public var hasPoints: Bool { get { return points > 0; } }
+    var hasPoints: Bool { get { return points > 0; } }
     
     //
     // MARK: Initialzers

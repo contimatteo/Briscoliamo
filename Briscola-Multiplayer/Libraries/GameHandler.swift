@@ -9,25 +9,25 @@
 import Foundation
 
 
-public class GameHandler {
+class GameHandler {
     //
     // MARK: Variables
     private var mode: GameType = .singleplayer;
-    public var gameEnded: Bool = true;
+    var gameEnded: Bool = true;
     
     private var aiPlayerEmulator: AIPlayerEmulator? = nil;
     
-    public var players: Array<PlayerModel> = [];
-    public var playerTurn: Int = 0;
-    public var initialCards: Array<CardModel> = [];
-    public var deckCards: Array<CardModel> = [];
-    public var cardsOnTable: Array<CardModel?> = [];
-    public var trumpCard: CardModel?;
+    var players: Array<PlayerModel> = [];
+    var playerTurn: Int = 0;
+    var initialCards: Array<CardModel> = [];
+    var deckCards: Array<CardModel> = [];
+    var cardsOnTable: Array<CardModel?> = [];
+    var trumpCard: CardModel?;
     
     //
     // MARK: Public Methods
     
-    public func initSinglePlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersName: [String]) {
+    func initSinglePlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersName: [String]) {
         self.mode = .singleplayer;
         gameEnded = false;
         
@@ -44,7 +44,7 @@ public class GameHandler {
                 playersType.insert(.local, at: i);
             } else {
                 playersType.insert(.emulator, at: i);
-
+                
             }
         }
         _initializePlayers(numberOfPlayers: numberOfPlayers, playersType: playersType, playersName: playersName);
@@ -61,7 +61,7 @@ public class GameHandler {
         }
     }
     
-    public func initMultiPlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersType: [PlayerType], playersName: [String], deckCards: [CardModel]? = nil) {
+    func initMultiPlayer(numberOfPlayers: Int, localPlayerIndex: Int, playersType: [PlayerType], playersName: [String], deckCards: [CardModel]? = nil) {
         self.mode = .multiplayer;
         gameEnded = false;
         
@@ -93,7 +93,7 @@ public class GameHandler {
         // }
     }
     
-    public func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
+    func playCard(playerIndex: Int, card: CardModel? = nil) -> Bool {
         if (playerIndex != playerTurn || gameEnded) { return false; }
         
         // HUMAN
@@ -111,7 +111,7 @@ public class GameHandler {
         return true;
     }
     
-    public func loadCards() -> Array<CardModel> {
+    func loadCards() -> Array<CardModel> {
         var initialCards: Array<CardModel> = [];
         var cards: Array<CardModel> = [];
         let types: Array<CardType> = [.bastoni, .denari, .coppe, .spade];
@@ -134,11 +134,11 @@ public class GameHandler {
         return cards;
     }
     
-    public func nextTurn() {
+    func nextTurn() {
         playerTurn = (playerTurn + 1) % players.count;
     }
     
-    public func endTurn() {
+    func endTurn() {
         // some player hasn't been played the card yet.
         let isTurnReadyToEnd: Bool = cardsOnTable.first(where: {$0 == nil}) == nil;
         if (!isTurnReadyToEnd) {

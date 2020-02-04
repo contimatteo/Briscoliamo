@@ -78,7 +78,7 @@ extension SocialController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DatabaseMatchRecord") as! DatabseResultViewCell;
-
+        
         let currentMatch = dbMatchesRecords[indexPath.row];
         cell.localPlayerNameLabel.text = String(describing: currentMatch.localPlayer.name);
         cell.remotePlayerNameLabel.text = String(describing: currentMatch.remotePlayer.name);

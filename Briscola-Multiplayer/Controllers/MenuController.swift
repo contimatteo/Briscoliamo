@@ -51,22 +51,22 @@ class MenuController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-            case "startTheGame":
-                let gameController: GameController = segue.destination as! GameController;
-                
-                self.gameOptions!.localPlayerName = localPlayerName.text!;
-                self.gameOptions!.mode = self.gameMode.selectedSegmentIndex == 0 ? .singleplayer : .multiplayer;
-                self.gameOptions!.gameSpeed = CONSTANTS.TURN_SECONDS_DELAY - (Double(self.gameSpeed.value) * 0.5);
-                self.gameOptions!.showRemotePlayerCards = showRemotePlayerCardsSwitcher.isOn;
-                self.gameOptions!.showRemotePlayerPoints = showRemotePlayerPointsSwitcher.isOn;
-                self.gameOptions!.showLocalPlayerPoints = showLocalPlayerPoints.isOn;
-                
-                gameController.gameOptions = self.gameOptions!;
-                break;
-            default:
-                // nothing to do ...
-                // let socialsController = segue.destination as? SocialController;
-                print("[INFO] segue.identifier = \(segue.identifier ?? "?????")")
+        case "startTheGame":
+            let gameController: GameController = segue.destination as! GameController;
+            
+            self.gameOptions!.localPlayerName = localPlayerName.text!;
+            self.gameOptions!.mode = self.gameMode.selectedSegmentIndex == 0 ? .singleplayer : .multiplayer;
+            self.gameOptions!.gameSpeed = CONSTANTS.TURN_SECONDS_DELAY - (Double(self.gameSpeed.value) * 0.5);
+            self.gameOptions!.showRemotePlayerCards = showRemotePlayerCardsSwitcher.isOn;
+            self.gameOptions!.showRemotePlayerPoints = showRemotePlayerPointsSwitcher.isOn;
+            self.gameOptions!.showLocalPlayerPoints = showLocalPlayerPoints.isOn;
+            
+            gameController.gameOptions = self.gameOptions!;
+            break;
+        default:
+            // nothing to do ...
+            // let socialsController = segue.destination as? SocialController;
+            print("[INFO] segue.identifier = \(segue.identifier ?? "?????")")
         }
     }
     
@@ -80,7 +80,7 @@ class MenuController: UIViewController {
             startGameButton.isEnabled = true;
         }
     }
-
+    
 }
 
 
