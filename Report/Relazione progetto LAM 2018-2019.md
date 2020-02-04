@@ -33,6 +33,8 @@ Il pattern utilizzato nella realizzazione di questa applicazione è il Model-Vie
 
 ![Main.storyboard](https://github.com/contimatteo/briscola/blob/master/Report/assets/main-storyboard.png?raw=true)
 
++++
+
 ## MVC
 All’interno dell’applicazione esiste un `NavigationController` attraverso il quale  è possibile muoversi attraverso la varie view che compongono l’applicazione. Esistono infatti 4 schermate:
 1. **Menù**: da qui è possibile impostare le varie opzioni di gioco e passare sia alla schermata di gioco, sia a quella “Social”.
@@ -83,6 +85,8 @@ Entità:
 - `Players`: contiene solo i campi incide, nome e tipo.
 - `Results`: contiene la serializzazione delle carte vinte e la somma dei loro punti.
 - `Matches`: contiene la coppia di relazioni sopra definite, sia per il giocatore locale che per quello remoto/emulato.
+
++++
 
 ## Emulatore
 Questa classe si occupa di simulare la presenza (in modalità single-player) di un giocatore reale con cui giocare. È stata realizzata, infatti, come una macchina a stati che in base alla classificazione real-time delle carte in tavola e quelle in mano (dell’emulatore) elabora uno stato finale, che si traduce nella scelta di una carta da giocare (chiaramente tra quelle che ha in mano).
@@ -154,9 +158,9 @@ Nessun dato viene salvato automaticamente e non è possibile salvare nessuna inf
 - Editor: *Xcode (versione 11.2.1)*
 - Linguaggio di Programmazione: *Swift (versione 5.0)*
 
-
-+++
-
+\
+\
+\
 
 # Progettazione
 SCHERMATA GIOCO
@@ -205,8 +209,7 @@ Lista di alcune possibili estensioni:
 
 
 # Conclusione e Commenti Finali
-In primo luogo, questo progetto mi ha dato la possibilità di applicare le conoscenze teoriche acquisite a lezione (per il sistema operativo iOS) lasciandomi, allo stesso tempo, la completa libertà di scegliere le librerie Swift su cui concentrarmi.
-In secondo luogo, a monte delle librerie utilizzate, è stato interessante sviluppare un’applicazione da zero: la progettazione dell’applicazione ha richiesto tempo (considerata la mia inesperienza) e l’adattamento alle logiche di sviluppo mobile non sono state semplici all’inizio (per esempio il ruolo dei *Delegates* e la loro applicazione a diversi casi d’uso). 
+A monte delle librerie utilizzate, è stato interessante sviluppare un’applicazione da zero: la progettazione dell’applicazione ha richiesto tempo (considerata la mia inesperienza) e l’adattamento alle logiche di sviluppo mobile non sono state semplici all’inizio (per esempio il ruolo dei *Delegates* e la loro applicazione a diversi casi d’uso). 
 Sicuramente si potrebbero apportare diversi miglioramenti all’emulatore, ma essendo già presente una classificazione real-time delle carte in gioco, questi non dovrebbero richiedere molto sforzo.
 Riassumendo, posso affermare che l’aspetto principale su cui mi sono concentrato, durante tutto lo sviluppo, è stato quello della progettazione e della gestione del flusso di dati. Ho cercato di creare una code-base facilmente estendibile (come già detto in precedenza) e molto modularizzata. La grafica sicuramente è l’aspetto che ho curato meno.
 
