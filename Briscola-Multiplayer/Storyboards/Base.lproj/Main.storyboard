@@ -242,10 +242,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCZ-LD-pe1">
-                                <rect key="frame" x="69" y="369" width="183" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCZ-LD-pe1">
+                                <rect key="frame" x="65" y="368" width="190" height="30"/>
                                 <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="190" id="IhT-a6-VBU"/>
                                     <constraint firstAttribute="height" constant="30" id="wEg-Aw-S9Q"/>
                                 </constraints>
                                 <state key="normal" title="SALVA IL RISULTATO">
@@ -273,8 +274,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="PUNTEGGIO AVVERSARIO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jlv-S4-H4Q">
-                                <rect key="frame" x="59" y="167" width="203" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PUNTEGGIO AVVERSARIO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jlv-S4-H4Q">
+                                <rect key="frame" x="58.5" y="166" width="203" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="P8c-F3-yCd"/>
                                 </constraints>
@@ -308,6 +309,7 @@
                             <constraint firstAttribute="centerX" secondItem="fCZ-LD-pe1" secondAttribute="centerX" id="c3q-xP-xXU"/>
                             <constraint firstItem="YXi-bq-mxz" firstAttribute="top" secondItem="eYY-Px-mD1" secondAttribute="bottom" constant="15" id="mG4-iv-SUt"/>
                             <constraint firstItem="sbe-zy-Ca8" firstAttribute="bottom" secondItem="czb-0p-3LY" secondAttribute="bottom" constant="42" id="qaT-zL-cNa"/>
+                            <constraint firstItem="Jlv-S4-H4Q" firstAttribute="centerX" secondItem="jN5-3L-72x" secondAttribute="centerX" id="rjw-oy-EZv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="sbe-zy-Ca8"/>
                     </view>
