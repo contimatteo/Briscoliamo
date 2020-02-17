@@ -55,7 +55,7 @@ class ResultsController: UIViewController {
     
     private func render() {
         // button
-        saveResultButton.isEnabled = !matchResultSaved;
+        saveResultButton.isHidden = matchResultSaved;
         
         // match result label
         var localPlayerMatchResultText: String = "HAI PAREGGIATO!";
