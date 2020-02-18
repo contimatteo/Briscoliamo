@@ -354,7 +354,7 @@
                                     <segue destination="NOz-NJ-38e" kind="show" identifier="showSocialView" id="51h-ve-b8L"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Inserisci il tuo nome" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P2P-g5-l80">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="il tuo nome" borderStyle="roundedRect" placeholder="Inserisci il tuo nome" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P2P-g5-l80">
                                 <rect key="frame" x="60" y="86" width="200" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="3D5-zT-Uef"/>
@@ -418,7 +418,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n3i-rn-3Kr">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="n3i-rn-3Kr">
                                 <rect key="frame" x="208" y="325" width="52" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="O2l-ot-ukr"/>
@@ -435,7 +435,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OzO-Tt-uAr">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="OzO-Tt-uAr">
                                 <rect key="frame" x="58" y="325" width="52" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="4TS-oV-JDs"/>
@@ -462,7 +462,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ya7-82-pLc">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ya7-82-pLc">
                                 <rect key="frame" x="135" y="395" width="52" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Hwt-cb-JQX"/>
