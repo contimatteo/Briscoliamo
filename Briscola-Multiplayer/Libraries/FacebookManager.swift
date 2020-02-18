@@ -14,14 +14,14 @@ import FBSDKShareKit
 class FacebookManager {
     
     //
-    // MARK:
+    // MARK: Variables
     
     private var permissions: [String];
     private var loginManager: LoginManager;
     private var currentUserProfile : [String: Any]?;
     
     //
-    // MARK:
+    // MARK: Initializers
     
     init(permissions: [String]) {
         self.permissions = permissions;
@@ -37,7 +37,7 @@ class FacebookManager {
     }
     
     //
-    // MARK
+    // MARK: Public Methods
     
     func login(from: UIViewController, didCompleteHandler: LoginManagerLoginResultBlock!) {
         // self.loginManager.logIn(permissions: self.permissions, from: from, handler: handler);
@@ -100,7 +100,7 @@ class FacebookManager {
     }
     
     //
-    // MARK
+    // MARK: Private Methods
     
     private func loginDidComplete(_ result: LoginManagerLoginResult?, error: Error?, didComplete: LoginManagerLoginResultBlock!) {
         // error

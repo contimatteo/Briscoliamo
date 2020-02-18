@@ -10,8 +10,9 @@ import Foundation
 
 
 class AIPlayerEmulator {
+    
     //
-    // MARK:
+    // MARK: Variables
     
     private var trumpCard: CardModel;
     
@@ -22,14 +23,14 @@ class AIPlayerEmulator {
     private var cardsOnTable: Array<CardModel?> = [];
     
     //
-    // MARK:
+    // MARK: Initializers
     
     init(trumpCard: CardModel) {
         self.trumpCard = trumpCard;
     }
     
     //
-    // MARK:
+    // MARK: Methods
     
     func playCard(playerIndex: Int, playersHands: Array<Array<CardModel>>, cardsOnTable: Array<CardModel?>) -> Int {
         var cardToPlay: Int?;

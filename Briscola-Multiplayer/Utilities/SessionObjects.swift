@@ -9,9 +9,10 @@
 import Foundation
 
 //
-// MARK: Session
+// MARK: - SS_InitObj
 
 class SS_InitObj: NSObject, NSCoding {
+    
     var cardsDeck: [String]!;
     var senderPlayerIndex: Int!;
     var senderPlayerName: String!;
@@ -48,9 +49,14 @@ class SS_InitObj: NSObject, NSCoding {
     static func fromData(_ data: Data) -> SS_InitObj? {
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? SS_InitObj;
     }
+
 }
 
+//
+// MARK: - SS_CardPlayed
+
 class SS_CardPlayed: NSObject, NSCoding {
+    
     var type: String!;
     var number: Int!;
     var senderPlayerIndex: Int!;
@@ -87,4 +93,5 @@ class SS_CardPlayed: NSObject, NSCoding {
     static func fromData(_ data: Data) -> SS_CardPlayed? {
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? SS_CardPlayed;
     }
+
 }
