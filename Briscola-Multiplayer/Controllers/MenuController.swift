@@ -17,7 +17,7 @@ class MenuController: UIViewController {
     var gameOptions: GameOptions?;
     
     //
-    // MARK: @
+    // MARK: @IBOutlet
     
     @IBOutlet weak var localPlayerName: UITextField!
     @IBOutlet weak var gameMode: UISegmentedControl!
@@ -71,7 +71,7 @@ class MenuController: UIViewController {
     }
     
     //
-    // MARK:
+    // MARK: Events
     
     @objc func localPlayerNameChanged(_ input: UITextField) {
         guard let playerName: String = input.text else { return; }

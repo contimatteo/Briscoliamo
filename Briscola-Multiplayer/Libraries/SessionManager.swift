@@ -42,8 +42,16 @@ class SessionManager: NSObject {
         return session
     }()
     
-    var serviceAdvertiser: MCNearbyServiceAdvertiser
-    var serviceBrowser: MCNearbyServiceBrowser
+    // MCNearbyServiceAdvertiser: publishes an advertisement for a specific service that
+    // your app provides through the Multipeer Connectivity framework and notifies its
+    // delegate about invitations from nearby peers.
+    var serviceAdvertiser: MCNearbyServiceAdvertiser;
+    
+    // MCNearbyServiceBrowser: searches (by service type) for services offered by nearby
+    // devices using infrastructure Wi-Fi, peer-to-peer Wi-Fi, and Bluetooth (in iOS) or Ethernet
+    // (in macOS and tvOS), and provides the ability to easily invite those devices to a Multipeer
+    // Connectivity session (MCSession).
+    var serviceBrowser: MCNearbyServiceBrowser;
     
     // Connected peers are stored in the MCSession
     // Manually track connecting and disconnected peers
@@ -54,7 +62,7 @@ class SessionManager: NSObject {
     // MARK: Initializer
     
     override init() {
-        let kMCSessionServiceType = "mcsessionp2p"
+        let kMCSessionServiceType = "mcsessionp2p";
         
         // Create the service advertiser
         serviceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: kMCSessionServiceType)
@@ -124,16 +132,17 @@ class SessionManager: NSObject {
         
         return send(data);
     }
-    
-    
 }
+
 
 
 //
 // MARK: MCSessionDelegate
+// MCSessionDelegate: this protocol defines methods that a delegate of the MCSession class
+// can implement to handle session-related events.
 
 extension SessionManager: MCSessionDelegate {
-    
+    // Remote peer changed state.
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         let displayName = peerID.displayName
         
@@ -159,18 +168,23 @@ extension SessionManager: MCSessionDelegate {
         delegate?.sessionDidChangeState()
     }
     
+    // Received data from remote peer.
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) from [\(peerID.displayName)]"); }
         
         delegate?.didReceivedDataFromPeer(data);
     }
     
+    // UNUSED: Start receiving a resource from remote peer.
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
         if (_SESSION_DEBUG_) { 
             NSLog("\(#function) \(resourceName) from [\(peerID.displayName)] with progress [\(progress)]");
         }
     }
     
+    // UNUSED: Finished receiving a resource from remote peer and saved the content
+    // in a temporary location - the app is responsible for moving the file
+    // to a permanent location within its sandbox.
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         // If error is not nil something went wrong
         if (error != nil) {
@@ -180,22 +194,23 @@ extension SessionManager: MCSessionDelegate {
         }
     }
     
-    // Streaming API not utilized in this sample code
+    // UNUSED: Received a byte stream from remote peer.
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) \(streamName) from [\(peerID.displayName)]"); }
     }
 }
 
 
+
 //
 // MARK: MCNearbyServiceBrowserDelegate
+// MCNearbyServiceBrowserDelegate: this protocol defines methods that a MCNearbyServiceBrowser
+// object’s delegate can implement to handle browser-related events.
 
 extension SessionManager: MCNearbyServiceBrowserDelegate {
-    
-    // Found a nearby advertising peer
+    // Found a nearby advertising peer.
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let remotePeerName = peerID.displayName
-        
         let myPeerID = session.myPeerID
         
         let shouldInvite = (myPeerID.displayName.compare(remotePeerName) == .orderedDescending)
@@ -210,27 +225,35 @@ extension SessionManager: MCNearbyServiceBrowserDelegate {
         delegate?.sessionDidChangeState()
     }
     
+    // A nearby peer has stopped advertising.
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) [\(peerID.displayName)]"); }
     }
     
+    // Browsing did not start due to an error.
     func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) \(error)"); }
     }
 }
 
 
+
 //
 // MARK: MCNearbyServiceAdvertiserDelegate
+// MCNearbyServiceAdvertiserDelegate: this protocol describes the methods that the delegate object
+// for an MCNearbyServiceAdvertiser instance can implement for handling events from the
+// MCNearbyServiceAdvertiser class.
 
 extension SessionManager: MCNearbyServiceAdvertiserDelegate {
-    
+    // Incoming invitation request.  Call the invitationHandler block with YES
+    // and a valid session to connect the inviting peer to the session.
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) Accepting invitation from [\(peerID.displayName)]"); }
         
-        invitationHandler(true, session)
+        invitationHandler(true, session);
     }
     
+    // Advertising did not start due to an error.
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
         if (_SESSION_DEBUG_) { NSLog("\(#function) \(error)"); }
     }

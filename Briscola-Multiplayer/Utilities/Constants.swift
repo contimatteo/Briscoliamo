@@ -25,7 +25,7 @@ struct CONSTANTS {
     
     static let REMOTE_PLAYER_NAME: String = "avversario";
     static let EMULATOR_PLAYER_NAME: String = "avversario";
-    static let LOCAL_PLAYER_NAME: String = "TU";
+    static let LOCAL_PLAYER_NAME: String = "TU"; // unused
     
     static let APP_GITHUB_REPOSITORY_LINK: String = "https://github.com/contimatteo/Briscola";
     
