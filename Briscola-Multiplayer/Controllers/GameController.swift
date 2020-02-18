@@ -56,7 +56,7 @@ class GameController: UIViewController {
         localPlayerIndex = 0;
         
         if (gameOptions.mode == .multiplayer) {
-            sessionManager = SessionManager();
+            sessionManager = SessionManager(self);
             sessionManager!.delegate = self;
             
             // start the session's services.
@@ -329,7 +329,6 @@ class GameController: UIViewController {
 // MARK: SessionControllerDelegate (protocol extension)
 
 extension GameController: SessionControllerDelegate {
-    
     func sessionDidChangeState() {
         // Ensure UI updates occur on the main queue.
         DispatchQueue.main.async {
@@ -356,7 +355,6 @@ extension GameController: SessionControllerDelegate {
             if end { return; }
         }
     }
-    
 }
 
 //
@@ -413,7 +411,6 @@ extension GameController {
 // MARK: Image/Model Methods (get, update)
 
 extension GameController {
-    
     private func _getModelFromImageView(imgView: UIImageView) -> (model: CardModel, playerIndex: Int, cardIndex: Int)? {
         for (pIndex, player) in gameHandler.players.enumerated() {
             for (cIndex, card) in player.cardsHand.enumerated() {
@@ -457,5 +454,18 @@ extension GameController {
             imageView.tag = -1;
         }
     }
-    
+}
+
+
+//
+// MARK: MCBrowserViewControllerDelegate (protocol extension)
+
+extension GameController: MCBrowserViewControllerDelegate {
+    func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
+        dismiss(animated: true)
+    }
+
+    func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
+        dismiss(animated: true)
+    }
 }

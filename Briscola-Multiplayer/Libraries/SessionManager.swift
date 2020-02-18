@@ -47,32 +47,29 @@ class SessionManager: NSObject {
     // delegate about invitations from nearby peers.
     var serviceAdvertiser: MCNearbyServiceAdvertiser;
     
-    // MCNearbyServiceBrowser: searches (by service type) for services offered by nearby
-    // devices using infrastructure Wi-Fi, peer-to-peer Wi-Fi, and Bluetooth (in iOS) or Ethernet
-    // (in macOS and tvOS), and provides the ability to easily invite those devices to a Multipeer
-    // Connectivity session (MCSession).
-    var serviceBrowser: MCNearbyServiceBrowser;
-    
     // Connected peers are stored in the MCSession
     // Manually track connecting and disconnected peers
     var connectingPeersDictionary = NSMutableDictionary()
     var disconnectedPeersDictionary = NSMutableDictionary()
     
+    var controller: UIViewController;
+    var myAdvertiserAssistant: MCAdvertiserAssistant!;
+    var mcBrowser: MCBrowserViewController?;
+    
     //
     // MARK: Initializer
     
-    override init() {
+    init(_ controller: UIViewController) {
         let kMCSessionServiceType = "mcsessionp2p";
+        self.controller = controller;
         
         // Create the service advertiser
-        serviceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: kMCSessionServiceType)
+        serviceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: kMCSessionServiceType);
         
-        // Create the service browser
-        serviceBrowser = MCNearbyServiceBrowser(peer: peerID, serviceType: kMCSessionServiceType)
+        super.init();
         
-        super.init()
-        
-        // startServices()
+        myAdvertiserAssistant = MCAdvertiserAssistant(serviceType: kMCSessionServiceType, discoveryInfo: nil, session: session);
+        mcBrowser = MCBrowserViewController(serviceType: kMCSessionServiceType, session: session);
     }
     
     //
@@ -91,19 +88,23 @@ class SessionManager: NSObject {
     // MARK: Services start / stop
     
     func startServices() {
-        serviceBrowser.delegate = self
-        serviceBrowser.startBrowsingForPeers()
+        serviceAdvertiser.delegate = self;
+        serviceAdvertiser.startAdvertisingPeer();
         
-        serviceAdvertiser.delegate = self
-        serviceAdvertiser.startAdvertisingPeer()
+        myAdvertiserAssistant.start();
+        
+        mcBrowser!.delegate = controller as? MCBrowserViewControllerDelegate;
+        
+        controller.present(mcBrowser!, animated: true)
     }
     
     func stopServices() {
+        myAdvertiserAssistant.stop()
+        
+        mcBrowser = nil;
+        
         serviceAdvertiser.stopAdvertisingPeer()
         serviceAdvertiser.delegate = nil
-        
-        serviceBrowser.stopBrowsingForPeers()
-        serviceBrowser.delegate = nil
     }
     
     //
@@ -199,43 +200,6 @@ extension SessionManager: MCSessionDelegate {
         if (_SESSION_DEBUG_) { NSLog("\(#function) \(streamName) from [\(peerID.displayName)]"); }
     }
 }
-
-
-
-//
-// MARK: MCNearbyServiceBrowserDelegate
-// MCNearbyServiceBrowserDelegate: this protocol defines methods that a MCNearbyServiceBrowser
-// object’s delegate can implement to handle browser-related events.
-
-extension SessionManager: MCNearbyServiceBrowserDelegate {
-    // Found a nearby advertising peer.
-    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        let remotePeerName = peerID.displayName
-        let myPeerID = session.myPeerID
-        
-        let shouldInvite = (myPeerID.displayName.compare(remotePeerName) == .orderedDescending)
-        
-        if shouldInvite {
-            if (_SESSION_DEBUG_) { NSLog("\(#function) Inviting [\(remotePeerName)]"); }
-            browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30.0)
-        } else {
-            if (_SESSION_DEBUG_) { NSLog("\(#function) Not inviting [\(remotePeerName)]"); }
-        }
-        
-        delegate?.sessionDidChangeState()
-    }
-    
-    // A nearby peer has stopped advertising.
-    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        if (_SESSION_DEBUG_) { NSLog("\(#function) [\(peerID.displayName)]"); }
-    }
-    
-    // Browsing did not start due to an error.
-    func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
-        if (_SESSION_DEBUG_) { NSLog("\(#function) \(error)"); }
-    }
-}
-
 
 
 //
