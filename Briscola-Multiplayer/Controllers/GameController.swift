@@ -237,12 +237,6 @@ class GameController: UIViewController {
                 self.playersPointsLabels[pIndex].text = String(player.deckPoints);
             }
         }
-        
-        // if game is ended go to the results page.
-        if (gameHandler.gameEnded) {
-            if (gameOptions.mode == .multiplayer) { stopSession(); }
-            goToNextView();
-        }
     }
     
     private func playCard(card model: CardModel, playerIndex: Int) {
@@ -267,6 +261,16 @@ class GameController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: delay, execute: {
             self.render();
         })
+        
+        // if game is ended go to the results page.
+        if (gameHandler.gameEnded) {
+            // stop the session
+            if (gameOptions.mode == .multiplayer) { stopSession(); }
+             // go to result page
+            DispatchQueue.main.async {
+                self.goToNextView();
+            };
+        }
     }
     
     //

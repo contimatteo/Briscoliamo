@@ -100,6 +100,8 @@ class ResultsController: UIViewController {
         let match: DB_Match = DB_Match(localPlayer: dbLocalPlayer, localPlayerResult: dbLocalPlayerResult, remotePlayer: dbRemotePlayer, remotePlayerResult: dbRemotePlayerResult);
         
         dbHandler.saveMatch(match);
+        
+        render();
     }
     
 }
