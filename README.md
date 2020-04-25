@@ -1,14 +1,14 @@
 # IOS-Briscola
 
 
-### Installazione
+### Setup
 
-prima di compilare il progetto, lanciare nel terminale il seguente comando (per installare tuttue le dipendenze):
+first, install all dependencies with command:
 ```
 pod install
 ```
 
 
-### Relazione
+### Summary
 
-La relazione è disponibile a [questo link](https://github.com/contimatteo/briscola/blob/master/Report/Relazione%20progetto%20LAM%202018-2019.pdf).
+Short keynote presentation availables at [this link](https://github.com/contimatteo/briscola/blob/master/Report/Relazione%20progetto%20LAM%202018-2019.pdf).
